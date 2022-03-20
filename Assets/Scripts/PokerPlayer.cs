@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PokerNPC : MonoBehaviour
+public class PokerPlayer : MonoBehaviour
 {
     public Sprite headShot;
     public GameObject cardImage1, cardImage2;
