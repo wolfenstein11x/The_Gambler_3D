@@ -128,8 +128,6 @@ public class Dealer : MonoBehaviour
         // deal opponent cards face down (start at i=1 because main player is at i=0)
         for (int i= 1; i < playerPositions.Length; i++)
         {
-            List<int> cards = new List<int>();
-
             // select card and store data
             int card1 = Random.Range(0, deck.Count);
             activePlayers[i].cards.Add(card1);
@@ -158,18 +156,6 @@ public class Dealer : MonoBehaviour
 
     private void DealPlayerHand()
     {
-        List<int> cards = new List<int>();
-        /*
-        int card1 = Random.Range(0, deck.Count);
-        cards.Add(deck[card1]);
-        playerCardPositions[0].GetComponent<SpriteRenderer>().sprite = cardImages[card1];
-        deck.RemoveAt(card1);
-
-        int card2 = Random.Range(0, deck.Count);
-        cards.Add(deck[card2]);
-        playerCardPositions[1].GetComponent<SpriteRenderer>().sprite = cardImages[card2];
-        deck.RemoveAt(card2);
-        */
         // select card and store data
         int card1 = Random.Range(0, deck.Count);
         player.cards.Add(card1);
@@ -196,19 +182,19 @@ public class Dealer : MonoBehaviour
         // get random card from deck, display image, store card in each players hand, then remove from deck
         int card1 = Random.Range(0, deck.Count);
         tableCardPositions[0].GetComponent<SpriteRenderer>().sprite = cardImages[card1];
-        //foreach (string player in activePlayers) { playerHands[player].Add(deck[card1]); }
+        foreach (PokerPlayer activePlayer in activePlayers) { activePlayer.hand.Add(cardImages[card1].name); }
         deck.RemoveAt(card1);
 
         // get random card from deck, display image, store card in each players hand, then remove from deck
         int card2 = Random.Range(0, deck.Count);
         tableCardPositions[1].GetComponent<SpriteRenderer>().sprite = cardImages[card2];
-        //foreach (string player in activePlayers) { playerHands[player].Add(card2); }
+        foreach (PokerPlayer activePlayer in activePlayers) { activePlayer.hand.Add(cardImages[card2].name); }
         deck.RemoveAt(card2);
 
         // get random card from deck, display image, store card in each players hand, then remove from deck
         int card3 = Random.Range(0, deck.Count);
         tableCardPositions[2].GetComponent<SpriteRenderer>().sprite = cardImages[card3];
-        //foreach (string player in activePlayers) { playerHands[player].Add(card3); }
+        foreach (PokerPlayer activePlayer in activePlayers) { activePlayer.hand.Add(cardImages[card3].name); }
         deck.RemoveAt(card3);
 
         // move state machine to next state
@@ -220,7 +206,7 @@ public class Dealer : MonoBehaviour
         // get random card from deck, display image, store card in each players hand, then remove from deck
         int card = Random.Range(0, deck.Count);
         tableCardPositions[3].GetComponent<SpriteRenderer>().sprite = cardImages[card];
-        //foreach (string player in activePlayers) { playerHands[player].Add(deck[card]); }
+        foreach (PokerPlayer activePlayer in activePlayers) { activePlayer.hand.Add(cardImages[card].name); }
         deck.RemoveAt(card);
 
         // move state machine to next state
@@ -232,7 +218,7 @@ public class Dealer : MonoBehaviour
         // get random card from deck, display image, store card in each players hand, then remove from deck
         int card = Random.Range(0, deck.Count);
         tableCardPositions[4].GetComponent<SpriteRenderer>().sprite = cardImages[card];
-        //foreach (string player in activePlayers) { playerHands[player].Add(deck[card]); }
+        foreach (PokerPlayer activePlayer in activePlayers) { activePlayer.hand.Add(cardImages[card].name); }
         deck.RemoveAt(card);
 
         // move state machine to next state
@@ -253,21 +239,24 @@ public class Dealer : MonoBehaviour
             cardImg2.GetComponent<SpriteRenderer>().sprite = cardImages[activePlayers[i].cards[1]];
         }
 
+        // for debugging only
+        PrintHands();
+
         // move state machine to next state
         state = HandState.NewHand;
 
     }
 
     
-    /*
+    
     void PrintHands()
     {
-        foreach (KeyValuePair<string, List<int>> entry in playerHands)
+        foreach(PokerPlayer activePlayer in activePlayers)
         {
-            Debug.Log(entry.Key + ": " + "[" + entry.Value[0] + "," + entry.Value[1] + "," + entry.Value[2] + "," + entry.Value[3] + "," + entry.Value[4] + "," + entry.Value[5] + "," + entry.Value[6] + "]");
+            activePlayer.PrintHand();
         }
     }
-    */
+    
     
 
 

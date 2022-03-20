@@ -22,5 +22,10 @@ public class PokerPlayer : MonoBehaviour
         
     }
 
+    public void PrintHand()
+    {
+        Debug.Log(gameObject.name + ": [" + hand[0] + "," + hand[1] + "," + hand[2] + "," + hand[3] + "," + hand[4] + "," + hand[5] + "," + hand[6] + "]");
+    }
+
     
 }
