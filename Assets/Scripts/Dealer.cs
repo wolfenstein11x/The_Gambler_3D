@@ -4,9 +4,12 @@ using System.Linq;
 using UnityEngine;
 
 
+public enum HandState { Begin, Flop, Turn, River, Reveal }
+
 public class Dealer : MonoBehaviour
 {
-    
+    HandState state;
+
     [SerializeField] List<string> opponents;
     [SerializeField] Sprite[] cardImages;
     [SerializeField] Transform[] playerCardPositions;
@@ -22,11 +25,10 @@ public class Dealer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        state = HandState.Begin;
+
         InitializeActivePlayers();
-        DealHands();
-        DealFlop();
-        DealTurn();
-        DealRiver();
+        
         //PrintHands();
     }
 
@@ -36,6 +38,28 @@ public class Dealer : MonoBehaviour
         
     }
 
+    private void ResetDeck()
+    {
+        deck = Enumerable.Range(0, 52).ToList();
+    }
+
+    private void NewHand()
+    {
+        // put the cards (numbers) back in the deck (list)
+        ResetDeck();
+
+        // clear all player cards and table cards
+        foreach (Transform playerCard in playerCardPositions) { playerCard.GetComponent<SpriteRenderer>().sprite = null; }
+        foreach (Transform tableCard in tableCardPositions) { tableCard.GetComponent<SpriteRenderer>().sprite = null; }
+
+        // clear all current hands from dictionary
+        playerHands.Clear();
+
+        // dealer ready to deal hands next time deal button pressed
+        state = HandState.Begin;
+    }
+
+    
     private void InitializeActivePlayers()
     {
         activePlayers.Add("Player");
@@ -46,12 +70,20 @@ public class Dealer : MonoBehaviour
         }
     }
 
+    public void Deal()
+    {
+        if (state == HandState.Begin) { DealHands(); }
+        else if (state == HandState.Flop) { DealFlop(); }
+        else if (state == HandState.Turn) { DealTurn(); }
+        else if (state == HandState.River) { DealRiver(); }
+        else if (state == HandState.Reveal) { NewHand(); }
+    }
+
     private void DealHands()
     {
         DealPlayerHand();
-        //int playerCardPosIdx = 0;
-
-        foreach(string player in opponents)
+        
+        foreach(string opponent in opponents)
         {
             List<int> cards = new List<int>();
 
@@ -63,8 +95,11 @@ public class Dealer : MonoBehaviour
             cards.Add(deck[card2]);
             deck.RemoveAt(card2);
 
-            playerHands.Add(player, cards);
+            playerHands.Add(opponent, cards);
         }
+
+        // move state machine to next state
+        state = HandState.Flop;
     }
 
     private void DealPlayerHand()
@@ -103,6 +138,9 @@ public class Dealer : MonoBehaviour
         tableCardPositions[2].GetComponent<SpriteRenderer>().sprite = cardImages[card3];
         foreach (string player in activePlayers) { playerHands[player].Add(card3); }
         deck.RemoveAt(card3);
+
+        // move state machine to next state
+        state = HandState.Turn;
     }
 
     private void DealTurn()
@@ -112,6 +150,9 @@ public class Dealer : MonoBehaviour
         tableCardPositions[3].GetComponent<SpriteRenderer>().sprite = cardImages[card];
         foreach (string player in activePlayers) { playerHands[player].Add(deck[card]); }
         deck.RemoveAt(card);
+
+        // move state machine to next state
+        state = HandState.River;
     }
 
     private void DealRiver()
@@ -121,25 +162,12 @@ public class Dealer : MonoBehaviour
         tableCardPositions[4].GetComponent<SpriteRenderer>().sprite = cardImages[card];
         foreach (string player in activePlayers) { playerHands[player].Add(deck[card]); }
         deck.RemoveAt(card);
+
+        // move state machine to next state
+        state = HandState.Reveal;
     }
 
-    private void Deal(int times = 1)
-    {
-        int n = 0;
-        while (n < times)
-        {
-            int card = Random.Range(0, deck.Count);
-
-            foreach (string player in opponents)
-            {
-                playerHands[player].Add(deck[card]);
-            }
-
-            deck.RemoveAt(card);
-
-            n++;
-        }
-    }
+    
 
     void PrintHands()
     {
