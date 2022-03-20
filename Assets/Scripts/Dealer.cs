@@ -54,7 +54,7 @@ public class Dealer : MonoBehaviour
         // put the cards (numbers) back in the deck (list)
         ResetDeck();
 
-        // clear all player cards and table cards
+        // clear all images of player cards and table cards
         foreach (Transform playerCardPosition in playerCardPositions) { playerCardPosition.GetComponent<SpriteRenderer>().sprite = null; }
         foreach (Transform tableCardPosition in tableCardPositions) { tableCardPosition.GetComponent<SpriteRenderer>().sprite = null; }
         foreach (Transform npcPosition in opponentPositions)
@@ -66,8 +66,12 @@ public class Dealer : MonoBehaviour
             cardImg2.GetComponent<SpriteRenderer>().sprite = null;
         }
 
-        // clear all current hands from dictionary
-        //playerHands.Clear();
+        // clear all current hands data
+        foreach(PokerNPC npc in NPCs)
+        {
+            npc.cards.Clear();
+            npc.hand.Clear();
+        }
 
         // dealer ready to deal hands next time deal button pressed
         state = HandState.Begin;
@@ -75,10 +79,20 @@ public class Dealer : MonoBehaviour
 
     private void DisplayNPCs()
     {
+        List<int> usedNPCs = new List<int>();
+
         for (int i=0; i < opponentPositions.Length; i++)
         {
-            // pick random NPC to fill each position
-            int npcIdx = Random.Range(0, NPCs.Length);
+            int npcIdx;
+
+            // pick random NPC to fill each position (but keep picking until you don't pick a repeat)
+            do
+            {
+                npcIdx = Random.Range(0, NPCs.Length);
+            } while (usedNPCs.Contains(npcIdx));
+
+            usedNPCs.Add(npcIdx);
+            
 
             // put NPC headshot in position
             Headshot headshot = opponentPositions[i].GetComponentInChildren<Headshot>();
@@ -103,7 +117,8 @@ public class Dealer : MonoBehaviour
         else if (state == HandState.Flop) { DealFlop(); }
         else if (state == HandState.Turn) { DealTurn(); }
         else if (state == HandState.River) { DealRiver(); }
-        else if (state == HandState.Reveal) { NewHand(); }
+        else if (state == HandState.Reveal) { Reveal(); }
+        else if (state == HandState.NewHand) { NewHand(); }
     }
 
     private void DealHands()
@@ -116,22 +131,24 @@ public class Dealer : MonoBehaviour
 
             // select card and store data
             int card1 = Random.Range(0, deck.Count);
-            cards.Add(deck[card1]);
+            NPCs[i].cards.Add(card1);
+            NPCs[i].hand.Add(cardImages[card1].name);
             deck.RemoveAt(card1);
 
             // display image of (back of) card
             CardImg1 cardImg1 = opponentPositions[i].GetComponentInChildren<CardImg1>();
-            cardImg1.GetComponent<SpriteRenderer>().sprite = cardBack; 
+            cardImg1.GetComponent<SpriteRenderer>().sprite = cardBack;
 
+            // select card and store data
             int card2 = Random.Range(0, deck.Count);
-            cards.Add(deck[card2]);
+            NPCs[i].cards.Add(card2);
+            NPCs[i].hand.Add(cardImages[card2].name);
             deck.RemoveAt(card2);
 
             // display image of (back of) card
             CardImg2 cardImg2 = opponentPositions[i].GetComponentInChildren<CardImg2>();
             cardImg2.GetComponent<SpriteRenderer>().sprite = cardBack;
 
-            //playerHands.Add(opponent, cards);
         }
 
         // move state machine to next state
@@ -152,7 +169,6 @@ public class Dealer : MonoBehaviour
         playerCardPositions[1].GetComponent<SpriteRenderer>().sprite = cardImages[card2];
         deck.RemoveAt(card2);
 
-        //playerHands.Add("Player", cards);
     }
 
     private void DealFlop()
@@ -205,6 +221,20 @@ public class Dealer : MonoBehaviour
 
     private void Reveal()
     {
+        // TODO: only loop through active NPCs (skip the ones who folded)
+        for (int i=0; i < opponentPositions.Length; i++)
+        {
+            // display image of first card
+            CardImg1 cardImg1 = opponentPositions[i].GetComponentInChildren<CardImg1>();
+            cardImg1.GetComponent<SpriteRenderer>().sprite = cardImages[NPCs[i].cards[0]];
+
+            // display image of second card
+            CardImg2 cardImg2 = opponentPositions[i].GetComponentInChildren<CardImg2>();
+            cardImg2.GetComponent<SpriteRenderer>().sprite = cardImages[NPCs[i].cards[1]];
+        }
+
+        // move state machine to next state
+        state = HandState.NewHand;
 
     }
 
