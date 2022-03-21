@@ -25,12 +25,10 @@ public class Dealer : MonoBehaviour
     void Start()
     {
         InitializeActivePlayers();
+        NewHand();
 
         state = HandState.Begin;
 
-        
-        
-        //PrintHands();
     }
 
     // Update is called once per frame
@@ -61,10 +59,10 @@ public class Dealer : MonoBehaviour
         }
 
         // clear all current hands data
-        foreach(PokerPlayer npc in NPCs)
+        foreach(PokerPlayer activePlayer in activePlayers)
         {
-            npc.cards.Clear();
-            npc.hand.Clear();
+            activePlayer.cards.Clear();
+            activePlayer.hand.Clear();
         }
 
         // dealer ready to deal hands next time deal button pressed
