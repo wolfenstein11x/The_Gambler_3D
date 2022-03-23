@@ -21,14 +21,26 @@ public class HandCalculator : MonoBehaviour
                                           {'7','8','9','t','j' },{'8','9','t','j','q'}, {'9','t','j','q','k'},
                                           {'t','j','q','k','a' } };
 
+    Dictionary<char, int> ranks = new Dictionary<char, int>()
+        {
+            {'2',2},{'3',3},{'4',4},{'5',5},{'6',6},{'7',7},{'8',8},{'9',9},{'t',10},{'j',11},{'q',12},{'k',13},{'a',14}
+        };
 
     void Start()
     {
-        
+        /*
+        List<string> myHand = new List<string> { "2s", "3d", "7h", "kc", "jd", "as", "4c" };
+        myHand = SortHandHighLow(myHand);
+
+        foreach(string card in myHand) { Debug.Log(card); }
+        */
     }
 
     public int CheckHand(List<string> hand)
     {
+        // first sort cards frmo high to low to make it easier later
+        hand = SortHandHighLow(hand);
+
         int pairScore = CheckForPairs(hand);
         bool flush = CheckForFlush(hand);
         bool straight = CheckAllStraights(hand);
@@ -169,13 +181,50 @@ public class HandCalculator : MonoBehaviour
 
     }
 
-    private int GetRankInt(char rankChar)
+    public List<string> SortHandHighLow(List<string> hand, bool highToLow=true)
     {
-        var ranks = new Dictionary<char, int>()
-        {
-            {'2',2},{'3',3},{'4',4},{'5',5},{'6',6},{'7',7},{'8',8},{'9',9},{'t',10},{'j',11},{'q',12},{'k',13},{'a',14}
-        };
+        List<string> sortedHand = new List<string>();
+        List<int> usedIndexes = new List<int>();
 
-        return ranks[rankChar];
+        int currentHighest = 0;
+        int currentHighestIdx = 0;
+        
+        for (int i=0; i<hand.Count; i++)
+        {
+
+            for (int j=0; j<hand.Count; j++)
+            {
+                if (ranks[hand[j][0]] > currentHighest)
+                {
+                    if (usedIndexes.Contains(j)) { continue; }
+                    currentHighest = ranks[hand[j][0]];
+                    currentHighestIdx = j;
+                    //Debug.Log("current highest is " + currentHighest);
+                }
+            }
+
+            currentHighest = 0;
+
+            sortedHand.Add(hand[currentHighestIdx]);
+            usedIndexes.Add(currentHighestIdx);
+        }
+
+        return sortedHand;
+    }
+
+    
+
+    public List<string> OptimizeHand(List<string> hand)
+    {
+        // case statement with case being score of hand
+            // in pair, 2 pair, or trips case:
+                // sort list in order of rank, highest to lowest
+                // start at lowest, and remove element if its not a dup, until list only has 5 items
+            // in flush case:
+                // remove every element that doesn't have a suit dup count of 5
+                // sort list in order of rank, highest to lowest
+                // remove lowest elements until list only has 5 items
+
+        return hand;
     }
 }
