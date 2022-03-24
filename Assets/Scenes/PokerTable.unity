@@ -260,6 +260,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c8208bf62d9ed54baed521a58f1aa2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  testHand:
+  - as
+  - kd
+  - 3d
+  - 8c
+  - ts
+  - 9h
+  - 4s
 --- !u!4 &219649587
 Transform:
   m_ObjectHideFlags: 0

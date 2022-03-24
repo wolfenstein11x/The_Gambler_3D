@@ -16,6 +16,8 @@ high card = 1
 
 public class HandCalculator : MonoBehaviour
 {
+    //[SerializeField] List<string> testHand;
+
     private char[,] straightCombos = new char[,] { {'a','2','3','4','5'}, {'2','3','4','5','6'}, {'3','4','5','6','7'},
                                           {'4','5','6','7','8' },{'5','6','7','8','9'}, {'6','7','8','9','t'},
                                           {'7','8','9','t','j' },{'8','9','t','j','q'}, {'9','t','j','q','k'},
@@ -28,37 +30,55 @@ public class HandCalculator : MonoBehaviour
 
     void Start()
     {
-        /*
-        List<string> myHand = new List<string> { "2s", "3d", "7h", "kc", "jd", "as", "4c" };
-        myHand = SortHandHighLow(myHand);
-
-        foreach(string card in myHand) { Debug.Log(card); }
-        */
+        //Debug.Log(CheckHand(testHand));
     }
 
     public int CheckHand(List<string> hand)
     {
-        // first sort cards frmo high to low to make it easier later
+        // first sort cards from high to low to make it easier later
         hand = SortHandHighLow(hand);
 
-        int pairScore = CheckForPairs(hand);
-        bool flush = CheckForFlush(hand);
-        bool straight = CheckAllStraights(hand);
+        if (CheckQuads(hand)) return 8;
+        else if (CheckFullHouse(hand)) return 7;
+        else if (CheckFlush(hand)) return 6;
+        else if (CheckAllStraights(hand)) return 5;
+        else if (CheckTrips(hand)) return 4;
+        else if (Check2Pair(hand)) return 3;
+        else if (CheckPair(hand)) return 2;
+        else return 1;
 
-        // full house/quads
-        if (pairScore > 6) { return pairScore; }
-
-        // flush
-        else if (flush) { return 6; }
-
-        // straight
-        else if (straight) { return 5; }
-
-        // trips, pairs, high card
-        else { return pairScore; }
     }
 
-    private bool CheckForFlush(List<string> hand)
+    private bool CheckQuads(List<string> hand)
+    {
+        foreach (string card in hand)
+        {
+            // count matches in letter at idx 0 (which is rank)
+            int dups = CountDups(card[0], 0, hand);
+
+            if (dups == 3) { return true; }
+        }
+        return false;
+    }
+
+    private bool CheckFullHouse(List<string> hand)
+    {
+        bool trips = false;
+        bool pair = false;
+
+        foreach (string card in hand)
+        {
+            // count matches in letter at idx 0 (which is rank)
+            int dups = CountDups(card[0], 0, hand);
+
+            if (dups == 2) { trips = true; }
+            else if (dups == 1) { pair = true; }
+        }
+
+        return (trips && pair);
+    }
+
+    private bool CheckFlush(List<string> hand)
     {
         foreach (string card in hand)
         {
@@ -127,6 +147,74 @@ public class HandCalculator : MonoBehaviour
         // if we make it here, then arr2 is subset of arr1
         return true;
     }
+
+    private bool CheckTrips(List<string> hand)
+    {
+        foreach (string card in hand)
+        {
+            // count matches in letter at idx 0 (which is rank)
+            int dups = CountDups(card[0], 0, hand);
+
+            if (dups == 2) { return true; }
+        }
+        return false;
+    }
+
+    private bool Check2Pair(List<string> hand)
+    {
+        int numPairs = 0;
+
+        foreach (string card in hand)
+        {
+            // count matches in letter at idx 0 (which is rank)
+            int dups = CountDups(card[0], 0, hand);
+
+            if (dups == 1) { numPairs++; }
+        }
+
+        // pairs are double counted, so divide by 2
+        numPairs /= 2;
+
+        return (numPairs >= 2);
+    }
+
+    private bool CheckPair(List<string> hand)
+    {
+        int numPairs = 0;
+
+        foreach (string card in hand)
+        {
+            // count matches in letter at idx 0 (which is rank)
+            int dups = CountDups(card[0], 0, hand);
+
+            if (dups == 1) { numPairs++; }
+        }
+
+        // pairs are double counted, so divide by 2
+        numPairs /= 2;
+
+        return (numPairs == 1);
+    }
+
+    // helper function to be used to resolve special case when hand has 3 pairs
+    private bool Check3Pair(List<string> hand)
+    {
+        int numPairs = 0;
+
+        foreach (string card in hand)
+        {
+            // count matches in letter at idx 0 (which is rank)
+            int dups = CountDups(card[0], 0, hand);
+
+            if (dups == 1) { numPairs++; }
+        }
+
+        // pairs are double counted, so divide by 2
+        numPairs /= 2;
+
+        return (numPairs == 3);
+    }
+
 
 
     // CountDups can be used to count duplicate ranks (idx=0) or duplicate suits (idx=1)
