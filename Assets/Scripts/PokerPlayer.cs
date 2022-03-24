@@ -6,6 +6,7 @@ public class PokerPlayer : MonoBehaviour
 {
     public Sprite headShot;
     public GameObject cardImage1, cardImage2;
+    public PlayerPosition playerPosition;
 
     public List<int> cards;
     public List<string> hand;

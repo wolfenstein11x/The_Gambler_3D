@@ -21,7 +21,7 @@ public class HandCalculator : MonoBehaviour
                                           {'7','8','9','t','j' },{'8','9','t','j','q'}, {'9','t','j','q','k'},
                                           {'t','j','q','k','a' } };
 
-    Dictionary<char, int> ranks = new Dictionary<char, int>()
+    private Dictionary<char, int> ranks = new Dictionary<char, int>()
         {
             {'2',2},{'3',3},{'4',4},{'5',5},{'6',6},{'7',7},{'8',8},{'9',9},{'t',10},{'j',11},{'q',12},{'k',13},{'a',14}
         };
