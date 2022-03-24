@@ -1340,7 +1340,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1850618539}
         m_TargetAssemblyTypeName: Dealer, Assembly-CSharp
-        m_MethodName: SeatPlayers
+        m_MethodName: Deal
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

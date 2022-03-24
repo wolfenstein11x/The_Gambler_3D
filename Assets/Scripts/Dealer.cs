@@ -26,7 +26,8 @@ public class Dealer : MonoBehaviour
     {
         ChoosePlayers();
         SeatPlayers();
-
+        NewHand();
+        
         state = HandState.Begin;
 
     }
@@ -49,13 +50,13 @@ public class Dealer : MonoBehaviour
 
         // clear all images of player cards and table cards
         foreach (Transform tableCardPosition in tableCardPositions) { tableCardPosition.GetComponent<SpriteRenderer>().sprite = null; }
-        //foreach (Transform playerPosition in playerPositions)
+        foreach (PlayerPosition playerPosition in playerPositions)
         {
-            //CardImg1 cardImg1 = playerPosition.GetComponentInChildren<CardImg1>();
-            //cardImg1.GetComponent<SpriteRenderer>().sprite = null;
+            CardImg1 cardImg1 = playerPosition.GetComponentInChildren<CardImg1>();
+            cardImg1.GetComponent<SpriteRenderer>().sprite = null;
 
-            //CardImg2 cardImg2 = playerPosition.GetComponentInChildren<CardImg2>();
-            //cardImg2.GetComponent<SpriteRenderer>().sprite = null;
+            CardImg2 cardImg2 = playerPosition.GetComponentInChildren<CardImg2>();
+            cardImg2.GetComponent<SpriteRenderer>().sprite = null;
         }
 
         // clear all current hands data
@@ -154,7 +155,7 @@ public class Dealer : MonoBehaviour
 
     public void Deal()
     {
-        if (state == HandState.Begin) { DealHands(); }
+        if (state == HandState.Begin) { DealToPlayers(); }
         else if (state == HandState.Flop) { DealFlop(); }
         else if (state == HandState.Turn) { DealTurn(); }
         else if (state == HandState.River) { DealRiver(); }
@@ -162,25 +163,52 @@ public class Dealer : MonoBehaviour
         else if (state == HandState.NewHand) { NewHand(); }
     }
 
+    private void DealToPlayers()
+    {
+        // deal main player face up
+        DealToPlayer(activePlayers[0], true);
+        DealToPlayer(activePlayers[0], true);
+
+        // deal to NPCs face down
+        for (int i=1; i < activePlayers.Count; i++)
+        {
+            DealToPlayer(activePlayers[i]);
+            DealToPlayer(activePlayers[i]);
+        }
+
+        // move state machine to next state
+        state = HandState.Flop;
+    }
+
     private void DealToPlayer(PokerPlayer player, bool faceUp=false)
     {
         // select card and store data
-        int card1Idx = Random.Range(0, deck.Count);
-        Debug.Log("index: " + card1Idx);
-        int card1 = deck[card1Idx];
+        int cardIdx = Random.Range(0, deck.Count);
+        int card = deck[cardIdx];
 
-        // add card to player's hand
-        //player.cards.Add(card1);
-        player.hand.Add(cardImages[card1].name);
+        // add card to player's hand (and to player cards, so we can reveal later if necessary)
+        player.hand.Add(cardImages[card].name);
+        player.cards.Add(card);
         
         // remove card from deck so not dealt again
-        deck.RemoveAt(card1);
+        deck.RemoveAt(cardIdx);
 
-        // display image of card (face up only if for main player)
-        CardImg1 cardImg1 = playerPositions[0].GetComponentInChildren<CardImg1>();
-        if (faceUp) { cardImg1.GetComponent<SpriteRenderer>().sprite = cardImages[card1]; }
-        else { cardImg1.GetComponent<SpriteRenderer>().sprite = cardBack; }
+        // display image of card in first empty card position (face up only if for main player)
+        if (player.playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite == null)
+        {
+            CardImg1 cardImg1 = player.playerPosition.GetComponentInChildren<CardImg1>();
+            if (faceUp) { cardImg1.GetComponent<SpriteRenderer>().sprite = cardImages[card]; }
+            else { cardImg1.GetComponent<SpriteRenderer>().sprite = cardBack; }
+        }
 
+        // display image of card in second empty position if first spot not empty (face up only if for main player)
+        else if (player.playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite == null)
+        {
+            CardImg2 cardImg2 = player.playerPosition.GetComponentInChildren<CardImg2>();
+            if (faceUp) { cardImg2.GetComponent<SpriteRenderer>().sprite = cardImages[card]; }
+            else { cardImg2.GetComponent<SpriteRenderer>().sprite = cardBack; }
+        }
+                
     }
 
     public void DealToTable(int position)
@@ -259,23 +287,10 @@ public class Dealer : MonoBehaviour
 
     private void DealFlop()
     {
-        // get random card from deck, display image, store card in each players hand, then remove from deck
-        int card1 = deck[Random.Range(0, deck.Count)];
-        tableCardPositions[0].GetComponent<SpriteRenderer>().sprite = cardImages[card1];
-        foreach (PokerPlayer activePlayer in activePlayers) { activePlayer.hand.Add(cardImages[card1].name); }
-        deck.RemoveAt(card1);
-
-        // get random card from deck, display image, store card in each players hand, then remove from deck
-        int card2 = deck[Random.Range(0, deck.Count)];
-        tableCardPositions[1].GetComponent<SpriteRenderer>().sprite = cardImages[card2];
-        foreach (PokerPlayer activePlayer in activePlayers) { activePlayer.hand.Add(cardImages[card2].name); }
-        deck.RemoveAt(card2);
-
-        // get random card from deck, display image, store card in each players hand, then remove from deck
-        int card3 = deck[Random.Range(0, deck.Count)];
-        tableCardPositions[2].GetComponent<SpriteRenderer>().sprite = cardImages[card3];
-        foreach (PokerPlayer activePlayer in activePlayers) { activePlayer.hand.Add(cardImages[card3].name); }
-        deck.RemoveAt(card3);
+        // deal to first 3 spots on table
+        DealToTable(0);
+        DealToTable(1);
+        DealToTable(2);
 
         // move state machine to next state
         state = HandState.Turn;
@@ -283,11 +298,8 @@ public class Dealer : MonoBehaviour
 
     private void DealTurn()
     {
-        // get random card from deck, display image, store card in each players hand, then remove from deck
-        int card = deck[Random.Range(0, deck.Count)];
-        tableCardPositions[3].GetComponent<SpriteRenderer>().sprite = cardImages[card];
-        foreach (PokerPlayer activePlayer in activePlayers) { activePlayer.hand.Add(cardImages[card].name); }
-        deck.RemoveAt(card);
+        // deal to 4th spot on table
+        DealToTable(3);
 
         // move state machine to next state
         state = HandState.River;
@@ -295,18 +307,15 @@ public class Dealer : MonoBehaviour
 
     private void DealRiver()
     {
-        // get random card from deck, display image, store card in each players hand, then remove from deck
-        int card = deck[Random.Range(0, deck.Count)];
-        tableCardPositions[4].GetComponent<SpriteRenderer>().sprite = cardImages[card];
-        foreach (PokerPlayer activePlayer in activePlayers) { activePlayer.hand.Add(cardImages[card].name); }
-        deck.RemoveAt(card);
+        // deal to 5th spot on table
+        DealToTable(4);
 
         // move state machine to next state
         state = HandState.Reveal;
     }
 
     private void Reveal()
-    {
+    {   /*
         // TODO: skip over inactive players
         for (int i=1; i < playerPositions.Length; i++)
         {
@@ -317,6 +326,21 @@ public class Dealer : MonoBehaviour
             // display image of second card
             CardImg2 cardImg2 = playerPositions[i].GetComponentInChildren<CardImg2>();
             cardImg2.GetComponent<SpriteRenderer>().sprite = cardImages[activePlayers[i].cards[1]];
+        }
+        */
+
+        foreach(PokerPlayer player in activePlayers)
+        {
+            // skip main player because we already see his cards
+            if (player.tag == "mainPlayer") { continue; }
+
+            // display image of first card
+            CardImg1 cardImg1 = player.playerPosition.GetComponentInChildren<CardImg1>();
+            cardImg1.GetComponent<SpriteRenderer>().sprite = cardImages[player.cards[0]];
+
+            // display image of second card
+            CardImg2 cardImg2 = player.playerPosition.GetComponentInChildren<CardImg2>();
+            cardImg2.GetComponent<SpriteRenderer>().sprite = cardImages[player.cards[1]];
         }
 
         // for debugging only
