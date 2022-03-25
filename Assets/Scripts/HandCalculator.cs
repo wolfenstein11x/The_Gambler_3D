@@ -2,21 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-/*
-straight flush = 9
-quads = 8
-full house = 7
-flush = 6
-straight = 5
-trips = 4
-two pair = 3
-pair = 2
-high card = 1
-*/
 
 public class HandCalculator : MonoBehaviour
 {
-    //[SerializeField] List<string> testHand;
+    [SerializeField] List<string> testHand;
 
     private Dictionary<int, string> handNames = new Dictionary<int, string>()
     {
@@ -33,7 +22,7 @@ public class HandCalculator : MonoBehaviour
 
     void Start()
     {
-        //Debug.Log(ScoreHand(testHand));
+        Debug.Log(ScoreHand(testHand));
     }
 
     public int ScoreHand(List<string> hand)
@@ -79,7 +68,7 @@ public class HandCalculator : MonoBehaviour
         if (straightFlushHand.Count == 5 && CheckFlush(straightFlushHand)) { return true; }
 
         // scenario #4, check special case (a-2-3-4-5)
-        if (CheckSpecialCaseStraight(hand)) { return true; }
+        if (CheckSpecialCaseStraightFlush(hand)) { return true; }
 
         return false;
     }
@@ -166,6 +155,7 @@ public class HandCalculator : MonoBehaviour
         return false;
     }
 
+    // helper function for CheckStraight()
     private List<string> GetStraightHand(List<string> hand, int startIdx)
     {
         List<string> straightHand = new List<string>();
@@ -181,18 +171,7 @@ public class HandCalculator : MonoBehaviour
         return straightHand;
     }
 
-    // helper function to determine if 5 card subset is a straight
-    private bool FiveConsecutive(List<string> fiveCards)
-    {
-        // make sure each card is exactly +1 greater than next card
-        for (int i=0; i<fiveCards.Count-1; i++)
-        {
-            if (ranks[fiveCards[i][0]] - ranks[fiveCards[i+1][0]] != 1) return false; 
-        }
-
-        return true;
-    }
-
+    
     // helper function to check for special case of straight, a-2-3-4-5
     private bool CheckSpecialCaseStraight(List<string> hand)
     {
@@ -215,6 +194,7 @@ public class HandCalculator : MonoBehaviour
         return true;
     }
 
+    // helper function to check for special case of straight flush, ax-2x-3x-4x-5x
     private bool CheckSpecialCaseStraightFlush(List<string> hand)
     {
         for (int i=0; i < straightFlushSpecialCases.GetLength(0); i++)
@@ -236,61 +216,7 @@ public class HandCalculator : MonoBehaviour
         return false;
     }
 
-    /*
-    private bool CheckAllStraights(List<string> hand)
-    {
-        // loop through all 10 straight combos
-        for (int i = 0; i < straightCombos.GetLength(0); i++)
-        {
-            bool straightFound = CheckStraight(straightCombos[i, 0], straightCombos[i, 1], straightCombos[i, 2],
-                                               straightCombos[i, 3], straightCombos[i, 4], hand);
-
-            // exit the function and return true if you find a straight
-            if (straightFound) { return true; }
-        }
-
-        // if you get to this point, there is no straight
-        return false;
-    }
-
-
-    // helper function to check for a particular straight combo
-    private bool CheckStraight(char r1, char r2, char r3, char r4, char r5, List<string> hand)
-    {
-        // take input chars and put the into array
-        char[] straightArr = new char[] { r1, r2, r3, r4, r5 };
-
-        // take first letters (ranks) from player hand and put into array
-        char[] handRanksArr = new char[] {hand[0][0], hand[1][0], hand[2][0], hand[3][0],
-                                          hand[4][0], hand[5][0], hand[6][0]};
-
-        // check if player hand contains straight combo
-        if (IsSubset(handRanksArr, straightArr, 5, 7)) { return true; }
-        else { return false; }
-    }
-
-    // helper function to check if a 7 card array contains a certain 5 card array
-    private bool IsSubset(char[] arr1, char[] arr2, int arr2Size, int arr1Size)
-    {
-        int i = 0;
-        int j = 0;
-
-        for (i = 0; i < arr2Size; i++)
-        {
-            for (j = 0; j < arr1Size; j++)
-            {
-                if (arr2[i] == arr1[j]) { break; }
-            }
-
-            // if the above loop goes once through without breaking, then its false
-            if (j == arr1Size) { return false; }
-        }
-
-        // if we make it here, then arr2 is subset of arr1
-        return true;
-    }
-    */
-
+   
     private bool CheckTrips(List<string> hand)
     {
         foreach (string card in hand)
@@ -375,43 +301,7 @@ public class HandCalculator : MonoBehaviour
         return dups;
     }
 
-    private int CheckForPairs(List<string> hand)
-    {
-        // initialize pair counts to zero
-        int numPairs = 0;
-        bool trips = false;
-        bool fullHouse = false;
-        bool quads = false;
-
-        foreach (string card in hand)
-        {
-            // count matches in letter at idx 0 (which is rank)
-            int dups = CountDups(card[0], 0, hand);
-
-            if (dups == 3) { quads = true; }
-            else if (dups == 2) { trips = true; }
-            else if (dups == 1) { numPairs++; }
-
-        }
-
-        // pairs are double counted, so divide by 2
-        numPairs /= 2;
-
-        // TODO write RemoveLowestPair function 
-        // if (numPairs == 3) { RemoveLowestPair(); }
-
-        // check for full house
-        if (numPairs >= 1 && trips) { fullHouse = true; }
-
-        if (quads) { return 8; }
-        else if (fullHouse) { return 7; }
-        else if (trips) { return 4; }
-        else if (numPairs >= 2) { return 3; }
-        else if (numPairs == 1) { return 2; }
-        else { return 1; }
-
-    }
-
+    
     public List<string> SortHandHighLow(List<string> hand, bool highToLow=true)
     {
         List<string> sortedHand = new List<string>();
