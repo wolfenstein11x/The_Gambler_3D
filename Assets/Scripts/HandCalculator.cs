@@ -18,10 +18,13 @@ public class HandCalculator : MonoBehaviour
 {
     //[SerializeField] List<string> testHand;
 
-    private char[,] straightCombos = new char[,] { {'a','2','3','4','5'}, {'2','3','4','5','6'}, {'3','4','5','6','7'},
-                                          {'4','5','6','7','8' },{'5','6','7','8','9'}, {'6','7','8','9','t'},
-                                          {'7','8','9','t','j' },{'8','9','t','j','q'}, {'9','t','j','q','k'},
-                                          {'t','j','q','k','a' } };
+    private Dictionary<int, string> handNames = new Dictionary<int, string>()
+    {
+        {9, "Straight flush"}, {8, "Quads"}, {7, "Full house"}, {6, "Flush"}, {5, "Straight"}, {4, "Trips"}, {3, "Two-pair"}, {2, "Pair"}, {1, "High card"}
+    };
+
+    private string[,] straightFlushSpecialCases = new string[,] { {"as","2s","3s","4s","5s"}, {"ad", "2d", "3d", "4d", "5d" }, {"ac", "2c", "3c", "4c", "5c" }, 
+                                                                  {"ah", "2h", "3h", "4h", "5h" } };
 
     private Dictionary<char, int> ranks = new Dictionary<char, int>()
         {
@@ -30,23 +33,67 @@ public class HandCalculator : MonoBehaviour
 
     void Start()
     {
-        //Debug.Log(CheckHand(testHand));
+        //Debug.Log(ScoreHand(testHand));
     }
 
-    public int CheckHand(List<string> hand)
+    public int ScoreHand(List<string> hand)
     {
         // first sort cards from high to low to make it easier later
         hand = SortHandHighLow(hand);
 
-        if (CheckQuads(hand)) return 8;
+        if (CheckStraightFlush(hand)) return 9;
+        else if (CheckQuads(hand)) return 8;
         else if (CheckFullHouse(hand)) return 7;
         else if (CheckFlush(hand)) return 6;
-        else if (CheckAllStraights(hand)) return 5;
+        else if (CheckStraight(hand)) return 5;
         else if (CheckTrips(hand)) return 4;
         else if (Check2Pair(hand)) return 3;
         else if (CheckPair(hand)) return 2;
         else return 1;
 
+    }
+
+    public string GetHandName(List<string> hand)
+    {
+        return handNames[ScoreHand(hand)];
+    }
+
+    private bool CheckStraightFlush(List<string> hand)
+    {
+        // fill this up/ clear it as you go
+        List<string> straightFlushHand = new List<string>();
+
+        // scenario #1, start at index 0
+        straightFlushHand = GetStraightHand(hand, 0);
+
+        if (straightFlushHand.Count == 5 && CheckFlush(straightFlushHand)) { return true; }
+
+        // scenario #2, start at index 1
+        straightFlushHand = GetStraightHand(hand, 1);
+
+        if (straightFlushHand.Count == 5 && CheckFlush(straightFlushHand)) { return true; }
+
+        // scenario #3, start at index 2
+        straightFlushHand = GetStraightHand(hand, 2);
+
+        if (straightFlushHand.Count == 5 && CheckFlush(straightFlushHand)) { return true; }
+
+        // scenario #4, check special case (a-2-3-4-5)
+        if (CheckSpecialCaseStraight(hand)) { return true; }
+
+        return false;
+    }
+
+    private List<string> MakeSublist(List<string> original, int start, int finish)
+    {
+        List<string> newList = new List<string>();
+
+        for (int i=start; i <= finish; i++)
+        {
+            newList.Add(original[i]);
+        }
+
+        return newList;
     }
 
     private bool CheckQuads(List<string> hand)
@@ -93,8 +140,103 @@ public class HandCalculator : MonoBehaviour
         return false;
     }
 
+    private bool CheckStraight(List<string> hand)
+    {   
+        // fill this up/ clear it as you go
+        List<string> straightHand = new List<string>();
 
+        // scenario #1, start at index 0
+        straightHand = GetStraightHand(hand, 0);
 
+        if (straightHand.Count == 5) { return true; }
+
+        // scenario #2, start at index 1
+        straightHand = GetStraightHand(hand, 1);
+
+        if (straightHand.Count == 5) { return true; }
+
+        // scenario #3, start at index 2
+        straightHand = GetStraightHand(hand, 2);
+
+        if (straightHand.Count == 5) { return true; }
+
+        // scenario #4, check special case (a-2-3-4-5)
+        if (CheckSpecialCaseStraight(hand)) { return true; }
+
+        return false;
+    }
+
+    private List<string> GetStraightHand(List<string> hand, int startIdx)
+    {
+        List<string> straightHand = new List<string>();
+
+        straightHand.Add(hand[startIdx]);
+        for (int i = startIdx; i < hand.Count - 1; i++)
+        {
+            if (ranks[hand[i][0]] - ranks[hand[i + 1][0]] == 1) { straightHand.Add(hand[i + 1]); }
+            else if (ranks[hand[i][0]] - ranks[hand[i + 1][0]] == 0) { continue; }
+            else break;
+        }
+
+        return straightHand;
+    }
+
+    // helper function to determine if 5 card subset is a straight
+    private bool FiveConsecutive(List<string> fiveCards)
+    {
+        // make sure each card is exactly +1 greater than next card
+        for (int i=0; i<fiveCards.Count-1; i++)
+        {
+            if (ranks[fiveCards[i][0]] - ranks[fiveCards[i+1][0]] != 1) return false; 
+        }
+
+        return true;
+    }
+
+    // helper function to check for special case of straight, a-2-3-4-5
+    private bool CheckSpecialCaseStraight(List<string> hand)
+    {
+        List<char> specialStraight = new List<char>() { 'a', '2', '3', '4', '5' };
+        List<char> handRanks = new List<char>();
+
+        // make list that is just the ranks (no suits) of player hand
+        foreach(string card in hand)
+        {
+            handRanks.Add(card[0]);
+        }
+
+        // check that each card in the special case straight is in the player hand
+        foreach(char rank in specialStraight)
+        {
+            if (!handRanks.Contains(rank)) { return false; }
+        }
+
+        // if it makes it to here, player has the special case straight
+        return true;
+    }
+
+    private bool CheckSpecialCaseStraightFlush(List<string> hand)
+    {
+        for (int i=0; i < straightFlushSpecialCases.GetLength(0); i++)
+        {
+            int matches = 0;
+            for (int j=0; j<hand.Count; j++)
+            {
+                //Debug.Log(straightFlushSpecialCases[i, j]);
+                // move on to next straight flush special case combo if one of its cards is not contained in player hand
+                if (!hand.Contains(straightFlushSpecialCases[i, j])) { break; }
+
+                // if you make it here, it has one of the special case straight flush cards
+                matches++;
+                if (matches == 5) { return true; }
+            }
+        }
+
+        // if you make it here, player does not have straight flush
+        return false;
+    }
+
+    /*
     private bool CheckAllStraights(List<string> hand)
     {
         // loop through all 10 straight combos
@@ -147,6 +289,7 @@ public class HandCalculator : MonoBehaviour
         // if we make it here, then arr2 is subset of arr1
         return true;
     }
+    */
 
     private bool CheckTrips(List<string> hand)
     {

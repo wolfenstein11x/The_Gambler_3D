@@ -261,13 +261,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   testHand:
-  - as
-  - kd
-  - 3d
-  - 8c
-  - ts
-  - 9h
-  - 4s
+  - ah
+  - 2h
+  - 3h
+  - 4c
+  - 5h
+  - td
+  - jd
 --- !u!4 &219649587
 Transform:
   m_ObjectHideFlags: 0

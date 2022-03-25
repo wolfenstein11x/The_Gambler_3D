@@ -27,9 +27,9 @@ public class PokerPlayer : MonoBehaviour
     {
         hand = FindObjectOfType<HandCalculator>().SortHandHighLow(hand);
 
-        int handScore = FindObjectOfType<HandCalculator>().CheckHand(hand);
+        string handName = FindObjectOfType<HandCalculator>().GetHandName(hand);
 
-        Debug.Log(gameObject.name + ": [" + hand[0] + "," + hand[1] + "," + hand[2] + "," + hand[3] + "," + hand[4] + "," + hand[5] + "," + hand[6] + "]" + " = " + handScore);
+        Debug.Log(gameObject.name + ": [" + hand[0] + "," + hand[1] + "," + hand[2] + "," + hand[3] + "," + hand[4] + "," + hand[5] + "," + hand[6] + "]" + " = " + handName);
     }
 
     
