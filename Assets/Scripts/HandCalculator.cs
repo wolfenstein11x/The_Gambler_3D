@@ -130,23 +130,17 @@ public class HandCalculator : MonoBehaviour
         List<string> straightHand = new List<string>();
 
         // scenario #1, start at index 0
-        straightHand = GetStraightHand(hand, 0);
-
-        if (straightHand.Count == 5) { return true; }
-
+        if (GetStraightHand(hand, 0).Count == 5) { return true; }
+        
         // scenario #2, start at index 1
-        straightHand = GetStraightHand(hand, 1);
-
-        if (straightHand.Count == 5) { return true; }
-
+        if (GetStraightHand(hand, 1).Count == 5) { return true; }
+        
         // scenario #3, start at index 2
-        straightHand = GetStraightHand(hand, 2);
-
-        if (straightHand.Count == 5) { return true; }
-
+        if (GetStraightHand(hand, 2).Count == 5) { return true; }
+        
         // scenario #4, check special case (a-2-3-4-5)
         if (CheckSpecialCaseStraight(hand)) { return true; }
-
+        
         return false;
     }
 
@@ -158,9 +152,20 @@ public class HandCalculator : MonoBehaviour
         straightHand.Add(hand[startIdx]);
         for (int i = startIdx; i < hand.Count - 1; i++)
         {
-            if (ranks[hand[i][0]] - ranks[hand[i + 1][0]] == 1) { straightHand.Add(hand[i + 1]); }
+            // add cards if they are consecutive cards 
+            if (ranks[hand[i][0]] - ranks[hand[i + 1][0]] == 1) 
+            { 
+                straightHand.Add(hand[i + 1]);
+
+                // quit if you get 5 connected cards (you will have a bug if you return 9-8-7-6-5-4-3, for example)
+                if (straightHand.Count == 5) { return straightHand; }
+            }
+
+            // skip card if it is a pair
             else if (ranks[hand[i][0]] - ranks[hand[i + 1][0]] == 0) { continue; }
-            else break;
+            
+            // quit if cards not connected
+            else break;    
         }
 
         return straightHand;
@@ -260,26 +265,7 @@ public class HandCalculator : MonoBehaviour
         return (numPairs == 1);
     }
 
-    // helper function to be used to resolve special case when hand has 3 pairs
-    private bool Check3Pair(List<string> hand)
-    {
-        int numPairs = 0;
-
-        foreach (string card in hand)
-        {
-            // count matches in letter at idx 0 (which is rank)
-            int dups = CountDups(card[0], 0, hand);
-
-            if (dups == 1) { numPairs++; }
-        }
-
-        // pairs are double counted, so divide by 2
-        numPairs /= 2;
-
-        return (numPairs == 3);
-    }
-
- 
+    
     // CountDups can be used to count duplicate ranks (idx=0) or duplicate suits (idx=1)
     private int CountDups(char letter, int idx, List<string> hand)
     {
@@ -334,6 +320,15 @@ public class HandCalculator : MonoBehaviour
 
         switch (ScoreHand(hand))
         {
+            case 7:
+                hand = OptimizeFullHouse(hand);
+                break;
+            case 6:
+                hand = OptimizeFlush(hand);
+                break;
+            case 5:
+                hand = OptimizeStraight(hand);
+                break;
             case 4:
                 hand = OptimizeTrips(hand);
                 break;
@@ -355,15 +350,14 @@ public class HandCalculator : MonoBehaviour
         return hand;
     }
 
-    // NOTE: this function is actually exactly the same as OptimizePair
-    private List<string> OptimizeTrips(List<string> hand)
+    private List<string> OptimizeFullHouse(List<string> hand)
     {
         List<string> optimizedHand = new List<string>();
 
         // start at beginning of hand (highest card) and find trips and put trips at front of optimized hand
         for (int i = 0; i < hand.Count - 2; i++)
         {
-            if (ranks[hand[i][0]] == ranks[hand[i + 1][0]]) 
+            if (ranks[hand[i][0]] == ranks[hand[i + 2][0]])
             {
                 optimizedHand.Add(hand[i]);
                 optimizedHand.Add(hand[i + 1]);
@@ -371,13 +365,110 @@ public class HandCalculator : MonoBehaviour
 
                 // store trips values to reference in order to remove them
                 string trip1 = hand[i];
-                string trip2 = hand[i + 1];
-                string trip3 = hand[i + 2];
+                string trip1a = hand[i + 1];
+                string trip1b = hand[i + 2];
 
                 // remove trips from original hand
                 hand.Remove(trip1);
-                hand.Remove(trip2);
-                hand.Remove(trip3);
+                hand.Remove(trip1a);
+                hand.Remove(trip1b);
+            }
+        }
+
+        // repeat process for the pair
+        for (int i = 0; i < hand.Count - 1; i++)
+        {
+            if (ranks[hand[i][0]] == ranks[hand[i + 1][0]])
+            {
+                optimizedHand.Add(hand[i]);
+                optimizedHand.Add(hand[i + 1]);
+
+                // store pair values to reference in order to remove them
+                string pair1 = hand[i];
+                string pair1a = hand[i + 1];
+
+                // remove pair from original hand
+                hand.Remove(pair1);
+                hand.Remove(pair1a);
+            }
+        }
+
+        // no more cards needed to put into optimized hand
+        return optimizedHand;
+    }
+
+    private List<string> OptimizeFlush(List<string> hand)
+    {
+        return hand;
+    }
+
+    private List<string> OptimizeStraight(List<string> hand)
+    {
+        // fill this up/ clear it as you go
+        List<string> straightHand = new List<string>();
+
+        // scenario #1, start at index 0
+        if (GetStraightHand(hand, 0).Count == 5)
+        {
+            straightHand = GetStraightHand(hand, 0);
+            return straightHand;
+        }
+
+        // scenario #2, start at index 1
+        else if (GetStraightHand(hand, 1).Count == 5)
+        {
+            straightHand = GetStraightHand(hand, 1);
+            return straightHand;
+        }
+
+        // scenario #3, start at index 2
+        else if (GetStraightHand(hand, 2).Count == 5)
+        {
+            straightHand = GetStraightHand(hand, 2);
+            return straightHand;
+        }
+
+        // scenario #4, check special case (a-2-3-4-5)
+        else if (CheckSpecialCaseStraight(hand)) 
+        {
+            List<string> specialCaseStraight = new List<string>();
+
+            // must order hand 5-4-3-2-a, so use helper function to grab those cards from the hand
+            specialCaseStraight.Add(CopyCardFromHand(hand, '5'));
+            specialCaseStraight.Add(CopyCardFromHand(hand, '4'));
+            specialCaseStraight.Add(CopyCardFromHand(hand, '3'));
+            specialCaseStraight.Add(CopyCardFromHand(hand, '2'));
+            specialCaseStraight.Add(CopyCardFromHand(hand, 'a'));
+
+            return specialCaseStraight;   
+        }
+
+        // something is wrong if made it to here, so just return original hand
+        return hand;   
+    }
+
+    private List<string> OptimizeTrips(List<string> hand)
+    {
+        List<string> optimizedHand = new List<string>();
+
+        // start at beginning of hand (highest card) and find trips and put trips at front of optimized hand
+        for (int i = 0; i < hand.Count - 2; i++)
+        {
+            if (ranks[hand[i][0]] == ranks[hand[i + 2][0]]) 
+            {
+                optimizedHand.Add(hand[i]);
+                optimizedHand.Add(hand[i + 1]);
+                optimizedHand.Add(hand[i + 2]);
+
+                // store trips values to reference in order to remove them
+                string trip1 = hand[i];
+                string trip1a = hand[i + 1];
+                string trip1b = hand[i + 2];
+
+                // remove trips from original hand
+                hand.Remove(trip1);
+                hand.Remove(trip1a);
+                hand.Remove(trip1b);
 
             }
         }
@@ -478,6 +569,29 @@ public class HandCalculator : MonoBehaviour
         hand.RemoveAt(hand.Count - 1);
 
         return hand;
+    }
+
+    // UTILITY FUNCTIONS
+    private List<string> CopyCardsFromHand(List<string> hand, char rank)
+    {
+        List<string> cards = new List<string>();
+
+        foreach(string card in hand)
+        {
+            if (card[0] == rank) { cards.Add(card); }
+        }
+
+        return cards;
+    }
+
+    private string CopyCardFromHand(List<string> hand, char rank)
+    {
+        foreach (string card in hand)
+        {
+            if (card[0] == rank) { return card; }
+        }
+
+        return "";
     }
 
 
