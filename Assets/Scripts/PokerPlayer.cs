@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PokerPlayer : MonoBehaviour
 {
+    public string nickName;
+    public string catchPhrase;
     public Sprite headShot;
     public GameObject cardImage1, cardImage2;
     public PlayerPosition playerPosition;

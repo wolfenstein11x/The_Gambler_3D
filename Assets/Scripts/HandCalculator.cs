@@ -9,7 +9,7 @@ public class HandCalculator : MonoBehaviour
 
     public Dictionary<int, string> handNames = new Dictionary<int, string>()
     {
-        {9, "Straight flush"}, {8, "Quads"}, {7, "Full house"}, {6, "Flush"}, {5, "Straight"}, {4, "Trips"}, {3, "Two-pair"}, {2, "Pair"}, {1, "High card"}
+        {9, "Straight Flush"}, {8, "Quads"}, {7, "Full house"}, {6, "Flush"}, {5, "Straight"}, {4, "Trips"}, {3, "Two-pair"}, {2, "Pair"}, {1, "High card"}
     };
 
     private string[,] straightFlushSpecialCases = new string[,] { {"as","2s","3s","4s","5s"}, {"ad", "2d", "3d", "4d", "5d" }, {"ac", "2c", "3c", "4c", "5c" }, 
