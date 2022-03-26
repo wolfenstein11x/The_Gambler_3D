@@ -64,6 +64,7 @@ public class Dealer : MonoBehaviour
         {
             activePlayer.cards.Clear();
             activePlayer.hand.Clear();
+            activePlayer.optimizedHand.Clear();
         }
 
         // dealer ready to deal hands next time deal button pressed

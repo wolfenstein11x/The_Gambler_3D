@@ -10,11 +10,14 @@ public class PokerPlayer : MonoBehaviour
 
     public List<int> cards;
     public List<string> hand;
+    public List<string> optimizedHand;
+
+    HandCalculator handCalculator;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        handCalculator = FindObjectOfType<HandCalculator>();
     }
 
     // Update is called once per frame
@@ -25,11 +28,13 @@ public class PokerPlayer : MonoBehaviour
 
     public void PrintHand()
     {
-        hand = FindObjectOfType<HandCalculator>().SortHandHighLow(hand);
+        //int handScore = handCalculator.ScoreHand(hand);
+        //string handName = handCalculator.handNames[handScore];
 
-        string handName = FindObjectOfType<HandCalculator>().GetHandName(hand);
-
-        Debug.Log(gameObject.name + ": [" + hand[0] + "," + hand[1] + "," + hand[2] + "," + hand[3] + "," + hand[4] + "," + hand[5] + "," + hand[6] + "]" + " = " + handName);
+        //optimizedHand = handCalculator.OptimizeHand(hand);
+        
+        //Debug.Log(gameObject.name + ": [" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
+        
     }
 
     

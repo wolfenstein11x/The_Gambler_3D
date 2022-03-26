@@ -7,7 +7,7 @@ public class HandCalculator : MonoBehaviour
 {
     [SerializeField] List<string> testHand;
 
-    private Dictionary<int, string> handNames = new Dictionary<int, string>()
+    public Dictionary<int, string> handNames = new Dictionary<int, string>()
     {
         {9, "Straight flush"}, {8, "Quads"}, {7, "Full house"}, {6, "Flush"}, {5, "Straight"}, {4, "Trips"}, {3, "Two-pair"}, {2, "Pair"}, {1, "High card"}
     };
@@ -22,12 +22,18 @@ public class HandCalculator : MonoBehaviour
 
     void Start()
     {
-        Debug.Log(ScoreHand(testHand));
+        List<string> sortedHand = SortHandHighLow(testHand);
+        int handScore = ScoreHand(testHand);
+        string handName = handNames[handScore];
+
+        List<string> optimizedHand = OptimizeHand(sortedHand);
+        Debug.Log("[" + sortedHand[0] + "," + sortedHand[1] + "," + sortedHand[2] + "," + sortedHand[3] + "," + sortedHand[4] + "," + sortedHand[5] + "," + sortedHand[6] + "]" + " = " + handName);
+        Debug.Log("[" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
     }
 
     public int ScoreHand(List<string> hand)
     {
-        // first sort cards from high to low to make it easier later
+        // sort hand from high to low because hand checker functions assume it is sorted
         hand = SortHandHighLow(hand);
 
         if (CheckStraightFlush(hand)) return 9;
@@ -73,18 +79,7 @@ public class HandCalculator : MonoBehaviour
         return false;
     }
 
-    private List<string> MakeSublist(List<string> original, int start, int finish)
-    {
-        List<string> newList = new List<string>();
-
-        for (int i=start; i <= finish; i++)
-        {
-            newList.Add(original[i]);
-        }
-
-        return newList;
-    }
-
+    
     private bool CheckQuads(List<string> hand)
     {
         foreach (string card in hand)
@@ -284,8 +279,7 @@ public class HandCalculator : MonoBehaviour
         return (numPairs == 3);
     }
 
-
-
+ 
     // CountDups can be used to count duplicate ranks (idx=0) or duplicate suits (idx=1)
     private int CountDups(char letter, int idx, List<string> hand)
     {
@@ -333,19 +327,158 @@ public class HandCalculator : MonoBehaviour
         return sortedHand;
     }
 
-    
-
     public List<string> OptimizeHand(List<string> hand)
     {
-        // case statement with case being score of hand
-            // in pair, 2 pair, or trips case:
-                // sort list in order of rank, highest to lowest
-                // start at lowest, and remove element if its not a dup, until list only has 5 items
-            // in flush case:
-                // remove every element that doesn't have a suit dup count of 5
-                // sort list in order of rank, highest to lowest
-                // remove lowest elements until list only has 5 items
+        // sort hand first because optimization functions assume it is sorted
+        hand = SortHandHighLow(hand);
+
+        switch (ScoreHand(hand))
+        {
+            case 4:
+                hand = OptimizeTrips(hand);
+                break;
+            case 3:
+                hand = Optimize2Pair(hand);
+                break;
+            case 2:
+                hand = OptimizePair(hand);
+                break;
+            case 1:
+                hand = OptimizeHighCard(hand);
+                break;
+            default:
+                Debug.Log("Error: Unknown hand score");
+                break;
+        }
+        
 
         return hand;
     }
+
+    // NOTE: this function is actually exactly the same as OptimizePair
+    private List<string> OptimizeTrips(List<string> hand)
+    {
+        List<string> optimizedHand = new List<string>();
+
+        // start at beginning of hand (highest card) and find trips and put trips at front of optimized hand
+        for (int i = 0; i < hand.Count - 2; i++)
+        {
+            if (ranks[hand[i][0]] == ranks[hand[i + 1][0]]) 
+            {
+                optimizedHand.Add(hand[i]);
+                optimizedHand.Add(hand[i + 1]);
+                optimizedHand.Add(hand[i + 2]);
+
+                // store trips values to reference in order to remove them
+                string trip1 = hand[i];
+                string trip2 = hand[i + 1];
+                string trip3 = hand[i + 2];
+
+                // remove trips from original hand
+                hand.Remove(trip1);
+                hand.Remove(trip2);
+                hand.Remove(trip3);
+
+            }
+        }
+
+        // put the highest remaining cards (need 2 more) into the optimized hand after the pair, highest to lowest
+        optimizedHand.Add(hand[0]);
+        optimizedHand.Add(hand[1]);
+
+        return optimizedHand;
+    }
+
+    private List<string> Optimize2Pair(List<string> hand)
+    {
+        List<string> optimizedHand = new List<string>();
+
+        // start at beginning of hand (highest card) and find first pair (which is highest pair) and put pair at front of optimized hand
+        for (int i = 0; i < hand.Count - 1; i++)
+        {
+            if (ranks[hand[i][0]] == ranks[hand[i + 1][0]])
+            {
+                optimizedHand.Add(hand[i]);
+                optimizedHand.Add(hand[i + 1]);
+
+                // store pair values to reference in order to remove them
+                string pair1 = hand[i];
+                string pair1a = hand[i + 1];
+
+                // remove pair from original hand
+                hand.Remove(pair1);
+                hand.Remove(pair1a);
+
+            }
+        }
+
+        // repeat process for 2nd highest pair
+        for (int i = 0; i < hand.Count - 1; i++)
+        {
+            if (ranks[hand[i][0]] == ranks[hand[i + 1][0]])
+            {
+                optimizedHand.Add(hand[i]);
+                optimizedHand.Add(hand[i + 1]);
+
+                // store pair values to reference in order to remove them
+                string pair2 = hand[i];
+                string pair2a = hand[i + 1];
+
+                // remove pair from original hand
+                hand.Remove(pair2);
+                hand.Remove(pair2a);
+
+            }
+        }
+
+        // put the highest remaining card (only need 1 more) into the optimized hand after the pair
+        optimizedHand.Add(hand[0]);
+
+        return optimizedHand;
+    }
+
+    private List<string> OptimizePair(List<string> hand)
+    {
+        List<string> optimizedHand = new List<string>();
+
+        // start at beginning of hand (highest card) and find first pair (which is highest pair) and put pair at front of optimized hand
+        for (int i=0; i<hand.Count-1; i++)
+        {
+            if (ranks[hand[i][0]] == ranks[hand[i+1][0]]) 
+            {
+                optimizedHand.Add(hand[i]);
+                optimizedHand.Add(hand[i + 1]);
+
+                // store pair values to reference in order to remove them
+                string pair1 = hand[i];
+                string pair1a = hand[i + 1];
+
+                // remove pair from original hand
+                hand.Remove(pair1);
+                hand.Remove(pair1a);
+                
+            }
+        }
+
+        // put the highest remaining cards (need 3 more) into the optimized hand after the pair, highest to lowest
+        int j = 0;
+        while (optimizedHand.Count < 5)
+        {
+            optimizedHand.Add(hand[j]);
+            j++;
+        }
+
+        return optimizedHand;
+    }
+
+    private List<string> OptimizeHighCard(List<string> hand)
+    {
+        // remove lowest 2 cards
+        hand.RemoveAt(hand.Count - 1);
+        hand.RemoveAt(hand.Count - 1);
+
+        return hand;
+    }
+
+
 }
