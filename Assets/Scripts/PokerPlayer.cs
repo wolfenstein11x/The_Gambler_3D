@@ -26,16 +26,17 @@ public class PokerPlayer : MonoBehaviour
         
     }
 
+    /*
     public void PrintHand()
     {
-        //int handScore = handCalculator.ScoreHand(hand);
-        //string handName = handCalculator.handNames[handScore];
+        int handScore = handCalculator.ScoreHand(hand);
+        string handName = handCalculator.handNames[handScore];
 
-        //optimizedHand = handCalculator.OptimizeHand(hand);
+        optimizedHand = handCalculator.OptimizeHand(hand);
         
-        //Debug.Log(gameObject.name + ": [" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
+        Debug.Log(gameObject.name + ": [" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
         
     }
-
+    */
     
 }

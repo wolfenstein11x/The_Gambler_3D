@@ -246,10 +246,20 @@ public class Dealer : MonoBehaviour
     
     void PrintHands()
     {
+        
         foreach(PokerPlayer activePlayer in activePlayers)
         {
-            activePlayer.PrintHand();
+            PrintHand(activePlayer, FindObjectOfType<HandCalculator>().OptimizeHand(activePlayer.hand));
         }
+        
+    }
+
+    void PrintHand(PokerPlayer pokerPlayer, List<string> hand)
+    {
+        int handScore = FindObjectOfType<HandCalculator>().ScoreHand(hand);
+        string handName = FindObjectOfType<HandCalculator>().handNames[handScore];
+
+        Debug.Log(pokerPlayer.gameObject.name + ": " + "[" + hand[0] + ", " + hand[1] + ", " + hand[2] + ", " + hand[3] + ", " + hand[4] + "] = " + handName);
     }
 
     

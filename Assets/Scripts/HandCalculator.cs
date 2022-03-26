@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class HandCalculator : MonoBehaviour
 {
-    [SerializeField] List<string> testHand;
+    //[SerializeField] List<string> testHand;
 
     public Dictionary<int, string> handNames = new Dictionary<int, string>()
     {
@@ -22,13 +22,13 @@ public class HandCalculator : MonoBehaviour
 
     void Start()
     {
-        List<string> sortedHand = SortHandHighLow(testHand);
-        int handScore = ScoreHand(testHand);
-        string handName = handNames[handScore];
+        //List<string> sortedHand = SortHandHighLow(testHand);
+        //int handScore = ScoreHand(testHand);
+        //string handName = handNames[handScore];
 
-        List<string> optimizedHand = OptimizeHand(sortedHand);
-        Debug.Log("[" + sortedHand[0] + "," + sortedHand[1] + "," + sortedHand[2] + "," + sortedHand[3] + "," + sortedHand[4] + "," + sortedHand[5] + "," + sortedHand[6] + "]" + " = " + handName);
-        Debug.Log("[" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
+        //List<string> optimizedHand = OptimizeHand(sortedHand);
+        //Debug.Log("[" + sortedHand[0] + "," + sortedHand[1] + "," + sortedHand[2] + "," + sortedHand[3] + "," + sortedHand[4] + "," + sortedHand[5] + "," + sortedHand[6] + "]" + " = " + handName);
+        //Debug.Log("[" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
     }
 
     public int ScoreHand(List<string> hand)
@@ -320,6 +320,12 @@ public class HandCalculator : MonoBehaviour
 
         switch (ScoreHand(hand))
         {
+            case 9:
+                hand = OptimizeStraightFlush(hand);
+                break;
+            case 8:
+                hand = OptimizeQuads(hand);
+                break;
             case 7:
                 hand = OptimizeFullHouse(hand);
                 break;
@@ -348,6 +354,86 @@ public class HandCalculator : MonoBehaviour
         
 
         return hand;
+    }
+
+    private List<string> OptimizeStraightFlush(List<string> hand)
+    {
+        // fill this up/ clear it as you go
+        List<string> straightFlushHand = new List<string>();
+
+        // scenario #1, start at index 0
+        if (GetStraightHand(hand, 0).Count == 5)
+        {
+            straightFlushHand = GetStraightHand(hand, 0);
+            if (CheckFlush(straightFlushHand)) { return straightFlushHand; }
+        }
+
+        // scenario #2, start at index 1
+        else if (GetStraightHand(hand, 1).Count == 5)
+        {
+            straightFlushHand = GetStraightHand(hand, 1);
+            if (CheckFlush(straightFlushHand)) { return straightFlushHand; }
+        }
+
+        // scenario #3, start at index 2
+        else if (GetStraightHand(hand, 2).Count == 5)
+        {
+            straightFlushHand = GetStraightHand(hand, 2);
+            if (CheckFlush(straightFlushHand)) { return straightFlushHand; }
+        }
+
+        // scenario #4, check special case (a-2-3-4-5)
+        else if (CheckSpecialCaseStraight(hand))
+        {
+            List<string> specialCaseStraightFlush = new List<string>();
+
+            // must order hand 5-4-3-2-a, so use helper function to grab those cards from the hand
+            specialCaseStraightFlush.Add(CopyCardFromHand(hand, '5'));
+            specialCaseStraightFlush.Add(CopyCardFromHand(hand, '4'));
+            specialCaseStraightFlush.Add(CopyCardFromHand(hand, '3'));
+            specialCaseStraightFlush.Add(CopyCardFromHand(hand, '2'));
+            specialCaseStraightFlush.Add(CopyCardFromHand(hand, 'a'));
+
+            if (CheckFlush(specialCaseStraightFlush)) { return specialCaseStraightFlush; }
+        }
+
+        // something is wrong if made it to here, so just return original hand
+        return hand;
+    }
+
+    private List<string> OptimizeQuads(List<string> hand)
+    {
+        List<string> optimizedHand = new List<string>();
+
+        // start at beginning of hand (highest card) and find trips and put trips at front of optimized hand
+        for (int i = 0; i < hand.Count - 3; i++)
+        {
+            if (ranks[hand[i][0]] == ranks[hand[i + 3][0]])
+            {
+                optimizedHand.Add(hand[i]);
+                optimizedHand.Add(hand[i + 1]);
+                optimizedHand.Add(hand[i + 2]);
+                optimizedHand.Add(hand[i + 3]);
+
+                // store quads values to reference in order to remove them
+                string quad1 =  hand[i];
+                string quad1a = hand[i + 1];
+                string quad1b = hand[i + 2];
+                string quad1c = hand[i + 3];
+
+                // remove trips from original hand
+                hand.Remove(quad1);
+                hand.Remove(quad1a);
+                hand.Remove(quad1b);
+                hand.Remove(quad1c);
+
+            }
+        }
+
+        // put the highest remaining cards (need 1 more) into the optimized hand after the quads
+        optimizedHand.Add(hand[0]);
+        
+        return optimizedHand;
     }
 
     private List<string> OptimizeFullHouse(List<string> hand)
@@ -490,7 +576,7 @@ public class HandCalculator : MonoBehaviour
             }
         }
 
-        // put the highest remaining cards (need 2 more) into the optimized hand after the pair, highest to lowest
+        // put the highest remaining cards (need 2 more) into the optimized hand after the trips, highest to lowest
         optimizedHand.Add(hand[0]);
         optimizedHand.Add(hand[1]);
 
