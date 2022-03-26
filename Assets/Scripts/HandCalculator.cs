@@ -399,7 +399,24 @@ public class HandCalculator : MonoBehaviour
 
     private List<string> OptimizeFlush(List<string> hand)
     {
-        return hand;
+        List<string> optimizedHand = new List<string>();
+
+        for (int i=0; i<hand.Count; i++)
+        {
+            // count matches in letter at idx 1 (which is suit)
+            int suitDups = CountDups(hand[i][1], 1, hand);
+
+            // if you count 5 of the same suit, then add that card to optimized hand
+            if (suitDups >= 4) { optimizedHand.Add(hand[i]); }
+        }
+
+        // remove low rank extra cards if necessary
+        while (optimizedHand.Count > 5)
+        {
+            optimizedHand.RemoveAt(optimizedHand.Count - 1);
+        }
+
+        return optimizedHand;
     }
 
     private List<string> OptimizeStraight(List<string> hand)
