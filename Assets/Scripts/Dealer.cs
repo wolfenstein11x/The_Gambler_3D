@@ -16,6 +16,8 @@ public class Dealer : MonoBehaviour
     [SerializeField] PlayerPosition[] playerPositions;
     [SerializeField] PokerPlayer[] NPCs;
     [SerializeField] PokerPlayer mainPlayer;
+
+    WinnerCalculator winnerCalculator;
     
     List<PokerPlayer> activePlayers = new List<PokerPlayer>();
     
@@ -24,6 +26,8 @@ public class Dealer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        winnerCalculator = FindObjectOfType<WinnerCalculator>();
+
         ChoosePlayers();
         SeatPlayers();
         NewHand();
@@ -238,6 +242,9 @@ public class Dealer : MonoBehaviour
 
         // for debugging only
         PrintHands();
+        List<PokerPlayer> finalists = winnerCalculator.DetermineFinalists(activePlayers);
+        winnerCalculator.FindWinners(finalists);
+
 
         // move state machine to next state
         state = HandState.NewHand;

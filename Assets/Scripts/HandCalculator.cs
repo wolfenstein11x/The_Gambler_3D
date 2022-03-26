@@ -15,7 +15,7 @@ public class HandCalculator : MonoBehaviour
     private string[,] straightFlushSpecialCases = new string[,] { {"as","2s","3s","4s","5s"}, {"ad", "2d", "3d", "4d", "5d" }, {"ac", "2c", "3c", "4c", "5c" }, 
                                                                   {"ah", "2h", "3h", "4h", "5h" } };
 
-    private Dictionary<char, int> ranks = new Dictionary<char, int>()
+    public Dictionary<char, int> ranks = new Dictionary<char, int>()
         {
             {'2',2},{'3',3},{'4',4},{'5',5},{'6',6},{'7',7},{'8',8},{'9',9},{'t',10},{'j',11},{'q',12},{'k',13},{'a',14}
         };
