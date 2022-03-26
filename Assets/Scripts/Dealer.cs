@@ -49,6 +49,7 @@ public class Dealer : MonoBehaviour
 
     private void NewHand()
     {
+        FindObjectOfType<CanvasController>().HideAllCanvases();
         // put the cards (numbers) back in the deck (list)
         ResetDeck();
 
@@ -244,6 +245,7 @@ public class Dealer : MonoBehaviour
         PrintHands();
         List<PokerPlayer> finalists = winnerCalculator.DetermineFinalists(activePlayers);
         winnerCalculator.FindWinners(finalists);
+        FindObjectOfType<CanvasController>().HandleHandWon();
 
 
         // move state machine to next state

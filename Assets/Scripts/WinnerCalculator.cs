@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class WinnerCalculator : MonoBehaviour
 {
-    public List<PokerPlayer> finalists = new List<PokerPlayer>();
+    //public List<PokerPlayer> finalists = new List<PokerPlayer>();
     public List<PokerPlayer> winners = new List<PokerPlayer>();
+    public int highScore;
 
     HandCalculator handCalculator;
 
@@ -31,10 +32,10 @@ public class WinnerCalculator : MonoBehaviour
         return finalists;
     }
 
-    // helper function for DetermineFInalists
+    // helper function for DetermineFinalists
     private int GetHighScore(List<PokerPlayer> activePlayers)
     {
-        int highScore = 0;
+        highScore = 0;
 
         foreach(PokerPlayer activePlayer in activePlayers)
         {
@@ -48,13 +49,16 @@ public class WinnerCalculator : MonoBehaviour
     // make a list of players with the highest hand and highest cards (usually will only be one... if multiple, it is a split pot)
     public List<PokerPlayer> FindWinners(List<PokerPlayer> finalists)
     {
+        // clear winners from last hand
+        winners.Clear();
+
         // break the tie until there is only one player left... if you go 5 rounds (for all 5 cards) and still have multiple players, it is a split plot
         // NOTE: this would be a good time to use recursion
         List<PokerPlayer> survivorsRound1 = BreakTieAtIdx(finalists, 0);
         List<PokerPlayer> survivorsRound2 = BreakTieAtIdx(survivorsRound1, 1);
         List<PokerPlayer> survivorsRound3 = BreakTieAtIdx(survivorsRound2, 2);
         List<PokerPlayer> survivorsRound4 = BreakTieAtIdx(survivorsRound3, 3);
-        List<PokerPlayer> winners = BreakTieAtIdx(survivorsRound4, 4);
+        winners = BreakTieAtIdx(survivorsRound4, 4);
 
         Debug.Log("Winners: ");
         PrintList(winners);
