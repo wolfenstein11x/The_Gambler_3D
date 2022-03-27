@@ -97,6 +97,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 2bb7d73b992b6364d88c5fdb441c83cd, type: 3}
   - {fileID: 21300000, guid: 31be1df0b91a73f4887544605c70ba60, type: 3}
   cardBack: {fileID: 21300000, guid: ce13e0f642b1dee45acf398a4d05f73c, type: 3}
+  dealerChip: {fileID: 21300000, guid: 67b6fe92f9f20ef47887218ab77d84ac, type: 3}
   tableCardPositions:
   - {fileID: 0}
   - {fileID: 0}
@@ -114,6 +115,10 @@ MonoBehaviour:
   - {fileID: 462097886580388270, guid: baf13132fe0229049894ab2747defe12, type: 3}
   - {fileID: 8189524703560242471, guid: d92eb51500c1bde48bc853804f185c05, type: 3}
   - {fileID: 1349999956518715106, guid: 97e972c2fe554004ba3b492cbc940344, type: 3}
-  - {fileID: 3864814831710178743, guid: ada3e46ea6eafb540b1e31914621b22f, type: 3}
+  - {fileID: 6037526407600436511, guid: 692a74b63567bce47bf441bcb9cc0b93, type: 3}
   - {fileID: 7659609603212158830, guid: bbd3d7d37ebfa4842844129a01d8f1b3, type: 3}
+  - {fileID: 2832527477239915500, guid: b427265a6a49ea04dae85bb900d51e69, type: 3}
+  - {fileID: 6684114509509410834, guid: 3f5ee546948eb0a40aec6c429146392b, type: 3}
+  - {fileID: 3356819535931036949, guid: 99bd1e5303bca004e8ff3448098ae6ab, type: 3}
+  - {fileID: 232554565408938075, guid: 6eb7a40610d0eee4dbcc24146c261e15, type: 3}
   mainPlayer: {fileID: 0}

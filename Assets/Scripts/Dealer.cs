@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 
-public enum HandState { Begin, Flop, Turn, River }//, Reveal, NewHand }
+public enum HandState { Begin, Flop, Turn, River }
 
 public class Dealer : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class Dealer : MonoBehaviour
 
     [SerializeField] Sprite[] cardImages;
     [SerializeField] Sprite cardBack;
+    [SerializeField] Sprite dealerChip;
     [SerializeField] Transform[] tableCardPositions;
     [SerializeField] PlayerPosition[] playerPositions;
     [SerializeField] PokerPlayer[] NPCs;
@@ -30,18 +31,27 @@ public class Dealer : MonoBehaviour
         controlHub = FindObjectOfType<ControlHub>();
         winnerCalculator = FindObjectOfType<WinnerCalculator>();
 
-        ChoosePlayers();
-        SeatPlayers();
-        NewHand();
-        
-        handState = HandState.Begin;
+        NewGame();
 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void NewGame()
     {
-        
+        ChoosePlayers();
+        SeatPlayers();
+        NewHand();
+
+        // main player starts game off as dealer
+        SetDealer(activePlayers, 0);
+
+        handState = HandState.Begin;
+    }
+
+    private void SetDealer(List<PokerPlayer> players, int idx)
+    {
+        foreach(PokerPlayer player in players) { player.playerPosition.dealerChip.GetComponent<SpriteRenderer>().sprite = null; }
+
+        players[idx].playerPosition.dealerChip.GetComponent<SpriteRenderer>().sprite = dealerChip;
     }
 
     private void ResetDeck()
@@ -51,21 +61,17 @@ public class Dealer : MonoBehaviour
 
     public void NewHand()
     {
-        FindObjectOfType<CanvasController>().HideAllCanvases();
         // put the cards (numbers) back in the deck (list)
         ResetDeck();
 
         // clear all images of player cards and table cards
         foreach (Transform tableCardPosition in tableCardPositions) { tableCardPosition.GetComponent<SpriteRenderer>().sprite = null; }
-        foreach (PlayerPosition playerPosition in playerPositions)
+        foreach (PokerPlayer activePlayer in activePlayers)
         {
-            CardImg1 cardImg1 = playerPosition.GetComponentInChildren<CardImg1>();
-            cardImg1.GetComponent<SpriteRenderer>().sprite = null;
-
-            CardImg2 cardImg2 = playerPosition.GetComponentInChildren<CardImg2>();
-            cardImg2.GetComponent<SpriteRenderer>().sprite = null;
+            activePlayer.playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = null;
+            activePlayer.playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = null;
         }
-
+        
         // clear all current hands data
         foreach(PokerPlayer activePlayer in activePlayers)
         {
@@ -123,8 +129,8 @@ public class Dealer : MonoBehaviour
         pokerPlayer.playerPosition = playerPositions[seat];
 
         // display player headshot in assigned playerPosition
-        Headshot headshot = pokerPlayer.playerPosition.GetComponentInChildren<Headshot>();
-        headshot.GetComponent<SpriteRenderer>().sprite = pokerPlayer.headShot;
+        pokerPlayer.playerPosition.headShot.GetComponent<SpriteRenderer>().sprite = pokerPlayer.headShot;
+
     }
 
     public void Deal()
@@ -133,8 +139,7 @@ public class Dealer : MonoBehaviour
         else if (handState == HandState.Flop) { DealFlop(); }
         else if (handState == HandState.Turn) { DealTurn(); }
         else if (handState == HandState.River) { DealRiver(); }
-        //else if (handState == HandState.Reveal) { Reveal(); }
-        //else if (handState == HandState.NewHand) { NewHand(); }
+        
     }
 
     private void DealToPlayers()
@@ -170,17 +175,15 @@ public class Dealer : MonoBehaviour
         // display image of card in first empty card position (face up only if for main player)
         if (player.playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite == null)
         {
-            CardImg1 cardImg1 = player.playerPosition.GetComponentInChildren<CardImg1>();
-            if (faceUp) { cardImg1.GetComponent<SpriteRenderer>().sprite = cardImages[card]; }
-            else { cardImg1.GetComponent<SpriteRenderer>().sprite = cardBack; }
+            if (faceUp) { player.playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = cardImages[card]; }
+            else { player.playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = cardBack; }
         }
 
         // display image of card in second empty position if first spot not empty (face up only if for main player)
         else if (player.playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite == null)
         {
-            CardImg2 cardImg2 = player.playerPosition.GetComponentInChildren<CardImg2>();
-            if (faceUp) { cardImg2.GetComponent<SpriteRenderer>().sprite = cardImages[card]; }
-            else { cardImg2.GetComponent<SpriteRenderer>().sprite = cardBack; }
+            if (faceUp) { player.playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = cardImages[card]; }
+            else { player.playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = cardBack; }
         }
                 
     }
@@ -228,7 +231,6 @@ public class Dealer : MonoBehaviour
         DealToTable(4);
 
         // move main state machine to next state
-        //handState = HandState.Reveal;
         controlHub.SetState(GameState.PreReveal);
     }
 
@@ -240,12 +242,10 @@ public class Dealer : MonoBehaviour
             if (player.tag == "mainPlayer") { continue; }
 
             // display image of first card
-            CardImg1 cardImg1 = player.playerPosition.GetComponentInChildren<CardImg1>();
-            cardImg1.GetComponent<SpriteRenderer>().sprite = cardImages[player.cards[0]];
+            player.playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = cardImages[player.cards[0]];
 
             // display image of second card
-            CardImg2 cardImg2 = player.playerPosition.GetComponentInChildren<CardImg2>();
-            cardImg2.GetComponent<SpriteRenderer>().sprite = cardImages[player.cards[1]];
+            player.playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = cardImages[player.cards[1]];
         }
 
         // for debugging only

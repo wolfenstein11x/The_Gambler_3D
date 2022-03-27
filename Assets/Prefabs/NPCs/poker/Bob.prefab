@@ -46,6 +46,7 @@ MonoBehaviour:
   nickName: BOB
   catchPhrase: IM BUYIN ROOT BEER!
   headShot: {fileID: 21300000, guid: 845396f417a279843846fb6045c4479a, type: 3}
+  dealerChip: {fileID: 21300000, guid: 67b6fe92f9f20ef47887218ab77d84ac, type: 3}
   cardImage1: {fileID: 0}
   cardImage2: {fileID: 0}
   playerPosition: {fileID: 0}

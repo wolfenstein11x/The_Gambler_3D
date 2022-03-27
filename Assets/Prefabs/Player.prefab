@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nickName: CAMERON
+  catchPhrase: I'M A PROFESSIONAL
   headShot: {fileID: 21300000, guid: b5697bec12531fd4bbc47a4faff34a5c, type: 3}
   cardImage1: {fileID: 0}
   cardImage2: {fileID: 0}
