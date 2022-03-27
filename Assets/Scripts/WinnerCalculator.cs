@@ -49,9 +49,12 @@ public class WinnerCalculator : MonoBehaviour
     // make a list of players with the highest hand and highest cards (usually will only be one... if multiple, it is a split pot)
     public List<PokerPlayer> FindWinners(List<PokerPlayer> finalists)
     {
+        // sort all hands because preceding functions depend on hands being sorted high to low
+        OptimizeAllHands(finalists);
+
         // clear winners from last hand
         winners.Clear();
-
+        
         // break the tie until there is only one player left... if you go 5 rounds (for all 5 cards) and still have multiple players, it is a split plot
         // NOTE: this would be a good time to use recursion
         List<PokerPlayer> survivorsRound1 = BreakTieAtIdx(finalists, 0);
@@ -60,8 +63,8 @@ public class WinnerCalculator : MonoBehaviour
         List<PokerPlayer> survivorsRound4 = BreakTieAtIdx(survivorsRound3, 3);
         winners = BreakTieAtIdx(survivorsRound4, 4);
 
-        Debug.Log("Winners: ");
-        PrintList(winners);
+        //Debug.Log("Winners: ");
+        //PrintList(winners);
         return winners;
     }
 
@@ -90,8 +93,16 @@ public class WinnerCalculator : MonoBehaviour
         {
             if (handCalculator.ranks[finalist.hand[idx][0]] > highestRank) { highestRank = handCalculator.ranks[finalist.hand[idx][0]]; }
         }
-
+        
         return highestRank;
+    }
+
+    private void OptimizeAllHands(List<PokerPlayer> activePlayers)
+    {
+        foreach(PokerPlayer activePlayer in activePlayers)
+        {
+            activePlayer.hand = handCalculator.OptimizeHand(activePlayer.hand);
+        }
     }
 
     // for debugging
@@ -99,8 +110,16 @@ public class WinnerCalculator : MonoBehaviour
     {
         foreach(PokerPlayer player in players)
         {
-            Debug.Log(player.gameObject.name);
+            Debug.Log(player.nickName);
         }
     }
-    
+
+    private void PrintHand(List<string> hand)
+    {
+        foreach (string card in hand)
+        {
+            Debug.Log(card);
+        }
+    }
+
 }

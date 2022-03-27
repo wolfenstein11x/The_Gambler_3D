@@ -242,7 +242,7 @@ public class Dealer : MonoBehaviour
         }
 
         // for debugging only
-        PrintHands();
+        //PrintHands();
         List<PokerPlayer> finalists = winnerCalculator.DetermineFinalists(activePlayers);
         winnerCalculator.FindWinners(finalists);
         FindObjectOfType<CanvasController>().HandleHandWon();
@@ -268,7 +268,7 @@ public class Dealer : MonoBehaviour
         int handScore = FindObjectOfType<HandCalculator>().ScoreHand(hand);
         string handName = FindObjectOfType<HandCalculator>().handNames[handScore];
 
-        Debug.Log(pokerPlayer.gameObject.name + ": " + "[" + hand[0] + ", " + hand[1] + ", " + hand[2] + ", " + hand[3] + ", " + hand[4] + "] = " + handName);
+        Debug.Log(pokerPlayer.nickName + ": " + "[" + hand[0] + ", " + hand[1] + ", " + hand[2] + ", " + hand[3] + ", " + hand[4] + "] = " + handName);
     }
 
     
