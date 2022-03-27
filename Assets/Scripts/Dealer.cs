@@ -4,11 +4,11 @@ using System.Linq;
 using UnityEngine;
 
 
-public enum HandState { Begin, Flop, Turn, River, Reveal, NewHand }
+public enum HandState { Begin, Flop, Turn, River }//, Reveal, NewHand }
 
 public class Dealer : MonoBehaviour
 {
-    HandState state;
+    HandState handState;
 
     [SerializeField] Sprite[] cardImages;
     [SerializeField] Sprite cardBack;
@@ -17,6 +17,7 @@ public class Dealer : MonoBehaviour
     [SerializeField] PokerPlayer[] NPCs;
     [SerializeField] PokerPlayer mainPlayer;
 
+    ControlHub controlHub;
     WinnerCalculator winnerCalculator;
     
     List<PokerPlayer> activePlayers = new List<PokerPlayer>();
@@ -26,13 +27,14 @@ public class Dealer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        controlHub = FindObjectOfType<ControlHub>();
         winnerCalculator = FindObjectOfType<WinnerCalculator>();
 
         ChoosePlayers();
         SeatPlayers();
         NewHand();
         
-        state = HandState.Begin;
+        handState = HandState.Begin;
 
     }
 
@@ -47,7 +49,7 @@ public class Dealer : MonoBehaviour
         deck = Enumerable.Range(0, 52).ToList();
     }
 
-    private void NewHand()
+    public void NewHand()
     {
         FindObjectOfType<CanvasController>().HideAllCanvases();
         // put the cards (numbers) back in the deck (list)
@@ -72,8 +74,12 @@ public class Dealer : MonoBehaviour
             activePlayer.optimizedHand.Clear();
         }
 
-        // dealer ready to deal hands next time deal button pressed
-        state = HandState.Begin;
+        // set main state machine to deal mode, and set dealer state machine to deal-new-hands mode
+        controlHub.SetState(GameState.Deal);
+        handState = HandState.Begin;
+
+
+
     }
 
     private void ChoosePlayers()
@@ -123,12 +129,12 @@ public class Dealer : MonoBehaviour
 
     public void Deal()
     {
-        if (state == HandState.Begin) { DealToPlayers(); }
-        else if (state == HandState.Flop) { DealFlop(); }
-        else if (state == HandState.Turn) { DealTurn(); }
-        else if (state == HandState.River) { DealRiver(); }
-        else if (state == HandState.Reveal) { Reveal(); }
-        else if (state == HandState.NewHand) { NewHand(); }
+        if (handState == HandState.Begin) { DealToPlayers(); }
+        else if (handState == HandState.Flop) { DealFlop(); }
+        else if (handState == HandState.Turn) { DealTurn(); }
+        else if (handState == HandState.River) { DealRiver(); }
+        //else if (handState == HandState.Reveal) { Reveal(); }
+        //else if (handState == HandState.NewHand) { NewHand(); }
     }
 
     private void DealToPlayers()
@@ -145,7 +151,7 @@ public class Dealer : MonoBehaviour
         }
 
         // move state machine to next state
-        state = HandState.Flop;
+        handState = HandState.Flop;
     }
 
     private void DealToPlayer(PokerPlayer player, bool faceUp=false)
@@ -204,7 +210,7 @@ public class Dealer : MonoBehaviour
         DealToTable(2);
 
         // move state machine to next state
-        state = HandState.Turn;
+        handState = HandState.Turn;
     }
 
     private void DealTurn()
@@ -213,7 +219,7 @@ public class Dealer : MonoBehaviour
         DealToTable(3);
 
         // move state machine to next state
-        state = HandState.River;
+        handState = HandState.River;
     }
 
     private void DealRiver()
@@ -221,11 +227,12 @@ public class Dealer : MonoBehaviour
         // deal to 5th spot on table
         DealToTable(4);
 
-        // move state machine to next state
-        state = HandState.Reveal;
+        // move main state machine to next state
+        //handState = HandState.Reveal;
+        controlHub.SetState(GameState.PreReveal);
     }
 
-    private void Reveal()
+    public void Reveal()
     {   
         foreach(PokerPlayer player in activePlayers)
         {
@@ -243,13 +250,12 @@ public class Dealer : MonoBehaviour
 
         // for debugging only
         //PrintHands();
+        
         List<PokerPlayer> finalists = winnerCalculator.DetermineFinalists(activePlayers);
         winnerCalculator.FindWinners(finalists);
-        FindObjectOfType<CanvasController>().HandleHandWon();
 
-
-        // move state machine to next state
-        state = HandState.NewHand;
+        // move main state machine to next state
+        controlHub.SetState(GameState.PostReveal);
 
     }
     

@@ -9,6 +9,10 @@ public class CanvasController : MonoBehaviour
     [SerializeField] Text catchPhraseText;
     [SerializeField] Image winnerHeadshot;
     [SerializeField] Text winnerInfoText;
+
+    [SerializeField] Canvas dealCanvas;
+    [SerializeField] Canvas revealCanvas;
+    [SerializeField] Canvas newHandCanvas;
     
     HandCalculator handCalculator;
     WinnerCalculator winnerCalculator;
@@ -22,21 +26,44 @@ public class CanvasController : MonoBehaviour
         HideAllCanvases();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void HideAllCanvases()
     {
+        dealCanvas.enabled = false;
+        revealCanvas.enabled = false;
+        newHandCanvas.enabled = false;
+
         handWonCanvas.enabled = false;
+        
     }
 
-    public void HandleHandWon()
+    // show only specified canvas (alone) or show it on top of currently displayed canvases (alone=false)
+    public void ShowCanvas(Canvas canvas, bool alone=true)
     {
-        handWonCanvas.enabled = true;
+        if (alone) { HideAllCanvases(); }
+        canvas.enabled = true;
+    }
 
+    public void HandleDeal()
+    {
+        ShowCanvas(dealCanvas);
+    }
+
+    public void HandlePreReveal()
+    {
+        ShowCanvas(revealCanvas);
+    }
+
+    public void HandleNewHand()
+    {
+        ShowCanvas(newHandCanvas);
+    }
+
+    public void HandlePostReveal()
+    {
+        ShowCanvas(handWonCanvas);
+        ShowCanvas(newHandCanvas, false);
+        
         List<PokerPlayer> winners = winnerCalculator.winners;
         
         int winningHand = winnerCalculator.highScore;
