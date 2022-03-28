@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { Deal, PlayerBet, NPCsBet, PreReveal, PostReveal, PostHand }
+public enum GameState { Deal, Blinds, PlayerBet, NPCsBet, PreReveal, PostReveal, PostHand }
 
 public class ControlHub : MonoBehaviour
 {
@@ -10,6 +10,7 @@ public class ControlHub : MonoBehaviour
 
     private Dealer dealer;
     private CanvasController canvasController;
+    private PotManager potManager;
     private HandCalculator handCalculator;
     private WinnerCalculator winnerCalculator;
 
@@ -20,6 +21,7 @@ public class ControlHub : MonoBehaviour
         canvasController = FindObjectOfType<CanvasController>();
         handCalculator = FindObjectOfType<HandCalculator>();
         winnerCalculator = FindObjectOfType<WinnerCalculator>();
+        potManager = FindObjectOfType<PotManager>();
 
         gameState = GameState.Deal;
     }
@@ -36,6 +38,11 @@ public class ControlHub : MonoBehaviour
         { 
             canvasController.HandleDeal(); 
         }
+        else if (gameState == GameState.Blinds)
+        {
+            potManager.CollectBlinds();
+            gameState = GameState.Deal;
+        }
         else if (gameState == GameState.PreReveal) 
         { 
             canvasController.HandlePreReveal(); 
@@ -43,6 +50,7 @@ public class ControlHub : MonoBehaviour
         else if (gameState == GameState.PostReveal)
         {
             canvasController.HandlePostReveal();
+            potManager.DistributeWinnings();
         }
         else if (gameState == GameState.PostHand) 
         { 
