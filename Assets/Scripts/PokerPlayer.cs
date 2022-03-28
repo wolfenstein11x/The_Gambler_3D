@@ -13,6 +13,7 @@ public class PokerPlayer : MonoBehaviour
     public List<int> cards;
     public List<string> hand;
     public List<string> optimizedHand;
+    public int money;
 
     HandCalculator handCalculator;
 

@@ -21,7 +21,7 @@ public class Dealer : MonoBehaviour
     ControlHub controlHub;
     WinnerCalculator winnerCalculator;
     
-    List<PokerPlayer> activePlayers = new List<PokerPlayer>();
+    public List<PokerPlayer> activePlayers = new List<PokerPlayer>();
     
     private List<int> deck = Enumerable.Range(0, 52).ToList();
     private int dealerPos;
@@ -41,6 +41,9 @@ public class Dealer : MonoBehaviour
         ChoosePlayers();
         SeatPlayers();
         NewHand();
+
+        // give every player their starting money
+        FindObjectOfType<PotManager>().InitMoney();
 
         // main player starts game off as dealer
         SetDealer(activePlayers, 0);
