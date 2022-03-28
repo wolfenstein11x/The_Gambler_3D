@@ -46,7 +46,7 @@ public class ControlHub : MonoBehaviour
         }
         else if (gameState == GameState.PostHand) 
         { 
-            canvasController.HandleNewHand(); 
+            canvasController.HandleNewHand();
         }
 
         

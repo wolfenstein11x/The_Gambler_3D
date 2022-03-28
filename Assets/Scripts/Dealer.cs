@@ -24,6 +24,7 @@ public class Dealer : MonoBehaviour
     List<PokerPlayer> activePlayers = new List<PokerPlayer>();
     
     private List<int> deck = Enumerable.Range(0, 52).ToList();
+    private int dealerPos;
 
     // Start is called before the first frame update
     void Start()
@@ -49,9 +50,18 @@ public class Dealer : MonoBehaviour
 
     private void SetDealer(List<PokerPlayer> players, int idx)
     {
+        // make sure no other player displays dealer chip
         foreach(PokerPlayer player in players) { player.playerPosition.dealerChip.GetComponent<SpriteRenderer>().sprite = null; }
 
+        // make selected player display dealer chip and record dealerPos for reference when rotating
         players[idx].playerPosition.dealerChip.GetComponent<SpriteRenderer>().sprite = dealerChip;
+        dealerPos = idx;
+    }
+
+    public void RotateDealer()
+    {
+        if (dealerPos >= activePlayers.Count - 1) { SetDealer(activePlayers, 0); }
+        else { SetDealer(activePlayers, dealerPos + 1); }
     }
 
     private void ResetDeck()
@@ -63,6 +73,8 @@ public class Dealer : MonoBehaviour
     {
         // put the cards (numbers) back in the deck (list)
         ResetDeck();
+
+        RotateDealer();
 
         // clear all images of player cards and table cards
         foreach (Transform tableCardPosition in tableCardPositions) { tableCardPosition.GetComponent<SpriteRenderer>().sprite = null; }
