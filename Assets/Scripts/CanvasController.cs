@@ -13,6 +13,10 @@ public class CanvasController : MonoBehaviour
     [SerializeField] Canvas dealCanvas;
     [SerializeField] Canvas revealCanvas;
     [SerializeField] Canvas newHandCanvas;
+    [SerializeField] Canvas checkBetCanvas;
+    [SerializeField] Canvas betCanvas;
+    [SerializeField] Canvas callFoldRaiseCanvas;
+    [SerializeField] Canvas raiseCanvas;
     
     HandCalculator handCalculator;
     WinnerCalculator winnerCalculator;
@@ -32,6 +36,10 @@ public class CanvasController : MonoBehaviour
         dealCanvas.enabled = false;
         revealCanvas.enabled = false;
         newHandCanvas.enabled = false;
+        checkBetCanvas.enabled = false;
+        betCanvas.enabled = false;
+        callFoldRaiseCanvas.enabled = false;
+        raiseCanvas.enabled = false;
 
         handWonCanvas.enabled = false;
         
