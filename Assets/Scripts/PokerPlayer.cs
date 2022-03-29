@@ -14,19 +14,26 @@ public class PokerPlayer : MonoBehaviour
     public List<string> hand;
     public List<string> optimizedHand;
     public int money;
+    public bool eliminated;
+    public bool folded;
 
     HandCalculator handCalculator;
+    BetTracker betTracker;
 
     // Start is called before the first frame update
     void Start()
     {
+        eliminated = false;
+        folded = false;
+
+        betTracker = FindObjectOfType<BetTracker>();
         handCalculator = FindObjectOfType<HandCalculator>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void CheckOrRaise()
     {
-        
+        Debug.Log(nickName + " checks");
+        betTracker.consecutiveNonRaises++;
     }
 
     /*

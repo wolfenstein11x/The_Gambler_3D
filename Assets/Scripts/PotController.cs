@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PotManager : MonoBehaviour
+public class PotController : MonoBehaviour
 {
     [SerializeField] int startingMoney;
-    
+
     public int smallBlind = 1;
     public int bigBlind = 2;
 
@@ -31,12 +31,12 @@ public class PotManager : MonoBehaviour
         Debug.Log(players[0].nickName);
     }
 
-    public void InitMoney(List<PokerPlayer> players)
+    public void InitMoney()
     {
-        foreach (PokerPlayer player in players)
+        foreach (PokerPlayer player in dealer.players)
         {
             player.money = startingMoney;
-            player.playerPosition.moneyText.text = "$" + player.money.ToString(); 
+            player.playerPosition.moneyText.text = "$" + player.money.ToString();
         }
 
         ResetPot();
@@ -82,12 +82,12 @@ public class PotManager : MonoBehaviour
         ResetPot();
     }
 
-    public void CollectBlinds(List<PokerPlayer> players)
+    public void CollectBlinds()
     {
-        DetermineBlindIndexes(players);
-        CollectMoneyFromPlayer(players[smallBlindIdx], smallBlind);
-        CollectMoneyFromPlayer(players[bigBlindIdx], bigBlind);
-  
+        DetermineBlindIndexes(dealer.players);
+        CollectMoneyFromPlayer(dealer.players[smallBlindIdx], smallBlind);
+        CollectMoneyFromPlayer(dealer.players[bigBlindIdx], bigBlind);
+
     }
 
     private void DetermineBlindIndexes(List<PokerPlayer> players)
@@ -124,8 +124,4 @@ public class PotManager : MonoBehaviour
         else return;
 
     }
-
-    
-
- 
 }

@@ -21,7 +21,9 @@ public class Dealer : MonoBehaviour
     ControlHub controlHub;
     WinnerCalculator winnerCalculator;
     
-    public List<PokerPlayer> activePlayers = new List<PokerPlayer>();
+    public List<PokerPlayer> players = new List<PokerPlayer>();
+    private List<PokerPlayer> usedNPCs = new List<PokerPlayer>();
+    private List<PokerPlayer> eliminatedPlayers = new List<PokerPlayer>();
     
     private List<int> deck = Enumerable.Range(0, 52).ToList();
     public int dealerIdx;
@@ -32,7 +34,7 @@ public class Dealer : MonoBehaviour
         controlHub = FindObjectOfType<ControlHub>();
         winnerCalculator = FindObjectOfType<WinnerCalculator>();
 
-        NewGame();
+        
 
     }
 
@@ -43,15 +45,15 @@ public class Dealer : MonoBehaviour
         NewHand();
 
         // give every player their starting money
-        FindObjectOfType<PotManager>().InitMoney();
+        //FindObjectOfType<PotManager>().InitMoney();
 
         // main player starts game off as dealer
-        SetDealer(activePlayers, 0);
+        SetDealer(0);
 
         handState = HandState.Begin;
     }
 
-    private void SetDealer(List<PokerPlayer> players, int idx)
+    public void SetDealer(int idx)
     {
         // make sure no other player displays dealer chip
         foreach(PokerPlayer player in players) { player.playerPosition.dealerChip.GetComponent<SpriteRenderer>().sprite = null; }
@@ -63,8 +65,8 @@ public class Dealer : MonoBehaviour
 
     public void RotateDealer()
     {
-        if (dealerIdx >= activePlayers.Count - 1) { SetDealer(activePlayers, 0); }
-        else { SetDealer(activePlayers, dealerIdx + 1); }
+        if (dealerIdx >= players.Count - 1) { SetDealer( 0); }
+        else { SetDealer(dealerIdx + 1); }
     }
 
     private void ResetDeck()
@@ -82,14 +84,14 @@ public class Dealer : MonoBehaviour
 
         // clear all images of player cards and table cards
         foreach (Transform tableCardPosition in tableCardPositions) { tableCardPosition.GetComponent<SpriteRenderer>().sprite = null; }
-        foreach (PokerPlayer activePlayer in activePlayers)
+        foreach (PokerPlayer activePlayer in players)
         {
             activePlayer.playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = null;
             activePlayer.playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = null;
         }
         
         // clear all current hands data
-        foreach(PokerPlayer activePlayer in activePlayers)
+        foreach(PokerPlayer activePlayer in players)
         {
             activePlayer.cards.Clear();
             activePlayer.hand.Clear();
@@ -97,37 +99,42 @@ public class Dealer : MonoBehaviour
         }
 
         // set main state machine to deal mode, and set dealer state machine to deal-new-hands mode
-        controlHub.SetState(GameState.Deal);
+       
         handState = HandState.Begin;
 
 
 
     }
 
+    public void InitializePlayers()
+    {
+        ChoosePlayers();
+        SeatPlayers();
+    }
+
     private void ChoosePlayers()
     {
         // the main player is always the first one added
-        activePlayers.Add(mainPlayer);
-
-        // choose random NPCs
-        List<int> usedNPCs = new List<int>();
+        players.Add(mainPlayer);
 
         // start at i=1, because main player is i=0
         for (int i = 1; i < playerPositions.Length; i++)
         {
-            int npcIdx;
+            int randomIdx;
+            PokerPlayer randomNPC;
 
             // pick random NPC to fill each position (but keep picking until you don't pick a repeat)
             do
             {
-                npcIdx = Random.Range(0, NPCs.Length);
-            } while (usedNPCs.Contains(npcIdx));
+                randomIdx = Random.Range(0, NPCs.Length);
+                randomNPC = NPCs[randomIdx];
+            } while (usedNPCs.Contains(randomNPC));
 
             // keep track of NPCs already picked, so you don't duplicate
-            usedNPCs.Add(npcIdx);
+            usedNPCs.Add(randomNPC);
 
             // add NPC to list of active players
-            activePlayers.Add(NPCs[npcIdx]);
+            players.Add(randomNPC);
         }
     }
 
@@ -135,7 +142,7 @@ public class Dealer : MonoBehaviour
     {
         for (int i=0; i < playerPositions.Length; i++)
         {
-            SeatPlayer(activePlayers[i], i);
+            SeatPlayer(players[i], i);
         }
     }
 
@@ -149,37 +156,45 @@ public class Dealer : MonoBehaviour
 
     }
 
+    // this is the Deal Button function
     public void Deal()
     {
+        if (controlHub.gameState == GameState.DealHands) 
+        { 
+            DealToPlayers();
+
+            // hide deal button after it is pressed
+            FindObjectOfType<CanvasController>().HideAllCanvases();
+        }
+
+        /*
         if (handState == HandState.Begin) { DealToPlayers(); }
         else if (handState == HandState.Flop) { DealFlop(); }
         else if (handState == HandState.Turn) { DealTurn(); }
         else if (handState == HandState.River) { DealRiver(); }
+        */
         
     }
 
     private void DealToPlayers()
     {
         // deal main player face up
-        DealToPlayer(activePlayers[0], true);
-        DealToPlayer(activePlayers[0], true);
+        DealToPlayer(players[0], true);
+        DealToPlayer(players[0], true);
 
         // deal to NPCs face down
-        for (int i=1; i < activePlayers.Count; i++)
+        for (int i=1; i < players.Count; i++)
         {
-            DealToPlayer(activePlayers[i]);
-            DealToPlayer(activePlayers[i]);
+            DealToPlayer(players[i]);
+            DealToPlayer(players[i]);
         }
-
-        // move state machine to next state
-        handState = HandState.Flop;
-
-        // move main state machine to collect-blinds state
-        controlHub.SetState(GameState.Blinds);
     }
 
     private void DealToPlayer(PokerPlayer player, bool faceUp=false)
     {
+        // skip over player if eliminated
+        if (player.eliminated) { return; }
+
         // select card and store data
         int cardIdx = Random.Range(0, deck.Count);
         int card = deck[cardIdx];
@@ -218,7 +233,7 @@ public class Dealer : MonoBehaviour
         tableCardPositions[position].GetComponent<SpriteRenderer>().sprite = cardImages[card1];
 
         // store card in each players hand
-        foreach (PokerPlayer activePlayer in activePlayers) { activePlayer.hand.Add(cardImages[card1].name); }
+        foreach (PokerPlayer activePlayer in players) { activePlayer.hand.Add(cardImages[card1].name); }
 
         // remove card from deck
         deck.RemoveAt(card1Idx);
@@ -250,12 +265,12 @@ public class Dealer : MonoBehaviour
         DealToTable(4);
 
         // move main state machine to next state
-        controlHub.SetState(GameState.PreReveal);
+     
     }
 
     public void Reveal()
     {   
-        foreach(PokerPlayer player in activePlayers)
+        foreach(PokerPlayer player in players)
         {
             // skip main player because we already see his cards
             if (player.tag == "mainPlayer") { continue; }
@@ -270,18 +285,18 @@ public class Dealer : MonoBehaviour
         // for debugging only
         //PrintHands();
         
-        List<PokerPlayer> finalists = winnerCalculator.DetermineFinalists(activePlayers);
+        List<PokerPlayer> finalists = winnerCalculator.DetermineFinalists(players);
         winnerCalculator.FindWinners(finalists);
 
         // move main state machine to next state
-        controlHub.SetState(GameState.PostReveal);
+       
 
     }
     
     void PrintHands()
     {
         
-        foreach(PokerPlayer activePlayer in activePlayers)
+        foreach(PokerPlayer activePlayer in players)
         {
             PrintHand(activePlayer, FindObjectOfType<HandCalculator>().OptimizeHand(activePlayer.hand));
         }

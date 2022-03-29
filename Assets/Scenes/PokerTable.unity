@@ -4027,6 +4027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6c4dc217d96d7243a685289ed4f118c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameState: 0
 --- !u!114 &1264809979 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1264809979, guid: e991350c5e55e404e83145d5e97610fd, type: 3}
@@ -5175,6 +5176,76 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4170b26a4d309e04f9f22362c6c34a13, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1874457851
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1874457853}
+  - component: {fileID: 1874457852}
+  - component: {fileID: 1874457854}
+  m_Layer: 0
+  m_Name: PotController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1874457852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874457851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c86b8b7877454448b71909551a405af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingMoney: 0
+  smallBlind: 1
+  bigBlind: 2
+  potMoneyText: {fileID: 0}
+  potMoney: 0
+  bigBlindIdx: 0
+  smallBlindIdx: 0
+--- !u!4 &1874457853
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874457851}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1874457854
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1874457851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9c86b8b7877454448b71909551a405af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingMoney: 100
+  smallBlind: 2
+  bigBlind: 4
+  potMoneyText: {fileID: 551817122}
+  potMoney: 0
+  bigBlindIdx: 0
+  smallBlindIdx: 0
 --- !u!1 &1973854159
 GameObject:
   m_ObjectHideFlags: 0
