@@ -17,6 +17,7 @@ public class CanvasController : MonoBehaviour
     [SerializeField] Canvas betCanvas;
     [SerializeField] Canvas callFoldRaiseCanvas;
     [SerializeField] Canvas raiseCanvas;
+    [SerializeField] Canvas raiseBlindsCanvas;
     
     HandCalculator handCalculator;
     WinnerCalculator winnerCalculator;
@@ -40,6 +41,7 @@ public class CanvasController : MonoBehaviour
         betCanvas.enabled = false;
         callFoldRaiseCanvas.enabled = false;
         raiseCanvas.enabled = false;
+        raiseBlindsCanvas.enabled = false;
 
         handWonCanvas.enabled = false;
         
@@ -98,4 +100,16 @@ public class CanvasController : MonoBehaviour
             winnerInfoText.text = "SPLIT POT! HIGH HAND IS " + winningHandName.ToUpper();
         }
     }
+
+    public void ShowRaiseBlindsCanvas()
+    {
+        ShowCanvas(raiseBlindsCanvas);
+    }
+
+    public void HideRaiseBlindsCanvas()
+    {
+        raiseBlindsCanvas.enabled = false;
+    }
+
+    
 }

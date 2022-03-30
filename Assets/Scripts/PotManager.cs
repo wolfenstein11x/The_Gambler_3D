@@ -31,6 +31,12 @@ public class PotManager : MonoBehaviour
         Debug.Log(players[4].nickName);
     }
 
+    public void RaiseBlinds()
+    {
+        smallBlind *= 2;
+        bigBlind *= 2;
+    }
+
     public void InitMoney(List<PokerPlayer> players)
     {
         foreach (PokerPlayer player in players)
@@ -149,5 +155,35 @@ public class PotManager : MonoBehaviour
             bigBlindIdx++;
             if (bigBlindIdx >= players.Count) { bigBlindIdx -= players.Count; }
         }
+    }
+
+    public int GetLowStack(List<PokerPlayer> players)
+    {
+        int lowStack = players[0].money;
+
+        foreach(PokerPlayer player in players)
+        {
+            if (player.money <= lowStack) { lowStack = player.money; }
+        }
+
+        return lowStack;
+    }
+
+    public int GetHighStack(List<PokerPlayer> players)
+    {
+        int highStack = players[0].money;
+
+        foreach (PokerPlayer player in players)
+        {
+            if (player.money >= highStack) { highStack = player.money; }
+        }
+
+        return highStack;
+    }
+
+    // useful when combining tables and want to make sure new players money doesn't disappear
+    public void RefreshPlayerMoney(PokerPlayer player)
+    {
+        player.playerPosition.moneyText.text = "$" + player.money.ToString();
     }
 }

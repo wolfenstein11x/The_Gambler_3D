@@ -32,7 +32,7 @@ public class PokerPlayer : MonoBehaviour
 
     public void CheckOrRaise()
     {
-        Debug.Log(nickName + " checks");
+        //Debug.Log(nickName + " checks");
         betTracker.consecutiveNonRaises++;
     }
 

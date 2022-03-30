@@ -15,6 +15,8 @@ public class ControlHub : MonoBehaviour
     private WinnerCalculator winnerCalculator;
     private BetTracker betTracker;
 
+    private int tableCombineCount;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -26,6 +28,7 @@ public class ControlHub : MonoBehaviour
         betTracker = FindObjectOfType<BetTracker>();
 
         gameState = GameState.Init;
+        tableCombineCount = 0;
 
         RunStateMachine();
     }
@@ -145,13 +148,22 @@ public class ControlHub : MonoBehaviour
 
             // game is over if main player is eliminated
 
-            // combine tables and raise blinds if down to 3 players (and combineTables count is less than 2)
+            // combine tables and raise blinds if down to 3 players (and haven't already combined tables twice)
+            if (dealer.CountActivePlayers() <= 3 && tableCombineCount < 2)
+            {
+                canvasController.ShowRaiseBlindsCanvas();
+                potManager.RaiseBlinds();
+                Invoke("InitiateCombineTables", 2);
+            }
 
-            // increment dealer chip
-            dealer.RotateDealer();
+            else
+            {
+                // increment dealer chip
+                dealer.RotateDealer();
 
-            // show deal button, which will move us to DealHands state when pressed
-            canvasController.HandleDeal();
+                // show deal button, which will move us to DealHands state when pressed
+                canvasController.HandleDeal();
+            }
         }
 
     }
@@ -199,5 +211,17 @@ public class ControlHub : MonoBehaviour
     public void SetState(GameState state)
     {
         gameState = state;
+    }
+
+    private void InitiateCombineTables()
+    {
+        dealer.CombineTables();
+        tableCombineCount++;
+
+        // increment dealer chip
+        dealer.RotateDealer();
+
+        // show deal button, which will move us to DealHands state when pressed
+        canvasController.HandleDeal();
     }
 }

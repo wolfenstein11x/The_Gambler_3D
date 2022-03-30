@@ -20,6 +20,7 @@ public class Dealer : MonoBehaviour
 
     ControlHub controlHub;
     WinnerCalculator winnerCalculator;
+    PotManager potManager;
     
     public List<PokerPlayer> players = new List<PokerPlayer>();
     private List<PokerPlayer> usedNPCs = new List<PokerPlayer>();
@@ -33,9 +34,7 @@ public class Dealer : MonoBehaviour
     {
         controlHub = FindObjectOfType<ControlHub>();
         winnerCalculator = FindObjectOfType<WinnerCalculator>();
-
-        
-
+        potManager = FindObjectOfType<PotManager>();
     }
 
     // NOT BEING USED
@@ -176,7 +175,7 @@ public class Dealer : MonoBehaviour
 
     public void SeatPlayers()
     {
-        for (int i=0; i < playerPositions.Length; i++)
+        for (int i=0; i < players.Count; i++)
         {
             SeatPlayer(players[i], i);
         }
@@ -192,6 +191,67 @@ public class Dealer : MonoBehaviour
 
     }
 
+    public void CombineTables()
+    {
+        // list of players from current table who aren't eliminated
+        List<PokerPlayer> remainingPlayers = new List<PokerPlayer>();
+       
+        foreach(PokerPlayer player in players)
+        {
+            if (!player.eliminated) { remainingPlayers.Add(player); }
+        }
+
+        // list of NPCs to be added to updated list of players
+        List<PokerPlayer> newPlayers = new List<PokerPlayer>();
+
+        // choose players to fill table
+        for (int i = remainingPlayers.Count; i < playerPositions.Length; i++)
+        {
+            int randomIdx;
+            PokerPlayer randomNPC;
+
+            // quit if we've run out of unused NPCs
+            if (usedNPCs.Count == NPCs.Length){ break; }
+
+            // pick random NPC to fill each position (but keep picking until you don't pick a repeat)
+            do
+            {
+                randomIdx = Random.Range(0, NPCs.Length);
+                randomNPC = NPCs[randomIdx];
+            } while (usedNPCs.Contains(randomNPC));
+
+            // keep track of NPCs already picked, so you don't duplicate
+            usedNPCs.Add(randomNPC);
+
+            // add NPC to list of new players
+            newPlayers.Add(randomNPC);
+        }
+
+        // randomize money that new players have, between high and low stack of remaining players
+        int low = potManager.GetLowStack(remainingPlayers);
+        int high = potManager.GetHighStack(remainingPlayers);
+
+        foreach (PokerPlayer player in newPlayers)
+        {
+            player.money = Random.Range(low, high);
+        }
+
+        // reset players list with old and new players
+        players.Clear();
+
+        foreach(PokerPlayer player in remainingPlayers) { players.Add(player); }
+        foreach(PokerPlayer player in newPlayers) { players.Add(player); }
+
+        // reseat players at new table
+        SeatPlayers();
+
+        // make sure all players money is showing (particularly new players)
+        foreach(PokerPlayer player in players) { potManager.RefreshPlayerMoney(player); }
+
+
+
+    }
+
     public void EliminatePlayer(PokerPlayer player)
     {
         player.eliminated = true;
@@ -202,6 +262,18 @@ public class Dealer : MonoBehaviour
         // clear player money display
         player.playerPosition.moneyText.text = "";
 
+    }
+
+    public int CountActivePlayers()
+    {
+        int activePlayerCount = 0;
+
+        foreach(PokerPlayer player in players)
+        {
+            if (!player.eliminated) { activePlayerCount++; }
+        }
+
+        return activePlayerCount;
     }
 
 
