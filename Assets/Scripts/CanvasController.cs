@@ -69,13 +69,12 @@ public class CanvasController : MonoBehaviour
 
     public void HandleNewHand()
     {
-        ShowCanvas(newHandCanvas);
+        ShowCanvas(newHandCanvas, false);
     }
 
-    public void HandlePostReveal()
+    public void HandleHandWon()
     {
         ShowCanvas(handWonCanvas);
-        ShowCanvas(newHandCanvas, false);
         
         List<PokerPlayer> winners = winnerCalculator.winners;
         

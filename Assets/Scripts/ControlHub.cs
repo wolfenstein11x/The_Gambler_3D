@@ -45,6 +45,9 @@ public class ControlHub : MonoBehaviour
 
             // give each player $100
             potManager.InitMoney(dealer.players);
+
+            // make sure players don't have any cards
+            dealer.ClearHands();
             
             // start main player off with dealer chip
             dealer.SetDealer(0);
@@ -108,6 +111,47 @@ public class ControlHub : MonoBehaviour
         {
             // reveal NPC cards (unless they are folded or eliminated)
             dealer.Reveal();
+
+            // determine hand winner(s)
+            List<PokerPlayer> finalists = winnerCalculator.DetermineFinalists(dealer.players);
+            winnerCalculator.FindWinners(finalists);
+
+            // distribute money in pot to winner(s)
+            potManager.DistributeWinnings();
+
+            // display hand won canvas
+            canvasController.HandleHandWon();
+
+            // show NewHand button, which will move us to NewHand state when pressed
+            canvasController.HandleNewHand();
+        }
+
+        else if (gameState == GameState.NewHand)
+        {
+            // clear cards from table
+            dealer.ClearTable();
+
+            // clear player hands
+            dealer.ClearHands();
+
+            // reset the deck
+            dealer.ResetDeck();
+
+            // eliminate players with $0
+            foreach(PokerPlayer player in dealer.players)
+            {
+                if (player.money <= 0) { dealer.EliminatePlayer(player); }
+            }
+
+            // game is over if main player is eliminated
+
+            // combine tables and raise blinds if down to 3 players (and combineTables count is less than 2)
+
+            // increment dealer chip
+            dealer.RotateDealer();
+
+            // show deal button, which will move us to DealHands state when pressed
+            canvasController.HandleDeal();
         }
 
     }
@@ -118,10 +162,11 @@ public class ControlHub : MonoBehaviour
         canvasController.HideAllCanvases();
 
         // move to particular deal state depending on current state
-        if (gameState == GameState.Init) { gameState = GameState.DealHands; }
+        if (gameState == GameState.Init)           { gameState = GameState.DealHands; }
         else if (gameState == GameState.DealHands) { gameState = GameState.DealFlop; }
-        else if (gameState == GameState.DealFlop) { gameState = GameState.DealTurn; }
-        else if (gameState == GameState.DealTurn) { gameState = GameState.DealRiver; }
+        else if (gameState == GameState.DealFlop)  { gameState = GameState.DealTurn; }
+        else if (gameState == GameState.DealTurn)  { gameState = GameState.DealRiver; }
+        else if (gameState == GameState.NewHand)   { gameState = GameState.DealHands; }
 
         // run the state machine now that it is in updated state
         RunStateMachine();
@@ -135,6 +180,18 @@ public class ControlHub : MonoBehaviour
         // move to Reveal state
         gameState = GameState.Reveal;
         
+        // run the state machine now that it is in updated state
+        RunStateMachine();
+    }
+
+    public void NewHandButton()
+    {
+        // hide button after it is pressed
+        canvasController.HideAllCanvases();
+
+        // move to NewHand state
+        gameState = GameState.NewHand;
+
         // run the state machine now that it is in updated state
         RunStateMachine();
     }

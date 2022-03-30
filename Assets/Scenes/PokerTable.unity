@@ -5365,9 +5365,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1850618539}
-        m_TargetAssemblyTypeName: Dealer, Assembly-CSharp
-        m_MethodName: NewHand
+      - m_Target: {fileID: 1248948974}
+        m_TargetAssemblyTypeName: ControlHub, Assembly-CSharp
+        m_MethodName: NewHandButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5803,17 +5803,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 3270336262013356747, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
   m_PrefabInstance: {fileID: 3270336261365816031}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1850618539 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7341409329220728784, guid: 82ad9a0f8a207c64cbc90f2cf1fa4e22, type: 3}
-  m_PrefabInstance: {fileID: 7341409329165326283}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4170b26a4d309e04f9f22362c6c34a13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1973854159
 GameObject:
   m_ObjectHideFlags: 0

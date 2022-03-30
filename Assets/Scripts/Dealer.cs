@@ -69,7 +69,7 @@ public class Dealer : MonoBehaviour
         else { SetDealer(dealerIdx + 1); }
     }
 
-    private void ResetDeck()
+    public void ResetDeck()
     {
         deck = Enumerable.Range(0, 52).ToList();
     }
@@ -104,6 +104,30 @@ public class Dealer : MonoBehaviour
 
 
 
+    }
+
+    public void ClearTable()
+    {
+        // clear all images of table cards
+        foreach (Transform tableCardPosition in tableCardPositions) 
+        { 
+            tableCardPosition.GetComponent<SpriteRenderer>().sprite = null; 
+        }
+    }
+
+    public void ClearHands()
+    {
+        foreach (PokerPlayer player in players)
+        {
+            // clear all current hands data
+            player.cards.Clear();
+            player.hand.Clear();
+            player.optimizedHand.Clear();
+
+            // clear all images of player cards
+            player.playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = null;
+            player.playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = null;
+        }
     }
 
     public void InitializePlayers()
@@ -156,7 +180,17 @@ public class Dealer : MonoBehaviour
 
     }
 
-    // this is the Deal Button function
+    public void EliminatePlayer(PokerPlayer player)
+    {
+        player.eliminated = true;
+
+        // clear NPC headshot
+        player.playerPosition.headShot.GetComponent<SpriteRenderer>().sprite = null;
+
+    }
+
+
+    // NOT BEING USED
     public void Deal()
     {
         if (controlHub.gameState == GameState.DealHands) 
