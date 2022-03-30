@@ -199,6 +199,9 @@ public class Dealer : MonoBehaviour
         // clear NPC headshot
         player.playerPosition.headShot.GetComponent<SpriteRenderer>().sprite = null;
 
+        // clear player money display
+        player.playerPosition.moneyText.text = "";
+
     }
 
 
@@ -229,7 +232,6 @@ public class Dealer : MonoBehaviour
             // skip over eliminated players
             if (player.eliminated) 
             {
-                Debug.Log("Not dealing to " + player.nickName);
                 continue; 
             }
 

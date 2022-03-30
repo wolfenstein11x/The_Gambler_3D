@@ -56,17 +56,24 @@ public class PotManager : MonoBehaviour
 
     public void CollectMoneyFromPlayer(PokerPlayer player, int amount)
     {
+        // if player has less than required amount, just give all the money the player has
+        if (amount > player.money) { amount = player.money; }
+
+        // take money from player and put it in pot
+        player.money -= amount;
         AddToPot(amount);
 
-        player.money -= amount;
+        // update player money display
         player.playerPosition.moneyText.text = "$" + player.money.ToString();
     }
 
     public void GiveMoneyToPlayer(PokerPlayer player, int amount)
     {
+        // take money from pot and give it to player
         AddToPot(-1 * amount);
-
         player.money += amount;
+
+        // update player money display
         player.playerPosition.moneyText.text = "$" + player.money.ToString();
     }
 
