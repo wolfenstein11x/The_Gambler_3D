@@ -36,17 +36,5 @@ public class PokerPlayer : MonoBehaviour
         betTracker.consecutiveNonRaises++;
     }
 
-    /*
-    public void PrintHand()
-    {
-        int handScore = handCalculator.ScoreHand(hand);
-        string handName = handCalculator.handNames[handScore];
-
-        optimizedHand = handCalculator.OptimizeHand(hand);
-        
-        Debug.Log(gameObject.name + ": [" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
-        
-    }
-    */
     
 }

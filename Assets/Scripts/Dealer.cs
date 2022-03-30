@@ -176,8 +176,28 @@ public class Dealer : MonoBehaviour
         
     }
 
-    private void DealToPlayers()
+    public void DealToPlayers()
     {
+        foreach(PokerPlayer player in players)
+        {
+            // skip over eliminated players
+            if (player.eliminated) { continue; }
+
+            // deal to main player face-up
+            else if (player.tag == "mainPlayer")
+            {
+                DealToPlayer(player, true);
+                DealToPlayer(player, true);
+            }
+
+            // deal to NPCs face down
+            else
+            {
+                DealToPlayer(player);
+                DealToPlayer(player);
+            }
+        }
+        /*
         // deal main player face up
         DealToPlayer(players[0], true);
         DealToPlayer(players[0], true);
@@ -185,16 +205,16 @@ public class Dealer : MonoBehaviour
         // deal to NPCs face down
         for (int i=1; i < players.Count; i++)
         {
+         
+
             DealToPlayer(players[i]);
             DealToPlayer(players[i]);
         }
+        */
     }
 
     private void DealToPlayer(PokerPlayer player, bool faceUp=false)
     {
-        // skip over player if eliminated
-        if (player.eliminated) { return; }
-
         // select card and store data
         int cardIdx = Random.Range(0, deck.Count);
         int card = deck[cardIdx];
@@ -233,45 +253,45 @@ public class Dealer : MonoBehaviour
         tableCardPositions[position].GetComponent<SpriteRenderer>().sprite = cardImages[card1];
 
         // store card in each players hand
-        foreach (PokerPlayer activePlayer in players) { activePlayer.hand.Add(cardImages[card1].name); }
+        foreach (PokerPlayer player in players) 
+        {
+            // skip over inactive players
+            if (player.folded || player.eliminated) { continue; }
+
+            else { player.hand.Add(cardImages[card1].name); } 
+        }
 
         // remove card from deck
         deck.RemoveAt(card1Idx);
     }
 
-    private void DealFlop()
+    public void DealFlop()
     {
         // deal to first 3 spots on table
         DealToTable(0);
         DealToTable(1);
         DealToTable(2);
-
-        // move state machine to next state
-        handState = HandState.Turn;
     }
 
-    private void DealTurn()
+    public void DealTurn()
     {
         // deal to 4th spot on table
         DealToTable(3);
-
-        // move state machine to next state
-        handState = HandState.River;
     }
 
-    private void DealRiver()
+    public void DealRiver()
     {
         // deal to 5th spot on table
         DealToTable(4);
-
-        // move main state machine to next state
-     
     }
 
     public void Reveal()
     {   
         foreach(PokerPlayer player in players)
         {
+            // skip inactive players
+            if (player.folded || player.eliminated) { continue; }
+
             // skip main player because we already see his cards
             if (player.tag == "mainPlayer") { continue; }
 
@@ -285,11 +305,8 @@ public class Dealer : MonoBehaviour
         // for debugging only
         //PrintHands();
         
-        List<PokerPlayer> finalists = winnerCalculator.DetermineFinalists(players);
-        winnerCalculator.FindWinners(finalists);
-
-        // move main state machine to next state
-       
+        //List<PokerPlayer> finalists = winnerCalculator.DetermineFinalists(players);
+        //winnerCalculator.FindWinners(finalists);
 
     }
     

@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PotManager : MonoBehaviour
 {
     [SerializeField] int startingMoney;
-    
+
     public int smallBlind = 1;
     public int bigBlind = 2;
 
@@ -28,7 +28,7 @@ public class PotManager : MonoBehaviour
 
     public void Test(List<PokerPlayer> players)
     {
-        Debug.Log(players[0].nickName);
+        Debug.Log(players[4].nickName);
     }
 
     public void InitMoney(List<PokerPlayer> players)
@@ -36,7 +36,7 @@ public class PotManager : MonoBehaviour
         foreach (PokerPlayer player in players)
         {
             player.money = startingMoney;
-            player.playerPosition.moneyText.text = "$" + player.money.ToString(); 
+            player.playerPosition.moneyText.text = "$" + player.money.ToString();
         }
 
         ResetPot();
@@ -87,7 +87,7 @@ public class PotManager : MonoBehaviour
         DetermineBlindIndexes(players);
         CollectMoneyFromPlayer(players[smallBlindIdx], smallBlind);
         CollectMoneyFromPlayer(players[bigBlindIdx], bigBlind);
-  
+
     }
 
     private void DetermineBlindIndexes(List<PokerPlayer> players)
@@ -124,8 +124,4 @@ public class PotManager : MonoBehaviour
         else return;
 
     }
-
-    
-
- 
 }
