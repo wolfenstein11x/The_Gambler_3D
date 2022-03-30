@@ -38,6 +38,7 @@ public class Dealer : MonoBehaviour
 
     }
 
+    // NOT BEING USED
     private void NewGame()
     {
         ChoosePlayers();
@@ -65,7 +66,17 @@ public class Dealer : MonoBehaviour
 
     public void RotateDealer()
     {
-        if (dealerIdx >= players.Count - 1) { SetDealer( 0); }
+        do
+        {   // increment dealer chip one time
+            IncrementDealer();
+            
+            // keep incrementing the dealer chip if currently on eliminated player 
+        } while (players[dealerIdx].eliminated == true);
+    }
+
+    private void IncrementDealer()
+    {
+        if (dealerIdx >= players.Count - 1) { SetDealer(0); }
         else { SetDealer(dealerIdx + 1); }
     }
 
@@ -74,6 +85,7 @@ public class Dealer : MonoBehaviour
         deck = Enumerable.Range(0, 52).ToList();
     }
 
+    // NOT BEING USED
     public void NewHand()
     {
         // put the cards (numbers) back in the deck (list)
@@ -215,7 +227,11 @@ public class Dealer : MonoBehaviour
         foreach(PokerPlayer player in players)
         {
             // skip over eliminated players
-            if (player.eliminated) { continue; }
+            if (player.eliminated) 
+            {
+                Debug.Log("Not dealing to " + player.nickName);
+                continue; 
+            }
 
             // deal to main player face-up
             else if (player.tag == "mainPlayer")
@@ -231,20 +247,6 @@ public class Dealer : MonoBehaviour
                 DealToPlayer(player);
             }
         }
-        /*
-        // deal main player face up
-        DealToPlayer(players[0], true);
-        DealToPlayer(players[0], true);
-
-        // deal to NPCs face down
-        for (int i=1; i < players.Count; i++)
-        {
-         
-
-            DealToPlayer(players[i]);
-            DealToPlayer(players[i]);
-        }
-        */
     }
 
     private void DealToPlayer(PokerPlayer player, bool faceUp=false)

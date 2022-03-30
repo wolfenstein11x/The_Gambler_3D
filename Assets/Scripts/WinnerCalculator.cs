@@ -17,15 +17,18 @@ public class WinnerCalculator : MonoBehaviour
     }
 
     // make a list of all players who have the highest hand
-    public List<PokerPlayer> DetermineFinalists(List<PokerPlayer> activePlayers)
+    public List<PokerPlayer> DetermineFinalists(List<PokerPlayer> players)
     {
-        int highScore = GetHighScore(activePlayers);
+        int highScore = GetHighScore(players);
 
         List<PokerPlayer> finalists = new List<PokerPlayer>();
 
-        foreach (PokerPlayer activePlayer in activePlayers)
+        foreach (PokerPlayer player in players)
         {
-            if (handCalculator.ScoreHand(activePlayer.hand) == highScore) { finalists.Add(activePlayer); }
+            // skip over folded or eliminated players
+            if (player.folded || player.eliminated) { continue; }
+
+            if (handCalculator.ScoreHand(player.hand) == highScore) { finalists.Add(player); }
         }
         //Debug.Log("Finalists: ");
         //PrintList(finalists);
@@ -33,13 +36,16 @@ public class WinnerCalculator : MonoBehaviour
     }
 
     // helper function for DetermineFinalists
-    private int GetHighScore(List<PokerPlayer> activePlayers)
+    private int GetHighScore(List<PokerPlayer> players)
     {
         highScore = 0;
 
-        foreach(PokerPlayer activePlayer in activePlayers)
+        foreach(PokerPlayer player in players)
         {
-            int handScore = handCalculator.ScoreHand(activePlayer.hand);
+            // skip over folded or eliminated players
+            if (player.folded || player.eliminated) { continue; }
+
+            int handScore = handCalculator.ScoreHand(player.hand);
             if (handScore > highScore) { highScore = handScore; }
         }
         //Debug.Log("high score: " + highScore);
