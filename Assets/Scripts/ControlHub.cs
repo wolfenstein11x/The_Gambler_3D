@@ -2,11 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { Init, DealHands, DealFlop, DealTurn, DealRiver, Reveal, NewHand,  }
+public enum GameState { Init, DealHands, BetRound1, BetRound1Done, BetRound2, BetRound2Done, BetRound3, BetRound3Done, BetRound4, BetRound4Done, NPCoption, PlayerOption, DealFlop, DealTurn, DealRiver, Reveal, NewHand,  }
 
 public class ControlHub : MonoBehaviour
 {
     public GameState gameState;
+    public GameState prevState;
 
     private Dealer dealer;
     private CanvasController canvasController;
@@ -29,18 +30,12 @@ public class ControlHub : MonoBehaviour
 
         gameState = GameState.Init;
         tableCombineCount = 0;
-
         RunStateMachine();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
-    private void RunStateMachine()
-    { 
+    public void RunStateMachine()
+    {
         if (gameState == GameState.Init)
         {
             // randomize players around table
@@ -51,7 +46,7 @@ public class ControlHub : MonoBehaviour
 
             // make sure players don't have any cards
             dealer.ClearHands();
-            
+
             // start main player off with dealer chip
             dealer.SetDealer(0);
 
@@ -66,12 +61,158 @@ public class ControlHub : MonoBehaviour
 
             // collect blinds
             potManager.CollectBlinds(dealer.players);
+            //Debug.Log("betStarterIdx before: " + betTracker.betStarterIdx);
+            // set bet starter to first active player left of big blind
+            betTracker.DetermineBetStarterPreFlop(dealer.players);
+            //Debug.Log("betStarterIdx after: " + betTracker.betStarterIdx);
+            // move state machine to start betting round
+            gameState = GameState.BetRound1;
+            RunStateMachine();
+        }
 
-            // run pre-flop bet sequence
-            betTracker.BetRoundType1();
+        else if (gameState == GameState.BetRound1)
+        {
+            
+            //Debug.Log("betStarterInx in this spot: " + betTracker.betStarterIdx);
+            // go to PlayerOption if bet is to main player
+            if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
+            {
+                gameState = GameState.PlayerOption;
 
-            // bet sequence has concluded, so show deal button, which will move us to DealFlop state when pressed
+                // save state so we can come back here when needed
+                prevState = GameState.BetRound1;
+
+                RunStateMachine();
+            }
+
+            // go to NPCoption if bet is to NPC
+            else
+            {
+                gameState = GameState.NPCoption;
+
+                // save state so we can come back here when needed
+                prevState = GameState.BetRound1;
+
+                RunStateMachine();
+            }
+        }
+
+        else if (gameState == GameState.BetRound2)
+        {
+            // go to PlayerOption if bet is to main player
+            if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
+            {
+                gameState = GameState.PlayerOption;
+
+                // save state so we can come back here when needed
+                prevState = GameState.BetRound2;
+
+                RunStateMachine();
+            }
+
+            // go to NPCoption if bet is to NPC
+            else
+            {
+                gameState = GameState.NPCoption;
+
+                // save state so we can come back here when needed
+                prevState = GameState.BetRound2;
+
+                RunStateMachine();
+            }
+        }
+
+        else if (gameState == GameState.BetRound3)
+        {
+            // go to PlayerOption if bet is to main player
+            if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
+            {
+                gameState = GameState.PlayerOption;
+
+                // save state so we can come back here when needed
+                prevState = GameState.BetRound3;
+
+                RunStateMachine();
+            }
+
+            // go to NPCoption if bet is to NPC
+            else
+            {
+                gameState = GameState.NPCoption;
+
+                // save state so we can come back here when needed
+                prevState = GameState.BetRound3;
+
+                RunStateMachine();
+            }
+        }
+
+        else if (gameState == GameState.BetRound4)
+        {
+            // go to PlayerOption if bet is to main player
+            if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
+            {
+                gameState = GameState.PlayerOption;
+
+                // save state so we can come back here when needed
+                prevState = GameState.BetRound4;
+
+                RunStateMachine();
+            }
+
+            // go to NPCoption if bet is to NPC
+            else
+            {
+                gameState = GameState.NPCoption;
+
+                // save state so we can come back here when needed
+                prevState = GameState.BetRound4;
+
+                RunStateMachine();
+            }
+        }
+
+        else if (gameState == GameState.BetRound1Done)
+        {
+            // show deal button, which will move us to correct deal state based on current state when pressed
             canvasController.HandleDeal();
+        }
+
+        else if (gameState == GameState.BetRound2Done)
+        {
+            // show deal button, which will move us to correct deal state based on current state when pressed
+            canvasController.HandleDeal();
+        }
+
+        else if (gameState == GameState.BetRound3Done)
+        {
+            // show deal button, which will move us to correct deal state based on current state when pressed
+            canvasController.HandleDeal();
+        }
+
+        else if (gameState == GameState.BetRound4Done)
+        {
+            // show reveal button, which will move us to reveal state based on current state when pressed
+            canvasController.HandleReveal();
+        }
+
+        else if (gameState == GameState.PlayerOption)
+        {
+            // bring up canvas
+            
+            dealer.players[betTracker.currentBetterIdx].CheckOrRaise();
+
+        }
+
+        else if (gameState == GameState.NPCoption)
+        {
+            //Debug.Log("smallBlindIdx: " + potManager.smallBlindIdx);
+            //Debug.Log("bigBlindIdx: " + potManager.bigBlindIdx);
+            //Debug.Log("currentBetterIdx: " + betTracker.currentBetterIdx);
+            //Debug.Log("betStarterIdx here: " + betTracker.betStarterIdx);
+            
+            //Debug.Log("made it to NPCOption");
+            dealer.players[betTracker.currentBetterIdx].CheckOrRaise();
         }
 
         else if (gameState == GameState.DealFlop)
@@ -79,11 +220,12 @@ public class ControlHub : MonoBehaviour
             // deal flop
             dealer.DealFlop();
 
-            // run post-flop bet sequence
-            betTracker.BetRoundType2();
-
-            // bet sequence has concluded, so show deal button, which will move us to DealTurn state when pressed
-            canvasController.HandleDeal();
+            // set bet starter to first active player left of dealer
+            betTracker.DetermineBetStarterPostFlop(dealer.players);
+            
+            // move state machine to start betting round
+            gameState = GameState.BetRound2;
+            RunStateMachine();
         }
 
         else if (gameState == GameState.DealTurn)
@@ -91,11 +233,12 @@ public class ControlHub : MonoBehaviour
             // deal turn
             dealer.DealTurn();
 
-            // run post-flop bet sequence
-            betTracker.BetRoundType2();
+            // set bet starter to first active player left of dealer
+            betTracker.DetermineBetStarterPostFlop(dealer.players);
 
-            // bet sequence has concluded, so show deal button, which will move us to DealTurn state when pressed
-            canvasController.HandleDeal();
+            // move state machine to start betting round
+            gameState = GameState.BetRound3;
+            RunStateMachine();
         }
 
         else if (gameState == GameState.DealRiver)
@@ -103,11 +246,12 @@ public class ControlHub : MonoBehaviour
             // deal turn
             dealer.DealRiver();
 
-            // run post-flop bet sequence
-            betTracker.BetRoundType2();
+            // set bet starter to first active player left of dealer
+            betTracker.DetermineBetStarterPostFlop(dealer.players);
 
-            // bet sequence has concluded, so show reveal button, which will move us to Reveal state when pressed
-            canvasController.HandleReveal();
+            // move state machine to start betting round
+            gameState = GameState.BetRound4;
+            RunStateMachine();
         }
 
         else if (gameState == GameState.Reveal)
@@ -141,7 +285,7 @@ public class ControlHub : MonoBehaviour
             dealer.ResetDeck();
 
             // eliminate players with $0
-            foreach(PokerPlayer player in dealer.players)
+            foreach (PokerPlayer player in dealer.players)
             {
                 if (player.money <= 0) { dealer.EliminatePlayer(player); }
             }
@@ -175,9 +319,9 @@ public class ControlHub : MonoBehaviour
 
         // move to particular deal state depending on current state
         if (gameState == GameState.Init)           { gameState = GameState.DealHands; }
-        else if (gameState == GameState.DealHands) { gameState = GameState.DealFlop; }
-        else if (gameState == GameState.DealFlop)  { gameState = GameState.DealTurn; }
-        else if (gameState == GameState.DealTurn)  { gameState = GameState.DealRiver; }
+        else if (gameState == GameState.BetRound1Done) { gameState = GameState.DealFlop; }
+        else if (gameState == GameState.BetRound2Done)  { gameState = GameState.DealTurn; }
+        else if (gameState == GameState.BetRound3Done)  { gameState = GameState.DealRiver; }
         else if (gameState == GameState.NewHand)   { gameState = GameState.DealHands; }
 
         // run the state machine now that it is in updated state
@@ -224,4 +368,6 @@ public class ControlHub : MonoBehaviour
         // show deal button, which will move us to DealHands state when pressed
         canvasController.HandleDeal();
     }
+
+    
 }

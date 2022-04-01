@@ -3788,8 +3788,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   startingMoney: 100
-  smallBlind: 50
-  bigBlind: 100
+  smallBlind: 2
+  bigBlind: 4
   potMoneyText: {fileID: 551817122}
   potMoney: 0
   bigBlindIdx: 0
@@ -7129,10 +7129,6 @@ PrefabInstance:
     - target: {fileID: 3847266748116278261, guid: e991350c5e55e404e83145d5e97610fd, type: 3}
       propertyPath: m_Name
       value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 3847266748116278261, guid: e991350c5e55e404e83145d5e97610fd, type: 3}
-      propertyPath: m_TagString
-      value: mainPlayer
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e991350c5e55e404e83145d5e97610fd, type: 3}
