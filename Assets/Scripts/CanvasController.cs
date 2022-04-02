@@ -14,6 +14,10 @@ public class CanvasController : MonoBehaviour
     [SerializeField] Text decisionText;
     [SerializeField] Image betterHeadshot;
 
+    public Canvas raisePanelCanvas;
+    public Text raiseAmountText;
+    public Text callAmountText;
+
     [SerializeField] Canvas dealCanvas;
     [SerializeField] Canvas revealCanvas;
     [SerializeField] Canvas newHandCanvas;
@@ -47,6 +51,7 @@ public class CanvasController : MonoBehaviour
         callFoldRaiseCanvas.enabled = false;
         raiseBlindsCanvas.enabled = false;
         betRoundCanvas.enabled = false;
+        raisePanelCanvas.enabled = false;
 
         handWonCanvas.enabled = false;
         

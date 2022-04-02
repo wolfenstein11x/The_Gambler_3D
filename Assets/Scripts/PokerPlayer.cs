@@ -48,8 +48,13 @@ public class PokerPlayer : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // bring up check or raise canvas (but don't clear currently displayed canvases, hence the 'false' parameter)
+        // bring up check or raise canvas and raise panel canvas (but don't clear currently displayed canvases, hence the 'false' parameters)
         canvasController.ShowCanvas(canvasController.checkRaiseCanvas, false);
+        canvasController.ShowCanvas(canvasController.raisePanelCanvas, false);
+
+        // display minimum raise, which will be one big blind over the current highest bet (so just big blind in this case)
+        int minRaise = potManager.highestBet + potManager.bigBlind;
+        canvasController.raiseAmountText.text = "$" + minRaise;
 
         // now that Check button and Raise button are visible, pushing those will call necessary functions and send us to next state
     }
@@ -59,8 +64,16 @@ public class PokerPlayer : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // bring up check or raise canvas (but don't clear currently displayed canvases, hence the 'false' parameter)
+        // bring up check or raise canvas and riase panel canvas (but don't clear currently displayed canvases, hence the 'false' parameters)
         canvasController.ShowCanvas(canvasController.callFoldRaiseCanvas, false);
+        canvasController.ShowCanvas(canvasController.raisePanelCanvas, false);
+
+        // display amount needed to call
+        canvasController.callAmountText.text = "$" + (potManager.highestBet - currentBet).ToString();
+
+        // display minimum raise, which will be one big blind over the current highest bet
+        int minRaise = potManager.highestBet + potManager.bigBlind;
+        canvasController.raiseAmountText.text = "$" + minRaise;
 
         // now that Check button and Raise button are visible, pushing those will call necessary functions and send us to next state
     }

@@ -53,7 +53,7 @@ public class WinnerCalculator : MonoBehaviour
     {
         
         int highScore = GetHighScore(players);
-        Debug.Log("made it here");
+        
         List<PokerPlayer> finalists = new List<PokerPlayer>();
 
         foreach (PokerPlayer player in players)
