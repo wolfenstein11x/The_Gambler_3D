@@ -1755,7 +1755,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: RAISE
+  m_Text: 'RAISE TO:'
 --- !u!222 &324520855
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2697,6 +2697,38 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1313577589}
     m_Modifications:
+    - target: {fileID: 4238305912302187349, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305912302187349, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305912302187349, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1248948974}
+    - target: {fileID: 4238305912302187349, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305912302187349, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpArrowButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305912302187349, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ControlHub, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305912302187349, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305912302187351, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_Name
+      value: UpArrowButton
+      objectReference: {fileID: 0}
     - target: {fileID: 4238305912427042818, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
       propertyPath: m_SizeDelta.x
       value: 83.228
@@ -2816,6 +2848,38 @@ PrefabInstance:
     - target: {fileID: 4238305913602868441, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305913826975431, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305913826975431, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305913826975431, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1248948974}
+    - target: {fileID: 4238305913826975431, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305913826975431, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DownArrowButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305913826975431, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: ControlHub, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305913826975431, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 4238305913826975433, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
+      propertyPath: m_Name
+      value: DownArrowButton
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 430eb48ee4ced1a4f88cbfe3f163d201, type: 3}
@@ -3491,7 +3555,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: RAISE
+  m_Text: 'RAISE TO:'
 --- !u!222 &946470595
 CanvasRenderer:
   m_ObjectHideFlags: 0

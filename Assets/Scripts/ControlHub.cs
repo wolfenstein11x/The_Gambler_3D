@@ -50,6 +50,10 @@ public class ControlHub : MonoBehaviour
             // start main player off with dealer chip
             dealer.SetDealer(0);
 
+            // reset all current bet amounts to zero
+            potManager.highestBet = 0;
+            potManager.ClearBets(dealer.players);
+
             // show deal button, which will move us to DealHands state when pressed
             canvasController.HandleDeal();
         }
@@ -411,5 +415,57 @@ public class ControlHub : MonoBehaviour
         canvasController.HandleDeal();
     }
 
-    
+    public int ParseRaiseAmountText()
+    {
+        string numericString = string.Empty;
+
+        // filter number characters (grab everything but '$' sign)
+        foreach(char c in canvasController.raiseAmountText.text)
+        {
+            if (c >= '0' && c <= '9')
+            {
+                numericString = string.Concat(numericString, c.ToString());
+            }
+        }
+
+        if (int.TryParse(numericString, out int raiseAmount))
+        {
+            return raiseAmount;  
+        }
+
+        else return 0;
+
+    }
+
+    public void UpArrowButton()
+    {
+        // get integer value from string in UI
+        int raiseAmount = ParseRaiseAmountText();
+
+        // toggle up in increments of big blind
+        raiseAmount += potManager.bigBlind;
+
+        // don't go higher than highest raise player can afford (which would be player's current bet + player's remaining money)
+        int highestPossibleRaise = dealer.players[betTracker.currentBetterIdx].currentBet + dealer.players[betTracker.currentBetterIdx].money;
+        if (raiseAmount > highestPossibleRaise) { raiseAmount -= potManager.bigBlind; }
+
+        // update UI with new raise amount
+        canvasController.raiseAmountText.text = "$" + raiseAmount.ToString();
+    }
+
+    public void DownArrowButton()
+    {
+        // get integer value from string in UI
+        int raiseAmount = ParseRaiseAmountText();
+
+        // toggle down in decrements of big blind
+        raiseAmount -= potManager.bigBlind;
+
+        // don't go below minimum raise amount
+        int minRaiseAmount = potManager.highestBet + potManager.bigBlind;
+        if (raiseAmount < minRaiseAmount) { raiseAmount = minRaiseAmount; }
+
+        // update UI with new raise amount
+        canvasController.raiseAmountText.text = "$" + raiseAmount.ToString();
+    }
 }

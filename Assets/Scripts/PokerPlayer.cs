@@ -107,16 +107,20 @@ public class PokerPlayer : MonoBehaviour
 
     public void RaiseButton()
     {
-        // get amount from text box
-        // for now just make it $4
-        int raise = 4;
+        // Note: raise equals current highest bet plus amount you are adding... so think of the word being used as "I raise to this amount" instead of "I raise by this much"
 
-        string decision = "I raise $" + raise;
+        // get amount from text box
+        int raiseAmount = controlHub.ParseRaiseAmountText();
+
+        string decision = "I raise to $" + raiseAmount;
         canvasController.ShowBetterDecision(decision);
 
+        // amount player puts in pot is the raise amount minus the money they already have put in
+        int amountOwed = raiseAmount - currentBet;
+
         // player puts money in pot and raise become new amount required to keep playing
-        potManager.CollectMoneyFromPlayer(this, raise);
-        potManager.highestBet = raise;
+        potManager.CollectMoneyFromPlayer(this, amountOwed);
+        potManager.highestBet = raiseAmount;
 
         // player bet, so player is new betStarter
         betTracker.betStarterIdx = betTracker.currentBetterIdx;

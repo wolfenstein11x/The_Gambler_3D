@@ -66,6 +66,8 @@ public class PotManager : MonoBehaviour
         {
             player.currentBet = 0;
         }
+
+        highestBet = 0;
     }
 
     public void AddToPot(int amount)
@@ -84,7 +86,7 @@ public class PotManager : MonoBehaviour
         AddToPot(amount);
 
         // keep track of money player paid, to find how much they owe to call raises
-        player.currentBet = amount;
+        player.currentBet += amount;
 
         // update player money display
         player.playerPosition.moneyText.text = "$" + player.money.ToString();
