@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { Init, DealHands, BetRound1, BetRound1Done, BetRound2, BetRound2Done, BetRound3, BetRound3Done, BetRound4, BetRound4Done, NPCoption, PlayerOption, DealFlop, DealTurn, DealRiver, PrematureWin, Reveal, NewHand,  }
+public enum GameState { Init, DealHands, BetRound1, BetRound1Done, BetRound2, BetRound2Done, BetRound3, BetRound3Done, BetRound4, BetRound4Done, NPCoption, PlayerOption, DealFlop, DealTurn, DealRiver, PrematureWin, Reveal, NewHand, }
 
 public class ControlHub : MonoBehaviour
 {
@@ -337,9 +337,13 @@ public class ControlHub : MonoBehaviour
             }
 
             // game is over if main player is eliminated
+            if (dealer.players[0].eliminated)
+            {
+                canvasController.ShowCanvas(canvasController.gameOverCanvas);
+            }
 
             // combine tables and raise blinds if down to 3 players (and haven't already combined tables twice)
-            if (dealer.CountActivePlayers() <= 3 && tableCombineCount < 2)
+            else if (dealer.CountActivePlayers() <= 3 && tableCombineCount < 2)
             {
                 canvasController.ShowRaiseBlindsCanvas();
                 potManager.RaiseBlinds();
@@ -356,7 +360,14 @@ public class ControlHub : MonoBehaviour
             }
         }
 
+        
+
     }
+
+
+
+
+    // buttons
 
     public void DealButton()
     {

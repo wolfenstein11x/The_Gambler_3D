@@ -133,6 +133,31 @@ public class PokerPlayer : MonoBehaviour
         controlHub.RunStateMachine();
     }
 
+    public void AllInButton()
+    {
+        int raiseAmount = currentBet + money;
+
+        string decision = "I'm all in!";
+        canvasController.ShowBetterDecision(decision);
+
+        // amount player puts in pot is the raise amount minus the money they already have put in
+        int amountOwed = raiseAmount - currentBet;
+
+        // player puts money in pot and raise become new amount required to keep playing
+        potManager.CollectMoneyFromPlayer(this, amountOwed);
+        potManager.highestBet = raiseAmount;
+
+        // player bet, so player is new betStarter
+        betTracker.betStarterIdx = betTracker.currentBetterIdx;
+
+        // now that we've stored the new bet starter, we can increment the current better
+        betTracker.IncrementCurrentBetter();
+
+        // go back to bet round state no matter what, since can't end round on a raise
+        controlHub.SetState(controlHub.prevState);
+        controlHub.RunStateMachine();
+    }
+
     public void CallButton()
     {
         // display NPC decision
