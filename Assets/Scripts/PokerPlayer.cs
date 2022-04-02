@@ -16,6 +16,9 @@ public class PokerPlayer : MonoBehaviour
     public int money;
     public bool eliminated;
     public bool folded;
+    
+    // amount the player has put in... must pay (toCall - currentBet) to play
+    public int currentBet;
 
     HandCalculator handCalculator;
     Dealer dealer;
@@ -45,6 +48,17 @@ public class PokerPlayer : MonoBehaviour
 
         // bring up check or raise canvas (but don't clear currently displayed canvases, hence the 'false' parameter)
         canvasController.ShowCanvas(canvasController.checkRaiseCanvas, false);
+
+        // now that Check button and Raise button are visible, pushing those will call necessary functions and send us to next state
+    }
+
+    public void CallRaiseOrFold()
+    {
+        // show player's headshot on canvas
+        canvasController.ShowBetter();
+
+        // bring up check or raise canvas (but don't clear currently displayed canvases, hence the 'false' parameter)
+        canvasController.ShowCanvas(canvasController.callFoldRaiseCanvas, false);
 
         // now that Check button and Raise button are visible, pushing those will call necessary functions and send us to next state
     }
@@ -87,7 +101,7 @@ public class PokerPlayer : MonoBehaviour
 
         // player puts money in pot and raise become new amount required to keep playing
         potManager.CollectMoneyFromPlayer(this, raise);
-        potManager.toCall = raise;
+        potManager.highestBet = raise;
 
         // player bet, so player is new betStarter
         betTracker.betStarterIdx = betTracker.currentBetterIdx;
@@ -98,6 +112,40 @@ public class PokerPlayer : MonoBehaviour
         // go back to bet round state no matter what, since can't end round on a raise
         controlHub.SetState(controlHub.prevState);
         controlHub.RunStateMachine();
+    }
+
+    public void CallButton()
+    {
+        // display NPC decision
+        string decision = "I call!";
+        canvasController.ShowBetterDecision(decision);
+
+        // calculate amount player owes
+        int toCall = potManager.highestBet - GetComponent<PokerPlayer>().currentBet;
+
+        // put call amount into pot, but no need to update bet starter
+        potManager.CollectMoneyFromPlayer(this, toCall);
+
+        betTracker.IncrementCurrentBetter();
+
+        // go to BetRound state if not reached end of bet sequence
+        if (betTracker.currentBetterIdx != betTracker.betStarterIdx)
+        {
+            // go to correct bet round depending on previous state
+            controlHub.SetState(controlHub.prevState);
+            controlHub.RunStateMachine();
+        }
+
+        // go to correct BetRoundDone state if reached end of bet sequence
+        else
+        {
+            if (controlHub.prevState == GameState.BetRound1) { controlHub.gameState = GameState.BetRound1Done; }
+            else if (controlHub.prevState == GameState.BetRound2) { controlHub.gameState = GameState.BetRound2Done; }
+            else if (controlHub.prevState == GameState.BetRound3) { controlHub.gameState = GameState.BetRound3Done; }
+            else if (controlHub.prevState == GameState.BetRound4) { controlHub.gameState = GameState.BetRound4Done; }
+
+            controlHub.RunStateMachine();
+        }
     }
 
     

@@ -107,7 +107,10 @@ public class PokerAI : MonoBehaviour
         string decision = "I call!";
         canvasController.ShowBetterDecision(decision);
 
+        // calculate amount player owes
+        int toCall = potManager.highestBet - GetComponent<PokerPlayer>().currentBet;
+
         // put call amount into pot, but no need to update bet starter
-        potManager.CollectMoneyFromPlayer(GetComponent<PokerPlayer>(), potManager.toCall);
+        potManager.CollectMoneyFromPlayer(GetComponent<PokerPlayer>(), toCall);
     }
 }

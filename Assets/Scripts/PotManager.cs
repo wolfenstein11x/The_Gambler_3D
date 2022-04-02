@@ -16,7 +16,7 @@ public class PotManager : MonoBehaviour
     public int bigBlindIdx;
     public int smallBlindIdx;
 
-    public int toCall;
+    public int highestBet;
 
     Dealer dealer;
     WinnerCalculator winnerCalculator;
@@ -48,6 +48,8 @@ public class PotManager : MonoBehaviour
         }
 
         ResetPot();
+
+        ClearBets(players);
     }
 
     private void ResetPot()
@@ -55,7 +57,15 @@ public class PotManager : MonoBehaviour
         potMoney = 0;
         potMoneyText.text = "$" + potMoney.ToString();
 
-        toCall = 0;
+        highestBet = 0;
+    }
+
+    public void ClearBets(List<PokerPlayer> players)
+    {
+        foreach(PokerPlayer player in players)
+        {
+            player.currentBet = 0;
+        }
     }
 
     public void AddToPot(int amount)
@@ -72,6 +82,9 @@ public class PotManager : MonoBehaviour
         // take money from player and put it in pot
         player.money -= amount;
         AddToPot(amount);
+
+        // keep track of money player paid, to find how much they owe to call raises
+        player.currentBet = amount;
 
         // update player money display
         player.playerPosition.moneyText.text = "$" + player.money.ToString();
@@ -105,6 +118,8 @@ public class PotManager : MonoBehaviour
         CollectMoneyFromPlayer(players[smallBlindIdx], smallBlind);
         CollectMoneyFromPlayer(players[bigBlindIdx], bigBlind);
 
+        // players have to match big blind in order to play
+        highestBet = bigBlind;
     }
 
     private void DetermineBlindIndexes(List<PokerPlayer> players)

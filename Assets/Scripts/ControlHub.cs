@@ -61,10 +61,10 @@ public class ControlHub : MonoBehaviour
 
             // collect blinds
             potManager.CollectBlinds(dealer.players);
-            //Debug.Log("betStarterIdx before: " + betTracker.betStarterIdx);
+            
             // set bet starter to first active player left of big blind
             betTracker.DetermineBetStarterPreFlop(dealer.players);
-            //Debug.Log("betStarterIdx after: " + betTracker.betStarterIdx);
+            
             // move state machine to start betting round
             gameState = GameState.BetRound1;
             RunStateMachine();
@@ -199,22 +199,28 @@ public class ControlHub : MonoBehaviour
         else if (gameState == GameState.PlayerOption)
         {
             // Check if toPlay amount is 0 or not
-            
-            dealer.players[betTracker.currentBetterIdx].CheckOrRaise();
+            if (dealer.players[betTracker.currentBetterIdx].currentBet < potManager.highestBet)
+            {
+                dealer.players[betTracker.currentBetterIdx].CallRaiseOrFold();
+            }
 
+            else
+            {
+                dealer.players[betTracker.currentBetterIdx].CheckOrRaise();
+            }
         }
 
         else if (gameState == GameState.NPCoption)
         {
             // Check if toPlay amount is 0 or not
-            if (potManager.toCall <= 0)
+            if (dealer.players[betTracker.currentBetterIdx].currentBet < potManager.highestBet)
             {
-                dealer.players[betTracker.currentBetterIdx].GetComponent<PokerAI>().CheckOrRaise();
+                dealer.players[betTracker.currentBetterIdx].GetComponent<PokerAI>().CallRaiseOrFold();
             }
 
             else
             {
-                dealer.players[betTracker.currentBetterIdx].GetComponent<PokerAI>().CallRaiseOrFold();
+                dealer.players[betTracker.currentBetterIdx].GetComponent<PokerAI>().CheckOrRaise();
             }
   
         }
@@ -227,8 +233,9 @@ public class ControlHub : MonoBehaviour
             // set bet starter to first active player left of dealer
             betTracker.DetermineBetStarterPostFlop(dealer.players);
 
-            // reset current bet amount to zero
-            potManager.toCall = 0;
+            // reset all current bet amounts to zero
+            potManager.highestBet = 0;
+            potManager.ClearBets(dealer.players);
 
             // move state machine to start betting round
             gameState = GameState.BetRound2;
@@ -243,8 +250,9 @@ public class ControlHub : MonoBehaviour
             // set bet starter to first active player left of dealer
             betTracker.DetermineBetStarterPostFlop(dealer.players);
 
-            // reset current bet amount to zero
-            potManager.toCall = 0;
+            // reset all current bet amounts to zero
+            potManager.highestBet = 0;
+            potManager.ClearBets(dealer.players);
 
             // move state machine to start betting round
             gameState = GameState.BetRound3;
@@ -259,8 +267,9 @@ public class ControlHub : MonoBehaviour
             // set bet starter to first active player left of dealer
             betTracker.DetermineBetStarterPostFlop(dealer.players);
 
-            // reset current bet amount to zero
-            potManager.toCall = 0;
+            // reset all current bet amounts to zero
+            potManager.highestBet = 0;
+            potManager.ClearBets(dealer.players);
 
             // move state machine to start betting round
             gameState = GameState.BetRound4;
@@ -296,6 +305,10 @@ public class ControlHub : MonoBehaviour
 
             // reset the deck
             dealer.ResetDeck();
+
+            // reset all current bet amounts to zero
+            potManager.highestBet = 0;
+            potManager.ClearBets(dealer.players);
 
             // eliminate players with $0
             foreach (PokerPlayer player in dealer.players)

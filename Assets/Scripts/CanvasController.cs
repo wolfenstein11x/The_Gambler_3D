@@ -18,7 +18,7 @@ public class CanvasController : MonoBehaviour
     [SerializeField] Canvas revealCanvas;
     [SerializeField] Canvas newHandCanvas;
     public Canvas checkRaiseCanvas;
-    [SerializeField] Canvas callFoldRaiseCanvas;
+    public Canvas callFoldRaiseCanvas;
     [SerializeField] Canvas raiseBlindsCanvas;
     
     HandCalculator handCalculator;
