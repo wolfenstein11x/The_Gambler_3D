@@ -207,9 +207,16 @@ public class ControlHub : MonoBehaviour
         else if (gameState == GameState.NPCoption)
         {
             // Check if toPlay amount is 0 or not
+            if (potManager.toCall <= 0)
+            {
+                dealer.players[betTracker.currentBetterIdx].GetComponent<PokerAI>().CheckOrRaise();
+            }
 
-            //Debug.Log("made it to NPCOption");
-            dealer.players[betTracker.currentBetterIdx].GetComponent<PokerAI>().CheckOrRaise();
+            else
+            {
+                dealer.players[betTracker.currentBetterIdx].GetComponent<PokerAI>().CallRaiseOrFold();
+            }
+  
         }
 
         else if (gameState == GameState.DealFlop)
@@ -219,7 +226,10 @@ public class ControlHub : MonoBehaviour
 
             // set bet starter to first active player left of dealer
             betTracker.DetermineBetStarterPostFlop(dealer.players);
-            
+
+            // reset current bet amount to zero
+            potManager.toCall = 0;
+
             // move state machine to start betting round
             gameState = GameState.BetRound2;
             RunStateMachine();
@@ -233,6 +243,9 @@ public class ControlHub : MonoBehaviour
             // set bet starter to first active player left of dealer
             betTracker.DetermineBetStarterPostFlop(dealer.players);
 
+            // reset current bet amount to zero
+            potManager.toCall = 0;
+
             // move state machine to start betting round
             gameState = GameState.BetRound3;
             RunStateMachine();
@@ -245,6 +258,9 @@ public class ControlHub : MonoBehaviour
 
             // set bet starter to first active player left of dealer
             betTracker.DetermineBetStarterPostFlop(dealer.players);
+
+            // reset current bet amount to zero
+            potManager.toCall = 0;
 
             // move state machine to start betting round
             gameState = GameState.BetRound4;

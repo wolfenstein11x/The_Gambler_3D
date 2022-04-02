@@ -49,7 +49,7 @@ public class PokerPlayer : MonoBehaviour
         // now that Check button and Raise button are visible, pushing those will call necessary functions and send us to next state
     }
 
-    public void Check()
+    public void CheckButton()
     {
         string decision = "I check!";
         canvasController.ShowBetterDecision(decision);
@@ -76,7 +76,7 @@ public class PokerPlayer : MonoBehaviour
         }
     }
 
-    public void Raise()
+    public void RaiseButton()
     {
         // get amount from text box
         // for now just make it $4
@@ -85,7 +85,9 @@ public class PokerPlayer : MonoBehaviour
         string decision = "I raise $" + raise;
         canvasController.ShowBetterDecision(decision);
 
+        // player puts money in pot and raise become new amount required to keep playing
         potManager.CollectMoneyFromPlayer(this, raise);
+        potManager.toCall = raise;
 
         // player bet, so player is new betStarter
         betTracker.betStarterIdx = betTracker.currentBetterIdx;

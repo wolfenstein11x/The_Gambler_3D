@@ -1079,7 +1079,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1264809979}
         m_TargetAssemblyTypeName: PokerPlayer, Assembly-CSharp
-        m_MethodName: Raise
+        m_MethodName: RaiseButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2199,7 +2199,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1264809979}
         m_TargetAssemblyTypeName: PokerPlayer, Assembly-CSharp
-        m_MethodName: Check
+        m_MethodName: CheckButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
