@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2832527477239915501}
   - component: {fileID: 2832527477239915500}
+  - component: {fileID: 436546163977988388}
   m_Layer: 0
   m_Name: Bob
   m_TagString: Untagged
@@ -46,10 +47,24 @@ MonoBehaviour:
   nickName: BOB
   catchPhrase: IM BUYIN ROOT BEER!
   headShot: {fileID: 21300000, guid: 845396f417a279843846fb6045c4479a, type: 3}
-  dealerChip: {fileID: 21300000, guid: 67b6fe92f9f20ef47887218ab77d84ac, type: 3}
   cardImage1: {fileID: 0}
   cardImage2: {fileID: 0}
   playerPosition: {fileID: 0}
   cards: 
   hand: []
   optimizedHand: []
+  money: 0
+  eliminated: 0
+  folded: 0
+--- !u!114 &436546163977988388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2832527477239915499}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f269add50feba49a243900d8ee3644, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6684114509509410835}
   - component: {fileID: 6684114509509410834}
+  - component: {fileID: 4422893010801047705}
   m_Layer: 0
   m_Name: Morry
   m_TagString: Untagged
@@ -52,3 +53,18 @@ MonoBehaviour:
   cards: 
   hand: []
   optimizedHand: []
+  money: 0
+  eliminated: 0
+  folded: 0
+--- !u!114 &4422893010801047705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6684114509509410837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12f269add50feba49a243900d8ee3644, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

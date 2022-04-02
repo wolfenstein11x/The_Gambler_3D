@@ -10,6 +10,10 @@ public class CanvasController : MonoBehaviour
     [SerializeField] Image winnerHeadshot;
     [SerializeField] Text winnerInfoText;
 
+    [SerializeField] Canvas betRoundCanvas;
+    [SerializeField] Text decisionText;
+    [SerializeField] Image betterHeadshot;
+
     [SerializeField] Canvas dealCanvas;
     [SerializeField] Canvas revealCanvas;
     [SerializeField] Canvas newHandCanvas;
@@ -19,14 +23,21 @@ public class CanvasController : MonoBehaviour
     [SerializeField] Canvas raiseCanvas;
     [SerializeField] Canvas raiseBlindsCanvas;
     
+
+    public 
+    
     HandCalculator handCalculator;
     WinnerCalculator winnerCalculator;
+    Dealer dealer;
+    BetTracker betTracker;
 
     // Start is called before the first frame update
     void Start()
     {
         handCalculator = FindObjectOfType<HandCalculator>();
         winnerCalculator = FindObjectOfType<WinnerCalculator>();
+        dealer = FindObjectOfType<Dealer>();
+        betTracker = FindObjectOfType<BetTracker>();
 
         HideAllCanvases();
     }
@@ -42,6 +53,7 @@ public class CanvasController : MonoBehaviour
         callFoldRaiseCanvas.enabled = false;
         raiseCanvas.enabled = false;
         raiseBlindsCanvas.enabled = false;
+        betRoundCanvas.enabled = false;
 
         handWonCanvas.enabled = false;
         
@@ -99,6 +111,22 @@ public class CanvasController : MonoBehaviour
         {
             winnerInfoText.text = "SPLIT POT! HIGH HAND IS " + winningHandName.ToUpper();
         }
+    }
+
+    public void ShowBetter()
+    {
+        ShowCanvas(betRoundCanvas);
+
+        // clear text from previous NPC
+        decisionText.text = "";
+
+        // display NPC headshot
+        betterHeadshot.sprite = dealer.players[betTracker.currentBetterIdx].headShot;
+    }
+
+    public void ShowBetterDecision(string decision)
+    {
+        decisionText.text = decision;
     }
 
     public void ShowRaiseBlindsCanvas()

@@ -198,7 +198,7 @@ public class ControlHub : MonoBehaviour
 
         else if (gameState == GameState.PlayerOption)
         {
-            // bring up canvas
+            // Check if toPlay amount is 0 or not
             
             dealer.players[betTracker.currentBetterIdx].CheckOrRaise();
 
@@ -206,13 +206,10 @@ public class ControlHub : MonoBehaviour
 
         else if (gameState == GameState.NPCoption)
         {
-            //Debug.Log("smallBlindIdx: " + potManager.smallBlindIdx);
-            //Debug.Log("bigBlindIdx: " + potManager.bigBlindIdx);
-            //Debug.Log("currentBetterIdx: " + betTracker.currentBetterIdx);
-            //Debug.Log("betStarterIdx here: " + betTracker.betStarterIdx);
-            
+            // Check if toPlay amount is 0 or not
+
             //Debug.Log("made it to NPCOption");
-            dealer.players[betTracker.currentBetterIdx].CheckOrRaise();
+            dealer.players[betTracker.currentBetterIdx].GetComponent<PokerAI>().CheckOrRaise();
         }
 
         else if (gameState == GameState.DealFlop)
