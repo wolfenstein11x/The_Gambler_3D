@@ -16,6 +16,8 @@ public class PotManager : MonoBehaviour
     public int bigBlindIdx;
     public int smallBlindIdx;
 
+    public int toCall;
+
     Dealer dealer;
     WinnerCalculator winnerCalculator;
 
@@ -52,6 +54,8 @@ public class PotManager : MonoBehaviour
     {
         potMoney = 0;
         potMoneyText.text = "$" + potMoney.ToString();
+
+        toCall = 0;
     }
 
     public void AddToPot(int amount)

@@ -29,17 +29,8 @@ public class BetTracker : MonoBehaviour
 
     }
 
-    public void PlaceBet(PokerPlayer player, int amount)
-    {
-        //potManager.CollectMoneyFromPlayer(player, amount);
-
-        //player = betStarter;
-
-    }
 
    
-
-    
 
     public void DetermineBetStarterPreFlop(List<PokerPlayer> players)
     {
