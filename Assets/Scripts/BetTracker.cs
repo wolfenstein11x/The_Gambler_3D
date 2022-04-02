@@ -74,7 +74,10 @@ public class BetTracker : MonoBehaviour
         currentBetterIdx++;
         if (currentBetterIdx >= dealer.players.Count) { currentBetterIdx -= dealer.players.Count; }
 
-        // keep rotating bet position if it lands on inactive player
+        // stop if back at betStarter, even if betStarter is folded
+        if (currentBetterIdx == betStarterIdx) { return; }
+
+        // otherwise, keep rotating bet position if it lands on inactive player
         while (dealer.players[currentBetterIdx].folded || dealer.players[currentBetterIdx].eliminated)
         {
             currentBetterIdx++;

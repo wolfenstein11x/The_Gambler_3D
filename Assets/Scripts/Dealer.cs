@@ -138,6 +138,9 @@ public class Dealer : MonoBehaviour
             // clear all images of player cards
             player.playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = null;
             player.playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = null;
+
+            // clear all player fold flags
+            player.folded = false;
         }
     }
 

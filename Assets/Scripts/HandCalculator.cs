@@ -35,7 +35,7 @@ public class HandCalculator : MonoBehaviour
     {
         // sort hand from high to low because hand checker functions assume it is sorted
         hand = SortHandHighLow(hand);
-
+        
         if (CheckStraightFlush(hand)) return 9;
         else if (CheckQuads(hand)) return 8;
         else if (CheckFullHouse(hand)) return 7;

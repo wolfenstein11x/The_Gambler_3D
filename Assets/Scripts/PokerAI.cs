@@ -9,6 +9,8 @@ public class PokerAI : MonoBehaviour
     ControlHub controlHub;
     CanvasController canvasController;
     PotManager potManager;
+    WinnerCalculator winnerCalculator;
+    Dealer dealer;
 
     private void Start()
     {
@@ -16,6 +18,8 @@ public class PokerAI : MonoBehaviour
         controlHub = FindObjectOfType<ControlHub>();
         canvasController = FindObjectOfType<CanvasController>();
         potManager = FindObjectOfType<PotManager>();
+        winnerCalculator = FindObjectOfType<WinnerCalculator>();
+        dealer = FindObjectOfType<Dealer>();
     }
 
     public void CheckOrRaise()
@@ -81,8 +85,15 @@ public class PokerAI : MonoBehaviour
 
         betTracker.IncrementCurrentBetter();
 
+        // if we only have one player left, hand is over in premature win
+        if (winnerCalculator.CheckForPrematureWinner(dealer.players))
+        {
+            controlHub.gameState = GameState.PrematureWin;
+            controlHub.RunStateMachine();
+        }
+
         // go to BetRound state if not reached end of bet sequence
-        if (betTracker.currentBetterIdx != betTracker.betStarterIdx)
+        else if (betTracker.currentBetterIdx != betTracker.betStarterIdx)
         {
             // go to correct bet round depending on previous state
             controlHub.SetState(controlHub.prevState);
@@ -112,5 +123,20 @@ public class PokerAI : MonoBehaviour
 
         // put call amount into pot, but no need to update bet starter
         potManager.CollectMoneyFromPlayer(GetComponent<PokerPlayer>(), toCall);
+    }
+
+    private void Fold()
+    {
+        // display NPC decision
+        string decision = "I fold!";
+        canvasController.ShowBetterDecision(decision);
+
+        // mark player as folded
+        GetComponent<PokerPlayer>().folded = true;
+
+        // clear all images of player cards
+        GetComponent<PokerPlayer>().playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = null;
+        GetComponent<PokerPlayer>().playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = null;
+
     }
 }

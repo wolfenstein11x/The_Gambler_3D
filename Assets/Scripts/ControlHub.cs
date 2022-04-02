@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState { Init, DealHands, BetRound1, BetRound1Done, BetRound2, BetRound2Done, BetRound3, BetRound3Done, BetRound4, BetRound4Done, NPCoption, PlayerOption, DealFlop, DealTurn, DealRiver, Reveal, NewHand,  }
+public enum GameState { Init, DealHands, BetRound1, BetRound1Done, BetRound2, BetRound2Done, BetRound3, BetRound3Done, BetRound4, BetRound4Done, NPCoption, PlayerOption, DealFlop, DealTurn, DealRiver, PrematureWin, Reveal, NewHand,  }
 
 public class ControlHub : MonoBehaviour
 {
@@ -181,13 +181,14 @@ public class ControlHub : MonoBehaviour
         else if (gameState == GameState.BetRound2Done)
         {
             // show deal button, which will move us to correct deal state based on current state when pressed
-            canvasController.HandleDeal();
+            canvasController.HandleDeal();   
         }
 
         else if (gameState == GameState.BetRound3Done)
         {
             // show deal button, which will move us to correct deal state based on current state when pressed
             canvasController.HandleDeal();
+            
         }
 
         else if (gameState == GameState.BetRound4Done)
@@ -295,12 +296,27 @@ public class ControlHub : MonoBehaviour
             canvasController.HandleNewHand();
         }
 
+        else if (gameState == GameState.PrematureWin)
+        {
+            // only player left is the winner
+            winnerCalculator.DeterminePrematureWinner(dealer.players);
+
+            // give winner all the money in the pot
+            potManager.DistributeWinnings();
+
+            // display hand won premature canvas
+            canvasController.HandleHandWonPremature();
+
+            // show NewHand button, which will move us to NewHand state when pressed
+            canvasController.HandleNewHand();
+        }
+
         else if (gameState == GameState.NewHand)
         {
             // clear cards from table
             dealer.ClearTable();
 
-            // clear player hands
+            // clear player hands (clears fold flags too)
             dealer.ClearHands();
 
             // reset the deck

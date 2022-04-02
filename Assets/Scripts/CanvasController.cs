@@ -106,6 +106,21 @@ public class CanvasController : MonoBehaviour
         }
     }
 
+    public void HandleHandWonPremature()
+    {
+        ShowCanvas(handWonCanvas);
+
+        // display winner catchphrase
+        catchPhraseText.text = winnerCalculator.winners[0].catchPhrase;
+
+        // display winner headshot
+        winnerHeadshot.sprite = winnerCalculator.winners[0].headShot;
+
+        // display winner info text
+        winnerInfoText.text = winnerCalculator.winners[0].nickName + " WINS!";
+       
+    }
+
     public void ShowBetter()
     {
         ShowCanvas(betRoundCanvas);

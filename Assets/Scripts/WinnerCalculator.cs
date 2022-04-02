@@ -16,11 +16,44 @@ public class WinnerCalculator : MonoBehaviour
         handCalculator = FindObjectOfType<HandCalculator>();
     }
 
+    public bool CheckForPrematureWinner(List<PokerPlayer> players)
+    {
+        int activePlayersCount = 0;
+
+        foreach (PokerPlayer player in players)
+        {
+            // skip over folded or eliminated players
+            if (player.folded || player.eliminated) { continue; }
+
+            else { activePlayersCount++; }
+        }
+
+        // if everyone folded except one person, then we have premature winner
+        return (activePlayersCount == 1);
+    }
+
+    // only call this function if we know there is a premature winner
+    public void DeterminePrematureWinner(List<PokerPlayer> players)
+    {
+        foreach (PokerPlayer player in players)
+        {
+            // skip over folded or eliminated players
+            if (player.folded || player.eliminated) { continue; }
+
+            else 
+            {
+                winners.Clear();
+                winners.Add(player);
+            }
+        }
+    }
+
     // make a list of all players who have the highest hand
     public List<PokerPlayer> DetermineFinalists(List<PokerPlayer> players)
     {
+        
         int highScore = GetHighScore(players);
-
+        Debug.Log("made it here");
         List<PokerPlayer> finalists = new List<PokerPlayer>();
 
         foreach (PokerPlayer player in players)
@@ -44,8 +77,9 @@ public class WinnerCalculator : MonoBehaviour
         {
             // skip over folded or eliminated players
             if (player.folded || player.eliminated) { continue; }
-
+            
             int handScore = handCalculator.ScoreHand(player.hand);
+            
             if (handScore > highScore) { highScore = handScore; }
         }
         //Debug.Log("high score: " + highScore);

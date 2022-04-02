@@ -26,6 +26,7 @@ public class PokerPlayer : MonoBehaviour
     ControlHub controlHub;
     CanvasController canvasController;
     PotManager potManager;
+    WinnerCalculator winnerCalculator;
 
     // Start is called before the first frame update
     void Start()
@@ -39,6 +40,7 @@ public class PokerPlayer : MonoBehaviour
         controlHub = FindObjectOfType<ControlHub>();
         canvasController = FindObjectOfType<CanvasController>();
         potManager = FindObjectOfType<PotManager>();
+        winnerCalculator = FindObjectOfType<WinnerCalculator>();
     }
 
     public void CheckOrRaise()
@@ -130,6 +132,48 @@ public class PokerPlayer : MonoBehaviour
 
         // go to BetRound state if not reached end of bet sequence
         if (betTracker.currentBetterIdx != betTracker.betStarterIdx)
+        {
+            // go to correct bet round depending on previous state
+            controlHub.SetState(controlHub.prevState);
+            controlHub.RunStateMachine();
+        }
+
+        // go to correct BetRoundDone state if reached end of bet sequence
+        else
+        {
+            if (controlHub.prevState == GameState.BetRound1) { controlHub.gameState = GameState.BetRound1Done; }
+            else if (controlHub.prevState == GameState.BetRound2) { controlHub.gameState = GameState.BetRound2Done; }
+            else if (controlHub.prevState == GameState.BetRound3) { controlHub.gameState = GameState.BetRound3Done; }
+            else if (controlHub.prevState == GameState.BetRound4) { controlHub.gameState = GameState.BetRound4Done; }
+
+            controlHub.RunStateMachine();
+        }
+    }
+
+    public void FoldButton()
+    {
+        // display NPC decision
+        string decision = "I fold!";
+        canvasController.ShowBetterDecision(decision);
+
+        // mark player as folded
+        folded = true;
+
+        // clear all images of player cards
+        playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = null;
+        playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = null;
+
+        betTracker.IncrementCurrentBetter();
+
+        // if we only have one player left, hand is over
+        if (winnerCalculator.CheckForPrematureWinner(dealer.players))
+        {
+            controlHub.gameState = GameState.Reveal;
+            controlHub.RunStateMachine();
+        }
+
+        // go to BetRound state if not reached end of bet sequence
+        else if (betTracker.currentBetterIdx != betTracker.betStarterIdx)
         {
             // go to correct bet round depending on previous state
             controlHub.SetState(controlHub.prevState);
