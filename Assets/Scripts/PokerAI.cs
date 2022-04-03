@@ -34,6 +34,8 @@ public class PokerAI : MonoBehaviour
 
     public void CheckOrRaise()
     {
+        Debug.Log(dealer.players[3].nickName);
+
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
@@ -98,6 +100,8 @@ public class PokerAI : MonoBehaviour
 
     public void CallRaiseOrFold()
     {
+        Debug.Log(dealer.players[3].nickName);
+
         // show player's headshot on canvas
         canvasController.ShowBetter();
 

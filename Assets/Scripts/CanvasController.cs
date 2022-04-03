@@ -136,9 +136,10 @@ public class CanvasController : MonoBehaviour
 
         // clear text from previous NPC
         decisionText.text = "";
-
+        
         // display NPC headshot
         betterHeadshot.sprite = dealer.players[betTracker.currentBetterIdx].headShot;
+        
     }
 
     public void ShowBetterDecision(string decision)
