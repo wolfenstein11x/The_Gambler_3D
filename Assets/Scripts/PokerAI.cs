@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PokerAI : MonoBehaviour
-{ 
+{
+    [SerializeField] [Range(0, 1)] float bluffRating; 
+
     BetTracker betTracker;
     ControlHub controlHub;
     CanvasController canvasController;
@@ -183,67 +185,104 @@ public class PokerAI : MonoBehaviour
         // pre-flop logic
         if (hand.Count <= 2)
         {
-            int highRank = handCalculator.CheckPocketHigh(hand);
-            int lowRank = handCalculator.CheckPocketLow(hand);
-            bool pocketPair = handCalculator.CheckPocketPair(hand);
+            // get weights
+            float handStrength = handCalculator.ScorePocket(hand) / 43f;
+            float bluff = Random.Range(0, bluffRating);
 
-            // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
-            return PreFlopAnalysisCallRaiseOrFold(highRank, lowRank, pocketPair);
+            // combine weights to get total weight
+            float weightedSum = handStrength + bluff;
+            Debug.Log("handStrength: " + handStrength);
+            Debug.Log("bluff: " + bluff);
+            Debug.Log("weighted sum: " + weightedSum);
+
+            // compare weight with thresholds
+            return PreFlopAnalysisCallRaiseOrFold(weightedSum);
         }
 
         // post-flop logic
         else 
         {
-            int handScore = handCalculator.ScoreHand(hand);
+            // get weights
+            float handStrength = (handCalculator.ScoreHand(hand) - 1f) / 9f;
+            float bluff = Random.Range(0, bluffRating);
 
-            // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
-            return PostFlopAnalysisCallRaiseOrFold(handScore);
+            // combine weights to get total weight
+            float totalWeight = handStrength + bluff;
+            Debug.Log("handStrength: " + handStrength);
+            Debug.Log("bluff: " + bluff);
+            Debug.Log("totalWeight: " + totalWeight);
+
+            // compare weight with thresholds
+            return PostFlopAnalysisCallRaiseOrFold(totalWeight);
         }
     }
 
     private int DecideCheckOrRaise()
     {
-        // return 1 for check, 2 for raise, 3 for all-in
+        // return 1 for call, 2 for raise, 3 for all-in
 
         List<string> hand = GetComponent<PokerPlayer>().hand;
 
         // pre-flop logic
+        if (hand.Count <= 2)
+        {
+            // get weights
+            float handStrength = handCalculator.ScorePocket(hand) / 43f;
+            float bluff = Random.Range(0, bluffRating);
 
-        int highRank = handCalculator.CheckPocketHigh(hand);
-        int lowRank = handCalculator.CheckPocketLow(hand);
-        bool pocketPair = handCalculator.CheckPocketPair(hand);
+            // combine weights to get total weight
+            float weightedSum = handStrength + bluff;
+            Debug.Log("handStrength: " + handStrength);
+            Debug.Log("bluff: " + bluff);
+            Debug.Log("weighted sum: " + weightedSum);
 
-        return 1;
+            // compare weight with thresholds
+            return AnalysisCheckOrRaise(weightedSum);
+        }
 
         // post-flop logic
-     
+        else
+        {
+            // get weights
+            float handStrength = (handCalculator.ScoreHand(hand) - 1f) / 9f;
+            float bluff = Random.Range(0, bluffRating);
+
+            // combine weights to get total weight
+            float weightedSum = handStrength + bluff;
+            Debug.Log("handStrength: " + handStrength);
+            Debug.Log("bluff: " + bluff);
+            Debug.Log("totalWeight: " + weightedSum);
+
+            // compare weight with thresholds
+            return AnalysisCheckOrRaise(weightedSum);
+        }
+
     }
 
-    private int PreFlopAnalysisCallRaiseOrFold(int highRank, int lowRank, bool pocketPair)
+    private int PreFlopAnalysisCallRaiseOrFold(float weightedSum)
     {
         // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
 
-        // if to call is more than half NPC's money, NPC would go all-in instead of raising
-        // ...
-
-        // if to call is less than half of NPC's money, NPC would raise a reasonable amount, not go all-in
-        if (highRank >= 10 && lowRank >= 10 && pocketPair) { return 1; }    // make it return 2 when you're ready
-        else if (highRank >= 10 && lowRank >= 10) { return 1; } 
-        else if (pocketPair) { return 1; }
-        else if (highRank >= 11 && lowRank >= 7) { return 1; }
-        else return 0;
+        // compare weighted sum with thresholds
+        if (weightedSum >= 0.5) { return 2; }
+        else { return 0; }
     }
 
-    private int PostFlopAnalysisCallRaiseOrFold(int handScore)
+    private int PostFlopAnalysisCallRaiseOrFold(float weightedSum)
     {
         // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
 
-        // if to call is more than half NPC's money, NPC would go all-in instead of raising
-        // ...
+        // compare weighted sum with thresholds
+        if (weightedSum >= 0.5) { return 1; }
+        else { return 0; }
+    }
 
-        // if to call is less than half of NPC's money, NPC would raise a reasonable amount, not go all-in
-        if (handScore > 3) { return 1; } // make it return 2 when ready
-        else if (handScore > 1) { return 1; }
-        else return 0;
+    private int AnalysisCheckOrRaise(float weightedSum)
+    {
+        // return 1 for call, 2 for raise, 3 for all-in
+
+        // compare weighted sum with thresholds
+        if (weightedSum >= 0.5) { return 2; }
+        else { return 1; }
     }
 }

@@ -50,24 +50,19 @@ public class HandCalculator : MonoBehaviour
         else return 1;
 
     }
-
-    public int CheckPocketHigh(List<string> hand)
+    public int ScorePocket(List<string> hand)
     {
-        hand = SortHandHighLow(hand);
+        int pocketScore = 0;
 
-        return ranks[hand[0][0]];
-    }
+        pocketScore += ranks[hand[0][0]];
+        pocketScore += ranks[hand[1][0]];
 
-    public int CheckPocketLow(List<string> hand)
-    {
-        hand = SortHandHighLow(hand);
+        if (ranks[hand[0][0]] == ranks[hand[1][0]]) { pocketScore += 15; }
 
-        return ranks[hand[1][0]];
-    }
+        // normalize number since highest pocket score will be 43, lowest 5 (want it to start at 0)
+        pocketScore -= 5;
 
-    public bool CheckPocketPair(List<string> hand)
-    {
-        return (ranks[hand[0][0]] == ranks[hand[1][0]]);
+        return pocketScore;
     }
 
     public string GetHandName(List<string> hand)
