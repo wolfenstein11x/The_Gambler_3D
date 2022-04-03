@@ -48,6 +48,22 @@ public class WinnerCalculator : MonoBehaviour
         }
     }
 
+    public bool CheckForMatchWonByMainPlayer(List<PokerPlayer> players)
+    {
+        int activePlayersCount = 0;
+
+        foreach (PokerPlayer player in players)
+        {
+            // skip over folded or eliminated players
+            if (player.folded || player.eliminated) { continue; }
+
+            else { activePlayersCount++; }
+        }
+
+        // if main player is not eliminated and only 1 player left, main player won match
+        return (!players[0].eliminated && activePlayersCount == 1);
+    }
+
     // make a list of all players who have the highest hand
     public List<PokerPlayer> DetermineFinalists(List<PokerPlayer> players)
     {

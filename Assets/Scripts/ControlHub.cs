@@ -342,6 +342,12 @@ public class ControlHub : MonoBehaviour
                 canvasController.ShowCanvas(canvasController.gameOverCanvas);
             }
 
+            // check if main player won match
+            else if (winnerCalculator.CheckForMatchWonByMainPlayer(dealer.players))
+            {
+                canvasController.ShowCanvas(canvasController.matchWonCanvas);
+            }
+
             // combine tables and raise blinds if down to 3 players (and haven't already combined tables twice)
             else if (dealer.CountActivePlayers() <= 3 && tableCombineCount < 2)
             {

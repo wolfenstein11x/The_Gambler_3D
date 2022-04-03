@@ -10,6 +10,7 @@ public class PokerAI : MonoBehaviour
     CanvasController canvasController;
     PotManager potManager;
     WinnerCalculator winnerCalculator;
+    HandCalculator handCalculator;
     Dealer dealer;
 
     private void Start()
@@ -20,6 +21,7 @@ public class PokerAI : MonoBehaviour
         potManager = FindObjectOfType<PotManager>();
         winnerCalculator = FindObjectOfType<WinnerCalculator>();
         dealer = FindObjectOfType<Dealer>();
+        handCalculator = FindObjectOfType<HandCalculator>();
     }
 
     public void CheckOrRaise()
@@ -35,9 +37,22 @@ public class PokerAI : MonoBehaviour
         yield return new WaitForSeconds(thinkTime);
 
         // run AI algorithm to determine check or raise
+        int decision = DecideCheckOrRaise();
 
-        string decision = "I check!";
-        canvasController.ShowBetterDecision(decision);
+        // return 1 for check, 2 for raise, 3 for all-in
+        switch (decision)
+        {
+            case 1:
+                Check();
+                break;
+            case 2:
+                Check();
+                break;
+            default:
+                Check();
+                break;
+        }
+
 
         yield return new WaitForSeconds(transitionTime);
 
@@ -76,10 +91,23 @@ public class PokerAI : MonoBehaviour
         yield return new WaitForSeconds(thinkTime);
 
         // run AI algorithm to determine call raise or fold
+        int decision = DecideCallRaiseFold();
 
-        //Fold();
-        Call();
+        // get raise amount if decision is raise
 
+        // 0 for fold, 1 for call, 2 for raise, 3 for all-in
+        switch (decision)
+        {
+            case 0:
+                Fold();
+                break;
+            case 1:
+                Call();
+                break;
+            default:
+                Call();
+                break;
+        }
 
         yield return new WaitForSeconds(transitionTime);
 
@@ -138,5 +166,84 @@ public class PokerAI : MonoBehaviour
         GetComponent<PokerPlayer>().playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = null;
         GetComponent<PokerPlayer>().playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = null;
 
+    }
+
+    private void Check()
+    {
+        string decision = "I check!";
+        canvasController.ShowBetterDecision(decision);
+    }
+
+    private int DecideCallRaiseFold()
+    {
+        // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
+
+        List<string> hand = GetComponent<PokerPlayer>().hand;
+
+        // pre-flop logic
+        if (hand.Count <= 2)
+        {
+            int highRank = handCalculator.CheckPocketHigh(hand);
+            int lowRank = handCalculator.CheckPocketLow(hand);
+            bool pocketPair = handCalculator.CheckPocketPair(hand);
+
+            // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
+            return PreFlopAnalysisCallRaiseOrFold(highRank, lowRank, pocketPair);
+        }
+
+        // post-flop logic
+        else 
+        {
+            int handScore = handCalculator.ScoreHand(hand);
+
+            // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
+            return PostFlopAnalysisCallRaiseOrFold(handScore);
+        }
+    }
+
+    private int DecideCheckOrRaise()
+    {
+        // return 1 for check, 2 for raise, 3 for all-in
+
+        List<string> hand = GetComponent<PokerPlayer>().hand;
+
+        // pre-flop logic
+
+        int highRank = handCalculator.CheckPocketHigh(hand);
+        int lowRank = handCalculator.CheckPocketLow(hand);
+        bool pocketPair = handCalculator.CheckPocketPair(hand);
+
+        return 1;
+
+        // post-flop logic
+     
+    }
+
+    private int PreFlopAnalysisCallRaiseOrFold(int highRank, int lowRank, bool pocketPair)
+    {
+        // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
+
+        // if to call is more than half NPC's money, NPC would go all-in instead of raising
+        // ...
+
+        // if to call is less than half of NPC's money, NPC would raise a reasonable amount, not go all-in
+        if (highRank >= 10 && lowRank >= 10 && pocketPair) { return 1; }    // make it return 2 when you're ready
+        else if (highRank >= 10 && lowRank >= 10) { return 1; } 
+        else if (pocketPair) { return 1; }
+        else if (highRank >= 11 && lowRank >= 7) { return 1; }
+        else return 0;
+    }
+
+    private int PostFlopAnalysisCallRaiseOrFold(int handScore)
+    {
+        // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
+
+        // if to call is more than half NPC's money, NPC would go all-in instead of raising
+        // ...
+
+        // if to call is less than half of NPC's money, NPC would raise a reasonable amount, not go all-in
+        if (handScore > 3) { return 1; } // make it return 2 when ready
+        else if (handScore > 1) { return 1; }
+        else return 0;
     }
 }

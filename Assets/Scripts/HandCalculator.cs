@@ -23,6 +23,9 @@ public class HandCalculator : MonoBehaviour
     void Start()
     {
         //List<string> sortedHand = SortHandHighLow(testHand);
+
+        //Debug.Log(CheckStraightFlush(sortedHand));
+
         //int handScore = ScoreHand(testHand);
         //string handName = handNames[handScore];
 
@@ -40,7 +43,7 @@ public class HandCalculator : MonoBehaviour
         else if (CheckQuads(hand)) return 8;
         else if (CheckFullHouse(hand)) return 7;
         else if (CheckFlush(hand)) return 6;
-        else if (CheckStraight(hand)) return 5;
+        else if (CheckStraight(hand)) return 5;         
         else if (CheckTrips(hand)) return 4;
         else if (Check2Pair(hand)) return 3;
         else if (CheckPair(hand)) return 2;
@@ -48,13 +51,35 @@ public class HandCalculator : MonoBehaviour
 
     }
 
+    public int CheckPocketHigh(List<string> hand)
+    {
+        hand = SortHandHighLow(hand);
+
+        return ranks[hand[0][0]];
+    }
+
+    public int CheckPocketLow(List<string> hand)
+    {
+        hand = SortHandHighLow(hand);
+
+        return ranks[hand[1][0]];
+    }
+
+    public bool CheckPocketPair(List<string> hand)
+    {
+        return (ranks[hand[0][0]] == ranks[hand[1][0]]);
+    }
+
     public string GetHandName(List<string> hand)
     {
         return handNames[ScoreHand(hand)];
     }
 
-    private bool CheckStraightFlush(List<string> hand)
+    public bool CheckStraightFlush(List<string> hand)
     {
+        // don't check when only have 2 cards in hand, or else it breaks
+        if (hand.Count <= 2) { return false; }
+
         // fill this up/ clear it as you go
         List<string> straightFlushHand = new List<string>();
 
@@ -124,8 +149,11 @@ public class HandCalculator : MonoBehaviour
         return false;
     }
 
-    private bool CheckStraight(List<string> hand)
+    public bool CheckStraight(List<string> hand)
     {   
+        // don't check when only have 2 cards in hand, or else it breaks
+        if (hand.Count <= 2) { return false; }
+
         // fill this up/ clear it as you go
         List<string> straightHand = new List<string>();
 
@@ -247,7 +275,7 @@ public class HandCalculator : MonoBehaviour
         return (numPairs >= 2);
     }
 
-    private bool CheckPair(List<string> hand)
+    public bool CheckPair(List<string> hand)
     {
         int numPairs = 0;
 

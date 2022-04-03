@@ -25,6 +25,7 @@ public class CanvasController : MonoBehaviour
     public Canvas callFoldRaiseCanvas;
     [SerializeField] Canvas raiseBlindsCanvas;
     public Canvas gameOverCanvas;
+    public Canvas matchWonCanvas;
     
     HandCalculator handCalculator;
     WinnerCalculator winnerCalculator;
@@ -54,6 +55,7 @@ public class CanvasController : MonoBehaviour
         betRoundCanvas.enabled = false;
         raisePanelCanvas.enabled = false;
         gameOverCanvas.enabled = false;
+        matchWonCanvas.enabled = false;
 
         handWonCanvas.enabled = false;
         
