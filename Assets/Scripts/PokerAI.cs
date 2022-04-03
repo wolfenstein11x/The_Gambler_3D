@@ -368,9 +368,9 @@ public class PokerAI : MonoBehaviour
         // return 0 for fold, 2 for call, 3 for raise, 4 for big raise
 
         // compare weighted sum with thresholds
-        if (weightedSum >= 0.9) { return 4; }
-        else if (weightedSum >= 0.5) { return 3; }
-        else if (weightedSum >= 0.2) { return 2; }
+        if (weightedSum >= 0.6) { return 4; }
+        else if (weightedSum >= 0.4) { return 3; }
+        else if (weightedSum >= 0.15) { return 2; }
         else { return 0; }
     }
 
@@ -379,8 +379,8 @@ public class PokerAI : MonoBehaviour
         // return 1 for check, 3 for raise, 4 for big raise
 
         // compare weighted sum with thresholds
-        if (weightedSum >= 0.9) { return 4; }
-        if (weightedSum >= 0.5) { return 3; }
+        if (weightedSum >= 0.6) { return 4; }
+        if (weightedSum >= 0.2) { return 3; }
         else { return 1; }
     }
 
