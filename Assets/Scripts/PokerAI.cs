@@ -14,6 +14,7 @@ public class PokerAI : MonoBehaviour
     WinnerCalculator winnerCalculator;
     HandCalculator handCalculator;
     Dealer dealer;
+    PokerPlayer pokerPlayer;
 
     private void Start()
     {
@@ -24,6 +25,7 @@ public class PokerAI : MonoBehaviour
         winnerCalculator = FindObjectOfType<WinnerCalculator>();
         dealer = FindObjectOfType<Dealer>();
         handCalculator = FindObjectOfType<HandCalculator>();
+        pokerPlayer = GetComponent<PokerPlayer>();
     }
 
     public void CheckOrRaise()
@@ -41,14 +43,17 @@ public class PokerAI : MonoBehaviour
         // run AI algorithm to determine check or raise
         int decision = DecideCheckOrRaise();
 
-        // return 1 for check, 2 for raise, 3 for all-in
+        // return 1 for check, 3 for raise, 4 for big raise
         switch (decision)
         {
             case 1:
                 Check();
                 break;
-            case 2:
-                Check();
+            case 3:
+                Raise();
+                break;
+            case 4:
+                Raise(true);
                 break;
             default:
                 Check();
@@ -95,16 +100,20 @@ public class PokerAI : MonoBehaviour
         // run AI algorithm to determine call raise or fold
         int decision = DecideCallRaiseFold();
 
-        // get raise amount if decision is raise
-
-        // 0 for fold, 1 for call, 2 for raise, 3 for all-in
+        // 0 for fold, 2 for call, 3 for raise, 4 for big raise
         switch (decision)
         {
             case 0:
                 Fold();
                 break;
-            case 1:
+            case 2:
                 Call();
+                break;
+            case 3:
+                Raise();
+                break;
+            case 4:
+                Raise(true);
                 break;
             default:
                 Call();
@@ -149,10 +158,10 @@ public class PokerAI : MonoBehaviour
         canvasController.ShowBetterDecision(decision);
 
         // calculate amount player owes
-        int toCall = potManager.highestBet - GetComponent<PokerPlayer>().currentBet;
+        int toCall = potManager.highestBet - pokerPlayer.currentBet;
 
         // put call amount into pot, but no need to update bet starter
-        potManager.CollectMoneyFromPlayer(GetComponent<PokerPlayer>(), toCall);
+        potManager.CollectMoneyFromPlayer(pokerPlayer, toCall);
     }
 
     private void Fold()
@@ -165,10 +174,65 @@ public class PokerAI : MonoBehaviour
         GetComponent<PokerPlayer>().folded = true;
 
         // clear all images of player cards
-        GetComponent<PokerPlayer>().playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = null;
-        GetComponent<PokerPlayer>().playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = null;
-
+        pokerPlayer.playerPosition.cardImg1.GetComponent<SpriteRenderer>().sprite = null;
+        pokerPlayer.playerPosition.cardImg2.GetComponent<SpriteRenderer>().sprite = null;
     }
+
+    private void Raise(bool bigRaise=false)
+    {
+        // Note: raise equals current highest bet plus amount you are adding... so think of the word being used as "I raise to this amount" instead of "I raise by this much"
+
+        // initialize raise to minimum raise
+        int raiseAmount = potManager.highestBet + potManager.bigBlind; 
+        
+        // standard increase will be between big blind and 3 times big blind
+        if (!bigRaise) 
+        {
+            // get random increase amount between big blind and 3 times big blind
+            int raiseMin = potManager.highestBet + potManager.bigBlind;
+            int raiseMax = potManager.highestBet + 3 * potManager.bigBlind;
+            raiseAmount = Random.Range(raiseMin, raiseMax+1);
+
+            // make raise a multiple of the big blind
+            raiseAmount -= (raiseAmount % potManager.bigBlind);        
+        }
+
+        // big increase will be between 3 times big blind and all-in
+        else
+        {
+            // get random increase amount between 3 times big blind and all-in
+            int raiseMin = potManager.highestBet + 3 * potManager.bigBlind;
+            int raiseMax = potManager.highestBet + pokerPlayer.money;
+            raiseAmount = Random.Range(raiseMin, raiseMax + 1);
+
+            // make raise a multiple of the big blind
+            raiseAmount -= (raiseAmount % potManager.bigBlind);
+        }
+
+        
+        //int raiseAmount = 4;//potManager.highestBet + potManager.bigBlind;
+        string decision = "I raise to $" + raiseAmount;
+
+        // if can't afford raise amount, that means going all in
+        if (raiseAmount >= pokerPlayer.money + pokerPlayer.currentBet)
+        {
+            raiseAmount = pokerPlayer.money + pokerPlayer.currentBet;
+            decision = "I'm all in!";
+        }
+
+        canvasController.ShowBetterDecision(decision);
+
+        // amount player puts in pot is the raise amount minus the money they already have put in
+        int amountOwed = raiseAmount - GetComponent<PokerPlayer>().currentBet;
+
+        // player puts money in pot and raise become new amount required to keep playing
+        potManager.CollectMoneyFromPlayer(GetComponent<PokerPlayer>(), amountOwed);
+        potManager.highestBet = raiseAmount;
+
+        // player bet, so player is new betStarter
+        betTracker.betStarterIdx = betTracker.currentBetterIdx;
+    }
+
 
     private void Check()
     {
@@ -178,7 +242,7 @@ public class PokerAI : MonoBehaviour
 
     private int DecideCallRaiseFold()
     {
-        // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
+        // return 0 for fold, 2 for call, 3 for raise, 4 for big raise
 
         List<string> hand = GetComponent<PokerPlayer>().hand;
 
@@ -196,7 +260,7 @@ public class PokerAI : MonoBehaviour
             Debug.Log("weighted sum: " + weightedSum);
 
             // compare weight with thresholds
-            return PreFlopAnalysisCallRaiseOrFold(weightedSum);
+            return AnalysisCallRaiseOrFold(weightedSum);
         }
 
         // post-flop logic
@@ -213,13 +277,13 @@ public class PokerAI : MonoBehaviour
             Debug.Log("totalWeight: " + totalWeight);
 
             // compare weight with thresholds
-            return PostFlopAnalysisCallRaiseOrFold(totalWeight);
+            return AnalysisCallRaiseOrFold(totalWeight);
         }
     }
 
     private int DecideCheckOrRaise()
     {
-        // return 1 for call, 2 for raise, 3 for all-in
+        // return 1 for call, 2 for raise, 3 for big raise
 
         List<string> hand = GetComponent<PokerPlayer>().hand;
 
@@ -259,30 +323,37 @@ public class PokerAI : MonoBehaviour
 
     }
 
-    private int PreFlopAnalysisCallRaiseOrFold(float weightedSum)
+    private int AnalysisCallRaiseOrFold(float weightedSum)
     {
-        // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
+        // return 0 for fold, 2 for call, 3 for raise, 4 for big raise
 
         // compare weighted sum with thresholds
-        if (weightedSum >= 0.5) { return 2; }
-        else { return 0; }
-    }
-
-    private int PostFlopAnalysisCallRaiseOrFold(float weightedSum)
-    {
-        // return 0 for fold, 1 for call, 2 for raise, 3 for all-in
-
-        // compare weighted sum with thresholds
-        if (weightedSum >= 0.5) { return 1; }
+        if (weightedSum >= 0.9) { return 4; }
+        else if (weightedSum >= 0.75) { return 3; }
+        else if (weightedSum >= 0.5) { return 2; }
         else { return 0; }
     }
 
     private int AnalysisCheckOrRaise(float weightedSum)
     {
-        // return 1 for call, 2 for raise, 3 for all-in
+        // return 1 for check, 3 for raise, 4 for big raise
 
         // compare weighted sum with thresholds
-        if (weightedSum >= 0.5) { return 2; }
+        if (weightedSum >= 0.9) { return 4; }
+        if (weightedSum >= 0.5) { return 3; }
         else { return 1; }
     }
+
+    private int PostFlopAnalysisCallRaiseOrFold(float weightedSum)
+    {
+        // return 0 for fold, 2 for call, 3 for raise, 4 for big raise
+
+        // compare weighted sum with thresholds
+        if (weightedSum >= 0.9) { return 4; }
+        else if (weightedSum >= 0.75) { return 3; }
+        else if (weightedSum >= 0.5) { return 2; }
+        else { return 0; }
+    }
+
+    
 }

@@ -4,11 +4,9 @@ using System.Linq;
 using UnityEngine;
 
 
-public enum HandState { Begin, Flop, Turn, River }
 
 public class Dealer : MonoBehaviour
 {
-    HandState handState;
 
     [SerializeField] Sprite[] cardImages;
     [SerializeField] Sprite cardBack;
@@ -50,7 +48,7 @@ public class Dealer : MonoBehaviour
         // main player starts game off as dealer
         SetDealer(0);
 
-        handState = HandState.Begin;
+        
     }
 
     public void SetDealer(int idx)
@@ -109,9 +107,7 @@ public class Dealer : MonoBehaviour
             activePlayer.optimizedHand.Clear();
         }
 
-        // set main state machine to deal mode, and set dealer state machine to deal-new-hands mode
-       
-        handState = HandState.Begin;
+        
 
 
 

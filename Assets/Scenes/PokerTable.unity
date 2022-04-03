@@ -264,6 +264,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Greg
       objectReference: {fileID: 0}
+    - target: {fileID: 7571556699033725571, guid: 97e972c2fe554004ba3b492cbc940344, type: 3}
+      propertyPath: bluffRating
+      value: 0.461
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97e972c2fe554004ba3b492cbc940344, type: 3}
 --- !u!4 &35164256 stripped
@@ -447,6 +451,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 80019662}
     m_Modifications:
+    - target: {fileID: 436546163977988388, guid: b427265a6a49ea04dae85bb900d51e69, type: 3}
+      propertyPath: bluffRating
+      value: 0.561
+      objectReference: {fileID: 0}
     - target: {fileID: 2832527477239915499, guid: b427265a6a49ea04dae85bb900d51e69, type: 3}
       propertyPath: m_Name
       value: Bob
@@ -711,6 +719,10 @@ PrefabInstance:
     - target: {fileID: 3864814831710178742, guid: ada3e46ea6eafb540b1e31914621b22f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7054165968671455604, guid: ada3e46ea6eafb540b1e31914621b22f, type: 3}
+      propertyPath: bluffRating
+      value: 0.735
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ada3e46ea6eafb540b1e31914621b22f, type: 3}
@@ -1711,6 +1723,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8334177269151811760, guid: bbd3d7d37ebfa4842844129a01d8f1b3, type: 3}
+      propertyPath: bluffRating
+      value: 0.515
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bbd3d7d37ebfa4842844129a01d8f1b3, type: 3}
 --- !u!4 &296320556 stripped
@@ -2236,6 +2252,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 80019662}
     m_Modifications:
+    - target: {fileID: 3133982789845460744, guid: 692a74b63567bce47bf441bcb9cc0b93, type: 3}
+      propertyPath: bluffRating
+      value: 0.318
+      objectReference: {fileID: 0}
     - target: {fileID: 6037526407600436504, guid: 692a74b63567bce47bf441bcb9cc0b93, type: 3}
       propertyPath: m_Name
       value: MrsCheese
@@ -2388,6 +2408,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 80019662}
     m_Modifications:
+    - target: {fileID: 21038136517091772, guid: baf13132fe0229049894ab2747defe12, type: 3}
+      propertyPath: bluffRating
+      value: 0.388
+      objectReference: {fileID: 0}
     - target: {fileID: 462097886580388265, guid: baf13132fe0229049894ab2747defe12, type: 3}
       propertyPath: m_Name
       value: Brian
@@ -3729,6 +3753,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 80019662}
     m_Modifications:
+    - target: {fileID: 7960721993492779539, guid: d92eb51500c1bde48bc853804f185c05, type: 3}
+      propertyPath: bluffRating
+      value: 0.468
+      objectReference: {fileID: 0}
     - target: {fileID: 8189524703560242464, guid: d92eb51500c1bde48bc853804f185c05, type: 3}
       propertyPath: m_Name
       value: Bryce
@@ -5144,6 +5172,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 80019662}
     m_Modifications:
+    - target: {fileID: 923717172964463934, guid: 99bd1e5303bca004e8ff3448098ae6ab, type: 3}
+      propertyPath: bluffRating
+      value: 0.267
+      objectReference: {fileID: 0}
     - target: {fileID: 3356819535931036946, guid: 99bd1e5303bca004e8ff3448098ae6ab, type: 3}
       propertyPath: m_Name
       value: Polly
@@ -5450,6 +5482,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 80019662}
     m_Modifications:
+    - target: {fileID: 4422893010801047705, guid: 3f5ee546948eb0a40aec6c429146392b, type: 3}
+      propertyPath: bluffRating
+      value: 0.227
+      objectReference: {fileID: 0}
     - target: {fileID: 6684114509509410835, guid: 3f5ee546948eb0a40aec6c429146392b, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -6537,6 +6573,10 @@ PrefabInstance:
     - target: {fileID: 232554565408938076, guid: 6eb7a40610d0eee4dbcc24146c261e15, type: 3}
       propertyPath: m_Name
       value: Cassie
+      objectReference: {fileID: 0}
+    - target: {fileID: 7534431806695777676, guid: 6eb7a40610d0eee4dbcc24146c261e15, type: 3}
+      propertyPath: bluffRating
+      value: 0.668
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6eb7a40610d0eee4dbcc24146c261e15, type: 3}
