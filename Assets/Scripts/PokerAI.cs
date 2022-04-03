@@ -37,6 +37,13 @@ public class PokerAI : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
+        // skip to the end when player has zero money
+        if (pokerPlayer.money <= 0)
+        {
+            pokerPlayer.HandleOptionToMoneylessPlayer();
+            return;
+        }
+
         StartCoroutine(CheckOrRaiseCoroutine(2f, 1f));
     }
 
@@ -93,6 +100,13 @@ public class PokerAI : MonoBehaviour
     {
         // show player's headshot on canvas
         canvasController.ShowBetter();
+
+        // skip to the end when player has zero money
+        if (pokerPlayer.money <= 0)
+        {
+            pokerPlayer.HandleOptionToMoneylessPlayer();
+            return;
+        }
 
         float thinkTime = Random.Range(thinkTimeMin, thinkTimeMax);
 
@@ -265,7 +279,7 @@ public class PokerAI : MonoBehaviour
 
             // combine weights to get total weight
             float weightedSum = handStrength + bluff;
-            Debug.Log("handStrength: " + handStrength);
+            //Debug.Log("handStrength: " + handStrength);
             //Debug.Log("bluff: " + bluff);
             //Debug.Log("weighted sum: " + weightedSum);
 
@@ -339,7 +353,7 @@ public class PokerAI : MonoBehaviour
 
             // combine weights to get total weight
             float weightedSum = handStrength + bluff - slowPlay;
-            Debug.Log("handStrength: " + handStrength);
+            //Debug.Log("handStrength: " + handStrength);
             //Debug.Log("bluff: " + bluff);
             //Debug.Log("weightedSum: " + weightedSum);
 
@@ -370,7 +384,10 @@ public class PokerAI : MonoBehaviour
         else { return 1; }
     }
 
-    
+    private void HandleOptionToMoneylessAI()
+    {
+
+    }
 
     
 }

@@ -48,6 +48,13 @@ public class PokerPlayer : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
+        // skip to the end when player has zero money
+        if (money <= 0)
+        {
+            HandleOptionToMoneylessPlayer();
+            return;
+        }
+        
         // bring up check or raise canvas and raise panel canvas (but don't clear currently displayed canvases, hence the 'false' parameters)
         canvasController.ShowCanvas(canvasController.checkRaiseCanvas, false);
         canvasController.ShowCanvas(canvasController.raisePanelCanvas, false);
@@ -109,6 +116,9 @@ public class PokerPlayer : MonoBehaviour
     {
         // Note: raise equals current highest bet plus amount you are adding... so think of the word being used as "I raise to this amount" instead of "I raise by this much"
 
+        // don't let player raise if player has zero money
+        if (money <= 0) { return; }
+
         // get amount from text box
         int raiseAmount = controlHub.ParseRaiseAmountText();
 
@@ -135,6 +145,9 @@ public class PokerPlayer : MonoBehaviour
 
     public void AllInButton()
     {
+        // don't let player raise if player has zero money
+        if (money <= 0) { return; }
+
         int raiseAmount = currentBet + money;
 
         string decision = "I'm all in!";
@@ -216,6 +229,30 @@ public class PokerPlayer : MonoBehaviour
 
         // go to BetRound state if not reached end of bet sequence
         else if (betTracker.currentBetterIdx != betTracker.betStarterIdx)
+        {
+            // go to correct bet round depending on previous state
+            controlHub.SetState(controlHub.prevState);
+            controlHub.RunStateMachine();
+        }
+
+        // go to correct BetRoundDone state if reached end of bet sequence
+        else
+        {
+            if (controlHub.prevState == GameState.BetRound1) { controlHub.gameState = GameState.BetRound1Done; }
+            else if (controlHub.prevState == GameState.BetRound2) { controlHub.gameState = GameState.BetRound2Done; }
+            else if (controlHub.prevState == GameState.BetRound3) { controlHub.gameState = GameState.BetRound3Done; }
+            else if (controlHub.prevState == GameState.BetRound4) { controlHub.gameState = GameState.BetRound4Done; }
+
+            controlHub.RunStateMachine();
+        }
+    }
+
+    public void HandleOptionToMoneylessPlayer()
+    {
+        betTracker.IncrementCurrentBetter();
+
+        // go to BetRound state if not reached end of bet sequence
+        if (betTracker.currentBetterIdx != betTracker.betStarterIdx)
         {
             // go to correct bet round depending on previous state
             controlHub.SetState(controlHub.prevState);
