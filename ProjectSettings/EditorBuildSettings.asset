@@ -6,12 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/MainMenu.unity
+    path: Assets/Game/Scenes/MainMenu.unity
     guid: e2583180bbf1366479713f4c7dc2a040
   - enabled: 1
-    path: Assets/Scenes/Credits.unity
+    path: Assets/Game/Scenes/Credits.unity
     guid: 96fc5e88e06123c45b91924ec86404e4
   - enabled: 1
-    path: Assets/Scenes/PokerTable.unity
+    path: Assets/Game/Scenes/PokerTable.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   m_configObjects: {}
