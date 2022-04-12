@@ -48,8 +48,8 @@ public class PokerPlayer : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // skip to the end when player has zero money
-        if (money <= 0)
+        // skip to the end when player has zero money, or if player is only active player with money
+        if (money <= 0 || !MoreThanOnePlayerWithMoney(dealer.players))
         {
             HandleOptionToMoneylessPlayer();
             return;
@@ -70,6 +70,13 @@ public class PokerPlayer : MonoBehaviour
     {
         // show player's headshot on canvas
         canvasController.ShowBetter();
+
+        // skip to the end when player has zero money, or if player is only active player with money
+        if (money <= 0 || !MoreThanOnePlayerWithMoney(dealer.players))
+        {
+            HandleOptionToMoneylessPlayer();
+            return;
+        }
 
         // bring up check or raise canvas and riase panel canvas (but don't clear currently displayed canvases, hence the 'false' parameters)
         canvasController.ShowCanvas(canvasController.callFoldRaiseCanvas, false);
@@ -269,6 +276,21 @@ public class PokerPlayer : MonoBehaviour
 
             controlHub.RunStateMachine();
         }
+    }
+
+    public bool MoreThanOnePlayerWithMoney(List<PokerPlayer> players)
+    {
+        int playersWithMoneyCount = 0;
+
+        foreach(PokerPlayer player in players)
+        {
+            if (player.money > 0 && !player.folded)
+            {
+                playersWithMoneyCount++;
+            }
+        }
+
+        return (playersWithMoneyCount > 1);
     }
 
     
