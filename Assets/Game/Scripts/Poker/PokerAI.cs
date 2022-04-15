@@ -37,8 +37,8 @@ public class PokerAI : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // skip to the end when player has zero money, or if player is only active player with money
-        if (pokerPlayer.money <= 0 || !pokerPlayer.MoreThanOnePlayerWithMoney(dealer.players))
+        // skip to the end when player has zero money
+        if (pokerPlayer.money <= 0)
         {
             pokerPlayer.HandleOptionToMoneylessPlayer();
             return;
@@ -101,8 +101,8 @@ public class PokerAI : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // skip to the end when player has zero money, or if player is only active player with money
-        if (pokerPlayer.money <= 0 || !pokerPlayer.MoreThanOnePlayerWithMoney(dealer.players))
+        // skip to the end when player has zero money
+        if (pokerPlayer.money <= 0)
         {
             pokerPlayer.HandleOptionToMoneylessPlayer();
             return;
@@ -272,13 +272,16 @@ public class PokerAI : MonoBehaviour
             // get weights
             float handStrength = handCalculator.ScorePocket(hand) / 43f;
             float bluff = Random.Range(0, bluffRating);
+            float betMagnitude = (float)potManager.highestBet / (float)pokerPlayer.money;
+            if (betMagnitude > 1.0f) { betMagnitude = 1.0f; }
 
-            // scale weights so they add up to 1.0 max
-            handStrength *= 0.5f;
-            bluff *= 0.5f;
+            // scale weights 
+            handStrength *= 1.0f;
+            bluff *= 1.0f;
+            betMagnitude *= 0.5f;
 
             // combine weights to get total weight
-            float weightedSum = handStrength + bluff;
+            float weightedSum = handStrength + bluff - betMagnitude;
             //Debug.Log("handStrength: " + handStrength);
             //Debug.Log("bluff: " + bluff);
             //Debug.Log("weighted sum: " + weightedSum);
@@ -291,18 +294,22 @@ public class PokerAI : MonoBehaviour
         else 
         {
             // get weights
-            float handStrength = (handCalculator.ScoreHand(hand) - 1f) / 9f;
+            float handStrength = (handCalculator.ScoreHandAdvanced(hand));
             float bluff = Random.Range(0, bluffRating);
+            float betMagnitude = (float)potManager.highestBet / (float)pokerPlayer.money;
+            if (betMagnitude > 1.0f) { betMagnitude = 1.0f; }
 
-            // scale weights so they add up to 1.0 max
-            handStrength *= 0.5f;
-            bluff *= 0.5f;
+            // scale weights 
+            handStrength *= 1.0f;
+            bluff *= 1.0f;
+            betMagnitude *= 0.5f;
 
             // combine weights to get total weight
-            float weightedSum = handStrength + bluff;
-            //Debug.Log("handStrength: " + handStrength);
-            //Debug.Log("bluff: " + bluff);
-            //Debug.Log("weightedSum: " + weightedSum);
+            float weightedSum = handStrength + bluff - betMagnitude;
+            Debug.Log("handStrength: " + handStrength);
+            Debug.Log("bluff: " + bluff);
+            Debug.Log("betMagnitude: " + betMagnitude);
+            Debug.Log("weightedSum: " + weightedSum);
 
             // compare weight with thresholds
             return AnalysisCallRaiseOrFold(weightedSum);
@@ -342,7 +349,7 @@ public class PokerAI : MonoBehaviour
         else
         {
             // get weights
-            float handStrength = (handCalculator.ScoreHand(hand) - 1f) / 9f;
+            float handStrength = (handCalculator.ScoreHandAdvanced(hand));
             float bluff = Random.Range(0, bluffRating);
             float slowPlay = Random.Range(0, slowPlayRating);
 
@@ -353,7 +360,7 @@ public class PokerAI : MonoBehaviour
 
             // combine weights to get total weight
             float weightedSum = handStrength + bluff - slowPlay;
-            //Debug.Log("handStrength: " + handStrength);
+            Debug.Log("handStrength: " + handStrength);
             //Debug.Log("bluff: " + bluff);
             //Debug.Log("weightedSum: " + weightedSum);
 

@@ -48,8 +48,8 @@ public class PokerPlayer : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // skip to the end when player has zero money, or if player is only active player with money
-        if (money <= 0 || !MoreThanOnePlayerWithMoney(dealer.players))
+        // skip to the end when player has zero money
+        if (money <= 0)
         {
             HandleOptionToMoneylessPlayer();
             return;
@@ -71,8 +71,8 @@ public class PokerPlayer : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // skip to the end when player has zero money, or if player is only active player with money
-        if (money <= 0 || !MoreThanOnePlayerWithMoney(dealer.players))
+        // skip to the end when player has zero money
+        if (money <= 0)
         {
             HandleOptionToMoneylessPlayer();
             return;

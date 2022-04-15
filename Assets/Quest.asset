@@ -9,16 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9da590cbb23a2b4c940494cfe61f89f, type: 3}
-  m_Name: D2
+  m_Script: {fileID: 11500000, guid: 57d9ee5c44705e0478e4d602f75a172b, type: 3}
+  m_Name: Quest
   m_EditorClassIdentifier: 
-  nodes:
-  - uniqueID: 
-    text: lemme choa ya
-    children: []
-    rect:
-      serializedVersion: 2
-      x: 0
-      y: 0
-      width: 200
-      height: 100
+  tasks:
+  - eat food
+  - run fast
+  - take a shat

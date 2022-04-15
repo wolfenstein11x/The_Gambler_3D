@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9da590cbb23a2b4c940494cfe61f89f, type: 3}
-  m_Name: D2
+  m_Name: D4
   m_EditorClassIdentifier: 
   nodes:
-  - uniqueID: 
-    text: lemme choa ya
+  - uniqueID: 0c59c081-e3a9-43dd-b161-dd2e1f431305
+    text: 
     children: []
     rect:
       serializedVersion: 2

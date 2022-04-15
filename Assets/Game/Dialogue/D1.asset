@@ -13,6 +13,42 @@ MonoBehaviour:
   m_Name: D1
   m_EditorClassIdentifier: 
   nodes:
-  - uniqueID: dsgdf
-    text: cats
+  - uniqueID: a
+    text: hello
+    children:
+    - b
+    - c
+    - d
+    rect:
+      serializedVersion: 2
+      x: 65
+      y: 84
+      width: 200
+      height: 200
+  - uniqueID: b
+    text: hey guy
     children: []
+    rect:
+      serializedVersion: 2
+      x: 480
+      y: 28
+      width: 200
+      height: 200
+  - uniqueID: c
+    text: yalp
+    children: []
+    rect:
+      serializedVersion: 2
+      x: 1006
+      y: 85
+      width: 200
+      height: 200
+  - uniqueID: d
+    text: hululul
+    children: []
+    rect:
+      serializedVersion: 2
+      x: 782
+      y: 28
+      width: 200
+      height: 200
