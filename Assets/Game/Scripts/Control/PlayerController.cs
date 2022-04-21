@@ -32,7 +32,7 @@ namespace RPG.Control
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             bool hasHit = Physics.Raycast(ray, out hit);
-
+            
             if (hasHit)
             {
                 mover.MoveTo(hit.point);
