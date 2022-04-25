@@ -55,19 +55,20 @@ public class HandCalculator : MonoBehaviour
     {
         hand = OptimizeHand(hand);
 
-        float baseScore = (ScoreHand(hand) - 1) * 14f;
+        float baseScore = (ScoreHand(hand) - 1) * 15f;
         float highCardScore = ranks[hand[0][0]] * 1.0f;
-        float maxScore = 14f + (14f * 9); // 140 is highest score, ace high straight flush
-        Debug.Log("baseScore: " + baseScore);
-        Debug.Log("highCardScore: " + highCardScore);
-        Debug.Log("maxScore: " + maxScore);
+        float maxScore = 14f + (15f * 8); // 134 is highest score, ace high straight flush
+        //Debug.Log("baseScore: " + baseScore);
+        //Debug.Log("highCardScore: " + highCardScore);
+        //Debug.Log("maxScore: " + maxScore);
         float handScore = baseScore + highCardScore;
+        //Debug.Log("handScore: " + handScore);
         float handScoreNormalized = handScore / maxScore;
 
         return handScoreNormalized;
     }
 
-    public int ScorePocket(List<string> hand)
+    public float ScorePocket(List<string> hand)
     {
         int pocketScore = 0;
 
@@ -76,10 +77,12 @@ public class HandCalculator : MonoBehaviour
 
         if (ranks[hand[0][0]] == ranks[hand[1][0]]) { pocketScore += 15; }
 
-        // normalize number since highest pocket score will be 43, lowest 5 (want it to start at 0)
+        // normalize number since highest pocket score will be 43, lowest 5 (want it to go from 0 to 1)
         pocketScore -= 5;
+        float pocketScoreFloat = pocketScore * 1.0f;
+        pocketScoreFloat /= 43f;
 
-        return pocketScore;
+        return pocketScoreFloat;
     }
 
     public string GetHandName(List<string> hand)
