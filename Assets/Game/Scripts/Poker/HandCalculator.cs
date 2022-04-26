@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class HandCalculator : MonoBehaviour
 {
-    //[SerializeField] List<string> testHand;
+    [SerializeField] List<string> testHand;
 
     public Dictionary<int, string> handNames = new Dictionary<int, string>()
     {
@@ -22,16 +22,16 @@ public class HandCalculator : MonoBehaviour
 
     void Start()
     {
-        //List<string> sortedHand = SortHandHighLow(testHand);
+        List<string> sortedHand = SortHandHighLow(testHand);
 
         //Debug.Log(CheckStraightFlush(sortedHand));
 
-        //int handScore = ScoreHand(testHand);
-        //string handName = handNames[handScore];
+        int handScore = ScoreHand(testHand);
+        string handName = handNames[handScore];
 
-        //List<string> optimizedHand = OptimizeHand(sortedHand);
-        //Debug.Log("[" + sortedHand[0] + "," + sortedHand[1] + "," + sortedHand[2] + "," + sortedHand[3] + "," + sortedHand[4] + "," + sortedHand[5] + "," + sortedHand[6] + "]" + " = " + handName);
-        //Debug.Log("[" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
+        List<string> optimizedHand = OptimizeHand(sortedHand);
+        Debug.Log("[" + sortedHand[0] + "," + sortedHand[1] + "," + sortedHand[2] + "," + sortedHand[3] + "," + sortedHand[4] + "," + sortedHand[5] + "," + sortedHand[6] + "]" + " = " + handName);
+        Debug.Log("[" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
     }
 
     public int ScoreHand(List<string> hand)
@@ -646,6 +646,8 @@ public class HandCalculator : MonoBehaviour
                 hand.Remove(pair1);
                 hand.Remove(pair1a);
 
+                // break from loop so we don't take second pair yet
+                break;
             }
         }
 
@@ -664,6 +666,9 @@ public class HandCalculator : MonoBehaviour
                 // remove pair from original hand
                 hand.Remove(pair2);
                 hand.Remove(pair2a);
+
+                // break from loop so we don't take 3rd pair
+                break;
 
             }
         }
