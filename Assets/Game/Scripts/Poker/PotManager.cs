@@ -207,4 +207,61 @@ public class PotManager : MonoBehaviour
     {
         player.playerPosition.moneyText.text = "$" + player.money.ToString();
     }
+
+    public int GetSecondHighestActiveStack()
+    {
+        List<PokerPlayer> activePlayers = new List<PokerPlayer>();
+        int i;
+        int highStackIdx = 0;
+
+        foreach(PokerPlayer player in dealer.players)
+        {
+            if (player.eliminated || player.folded) { continue; }
+            else
+            {
+                activePlayers.Add(player);
+            }
+        }
+  
+        int highStack = activePlayers[0].money;
+       
+        // first find highest stack
+        for (i=0; i<activePlayers.Count; i++)
+        {
+            if (activePlayers[i].eliminated || activePlayers[i].folded) { continue; }
+
+            if (activePlayers[i].money >= highStack)
+            {
+                highStack = activePlayers[i].money;
+                highStackIdx = i;
+            }
+        }
+
+        // remove highest stack
+        activePlayers.RemoveAt(highStackIdx);
+
+        int secondHighestStack = activePlayers[0].money;
+
+        // find highest remaining stack, which is second highest stack
+        for (i = 0; i < activePlayers.Count; i++)
+        {
+            if (activePlayers[i].eliminated || activePlayers[i].folded) { continue; }
+
+            if (activePlayers[i].money >= highStack)
+            {
+                secondHighestStack = activePlayers[i].money;
+            }
+        }
+
+        return secondHighestStack;
+    }
+
+    public int LevelOffRaise(int amountOwed)
+    {
+        int secondHighestStack = GetSecondHighestActiveStack();
+
+        if (amountOwed > secondHighestStack) { amountOwed = secondHighestStack; }
+
+        return amountOwed;
+    }
 }

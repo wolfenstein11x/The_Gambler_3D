@@ -22,16 +22,16 @@ public class HandCalculator : MonoBehaviour
 
     void Start()
     {
-        List<string> sortedHand = SortHandHighLow(testHand);
+        //List<string> sortedHand = SortHandHighLow(testHand);
 
         //Debug.Log(CheckStraightFlush(sortedHand));
 
-        int handScore = ScoreHand(testHand);
-        string handName = handNames[handScore];
+        //int handScore = ScoreHand(testHand);
+        //string handName = handNames[handScore];
 
-        List<string> optimizedHand = OptimizeHand(sortedHand);
-        Debug.Log("[" + sortedHand[0] + "," + sortedHand[1] + "," + sortedHand[2] + "," + sortedHand[3] + "," + sortedHand[4] + "," + sortedHand[5] + "," + sortedHand[6] + "]" + " = " + handName);
-        Debug.Log("[" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
+        //List<string> optimizedHand = OptimizeHand(sortedHand);
+        //Debug.Log("[" + sortedHand[0] + "," + sortedHand[1] + "," + sortedHand[2] + "," + sortedHand[3] + "," + sortedHand[4] + "," + sortedHand[5] + "," + sortedHand[6] + "]" + " = " + handName);
+        //Debug.Log("[" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
     }
 
     public int ScoreHand(List<string> hand)

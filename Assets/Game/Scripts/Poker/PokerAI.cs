@@ -230,7 +230,6 @@ public class PokerAI : MonoBehaviour
         }
 
         
-        //int raiseAmount = 4;//potManager.highestBet + potManager.bigBlind;
         string decision = "I raise to $" + raiseAmount;
 
         // if can't afford raise amount, that means going all in
@@ -244,6 +243,10 @@ public class PokerAI : MonoBehaviour
 
         // amount player puts in pot is the raise amount minus the money they already have put in
         int amountOwed = raiseAmount - GetComponent<PokerPlayer>().currentBet;
+
+        // NEED TO TEST IT IN HEADS-UP
+        // level off amount put in pot, so it is not greater than money of second highest non-folded player
+        amountOwed = potManager.LevelOffRaise(amountOwed);
 
         // player puts money in pot and raise become new amount required to keep playing
         potManager.CollectMoneyFromPlayer(GetComponent<PokerPlayer>(), amountOwed);

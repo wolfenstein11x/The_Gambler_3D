@@ -135,6 +135,10 @@ public class PokerPlayer : MonoBehaviour
         // amount player puts in pot is the raise amount minus the money they already have put in
         int amountOwed = raiseAmount - currentBet;
 
+        // NEED TO TEST IT IN HEADS-UP
+        // level off amount put in pot, so it is not greater than money of second highest non-folded player
+        amountOwed = potManager.LevelOffRaise(amountOwed);
+
         // player puts money in pot and raise become new amount required to keep playing
         potManager.CollectMoneyFromPlayer(this, amountOwed);
         potManager.highestBet = raiseAmount;
@@ -162,6 +166,9 @@ public class PokerPlayer : MonoBehaviour
 
         // amount player puts in pot is the raise amount minus the money they already have put in
         int amountOwed = raiseAmount - currentBet;
+
+        // level off amount put in pot, so it is not greater than money of second highest non-folded player
+        amountOwed = potManager.LevelOffRaise(amountOwed);
 
         // player puts money in pot and raise become new amount required to keep playing
         potManager.CollectMoneyFromPlayer(this, amountOwed);
