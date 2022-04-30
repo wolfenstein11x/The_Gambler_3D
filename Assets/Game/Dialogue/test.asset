@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-1033334785251794680
+--- !u!114 &-282143089621526200
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,15 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
-  m_Name: 6157499f-b473-40a4-840a-47e56d9dc854
+  m_Name: cefca886-a8c6-45c6-bf23-6ee27788027d
   m_EditorClassIdentifier: 
   isPlayerSpeaking: 0
-  text: Girls never lie!
+  text: 
   children: []
   rect:
     serializedVersion: 2
-    x: 654
-    y: 56
+    x: 254
+    y: 156
     width: 200
     height: 100
 --- !u!114 &11400000
@@ -34,98 +34,5 @@ MonoBehaviour:
   m_Name: test
   m_EditorClassIdentifier: 
   nodes:
-  - {fileID: 2594949537339068484}
-  - {fileID: 6921942441970655478}
-  - {fileID: 5546577432940879164}
-  - {fileID: -1033334785251794680}
-  - {fileID: 1117505059654896547}
+  - {fileID: -282143089621526200}
   newNodeOffset: {x: 250, y: 0}
---- !u!114 &1117505059654896547
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
-  m_Name: d2a69752-fa77-42c3-a92c-032a18d8f6a8
-  m_EditorClassIdentifier: 
-  isPlayerSpeaking: 0
-  text: I know!
-  children: []
-  rect:
-    serializedVersion: 2
-    x: 666
-    y: 269
-    width: 200
-    height: 100
---- !u!114 &2594949537339068484
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
-  m_Name: e3601591-3c63-4b24-acc9-46f7da0408a6
-  m_EditorClassIdentifier: 
-  isPlayerSpeaking: 0
-  text: I know it was one of the boys who stole Mrs Canter's lamb! No girl would
-    ever do that!
-  children:
-  - 1c2723e3-6fab-4ebe-a4c0-b54197e607a4
-  - bc59ef96-5e08-439a-8e54-071475fc3f7c
-  rect:
-    serializedVersion: 2
-    x: 159
-    y: 171
-    width: 200
-    height: 100
---- !u!114 &5546577432940879164
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
-  m_Name: bc59ef96-5e08-439a-8e54-071475fc3f7c
-  m_EditorClassIdentifier: 
-  isPlayerSpeaking: 1
-  text: Why can't a girl do that?
-  children:
-  - 6157499f-b473-40a4-840a-47e56d9dc854
-  rect:
-    serializedVersion: 2
-    x: 404
-    y: 56
-    width: 200
-    height: 100
---- !u!114 &6921942441970655478
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
-  m_Name: 1c2723e3-6fab-4ebe-a4c0-b54197e607a4
-  m_EditorClassIdentifier: 
-  isPlayerSpeaking: 1
-  text: You're right Mrs Cheese!
-  children:
-  - d2a69752-fa77-42c3-a92c-032a18d8f6a8
-  rect:
-    serializedVersion: 2
-    x: 416
-    y: 269
-    width: 200
-    height: 100

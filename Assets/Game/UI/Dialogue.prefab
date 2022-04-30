@@ -173,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AIText: {fileID: 4478913340627439463}
+  nextButton: {fileID: 8021612050587224020}
 --- !u!1 &7298762514082353339
 GameObject:
   m_ObjectHideFlags: 0

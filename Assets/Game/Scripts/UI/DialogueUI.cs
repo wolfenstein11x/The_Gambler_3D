@@ -10,18 +10,28 @@ namespace RPG.UI
     {
         PlayerConversant playerConversant;
         [SerializeField] Text AIText;
+        [SerializeField] Button nextButton;
 
         // Start is called before the first frame update
         void Start()
         {
             playerConversant = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerConversant>();
-            AIText.text = playerConversant.GetText();
+            nextButton.onClick.AddListener(Next);
+            
+            UpdateUI();
+        }
+
+        void Next()
+        {
+            playerConversant.Next();
+            UpdateUI();
         }
 
         // Update is called once per frame
-        void Update()
+        void UpdateUI()
         {
-
+            AIText.text = playerConversant.GetText();
+            nextButton.gameObject.SetActive(playerConversant.HasNext());
         }
     }
 }
