@@ -143,7 +143,7 @@ MonoBehaviour:
   m_Name: bc59ef96-5e08-439a-8e54-071475fc3f7c
   m_EditorClassIdentifier: 
   isPlayerSpeaking: 1
-  text: Why can't a girl do that?
+  text: '    Why can''t a girl do that?'
   children:
   - 6157499f-b473-40a4-840a-47e56d9dc854
   rect:
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_Name: 1c2723e3-6fab-4ebe-a4c0-b54197e607a4
   m_EditorClassIdentifier: 
   isPlayerSpeaking: 1
-  text: You're right Mrs Cheese!
+  text: '    You''re right Mrs Cheese!'
   children:
   - d2a69752-fa77-42c3-a92c-032a18d8f6a8
   - b33820ff-ef7f-4d5e-ab2d-967d1bc373c3

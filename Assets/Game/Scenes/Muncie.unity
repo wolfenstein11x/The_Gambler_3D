@@ -1308,6 +1308,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8569550423476797156, guid: 95db2b017cc1c0a4a945b29c30c21833, type: 3}
   m_PrefabInstance: {fileID: 39923773}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &40660423 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8021612050616836255, guid: 087c327879f71664a9a1d6f0e48de905, type: 3}
+  m_PrefabInstance: {fileID: 8021612050367825490}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &40819060
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51425,6 +51436,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: -7242798275662534859, guid: 7771e607efcb8fd419eef7de6f71a994, type: 3}
+      propertyPath: testDialogue
+      value: 
+      objectReference: {fileID: 11400000, guid: efb758c6e6f4adf499553843d458ba55, type: 2}
+    - target: {fileID: -7242798275662534859, guid: 7771e607efcb8fd419eef7de6f71a994, type: 3}
       propertyPath: currentDialogue
       value: 
       objectReference: {fileID: 11400000, guid: efb758c6e6f4adf499553843d458ba55, type: 2}
@@ -51484,6 +51499,22 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 1302521764}
+    - target: {fileID: 7414407850317056028, guid: 7771e607efcb8fd419eef7de6f71a994, type: 3}
+      propertyPath: cursorMappings.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7414407850317056028, guid: 7771e607efcb8fd419eef7de6f71a994, type: 3}
+      propertyPath: cursorMappings.Array.data[1].type
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7414407850317056028, guid: 7771e607efcb8fd419eef7de6f71a994, type: 3}
+      propertyPath: cursorMappings.Array.data[0].texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 21628736160fcc9488493401da3ef621, type: 3}
+    - target: {fileID: 7414407850317056028, guid: 7771e607efcb8fd419eef7de6f71a994, type: 3}
+      propertyPath: cursorMappings.Array.data[1].texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 2e71a8202d3b4a3448ec85ced5a40265, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7771e607efcb8fd419eef7de6f71a994, type: 3}
 --- !u!4 &7447163606135469178 stripped
@@ -51602,6 +51633,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6478766670910498978, guid: 087c327879f71664a9a1d6f0e48de905, type: 3}
+      propertyPath: quitButton
+      value: 
+      objectReference: {fileID: 40660423}
     - target: {fileID: 8230260328896654263, guid: 087c327879f71664a9a1d6f0e48de905, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
