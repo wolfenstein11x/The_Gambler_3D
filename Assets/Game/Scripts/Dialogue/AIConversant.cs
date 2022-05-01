@@ -2,18 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using RPG.Control;
+using UnityEngine.UI;
 
-public class AIConversant : MonoBehaviour
+namespace RPG.Dialogue
 {
-    // Start is called before the first frame update
-    void Start()
+    public class AIConversant : MonoBehaviour, IRaycastable
     {
-        
-    }
+        [SerializeField] Sprite profilePic;
+        [SerializeField] Dialogue dialogue = null;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        public CursorType GetCursorType()
+        {
+            return CursorType.Dialogue;
+        }
+
+        public bool HandleRaycast(PlayerController callingController)
+        {
+            if (dialogue == null)
+            {
+                return false;
+            }
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                callingController.GetComponent<PlayerConversant>().StartDialogue(this, dialogue);
+            }
+            return true;
+        }
+
+        public Sprite GetProfilePic()
+        {
+            return profilePic;
+        }
+
     }
 }

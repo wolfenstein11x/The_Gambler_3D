@@ -13,12 +13,6 @@ namespace RPG.Control
 
         Mover mover;
 
-        enum CursorType
-        {
-            None, 
-            Movement
-        }
-
         [System.Serializable]
         struct CursorMapping
         {
@@ -38,7 +32,9 @@ namespace RPG.Control
         // Update is called once per frame
         void Update()
         {
-            if (InteractWithUI()) return; 
+            if (InteractWithUI()) return;
+
+            if (InteractWithComponent()) return;
 
             if (Input.GetMouseButton(0))
             {
@@ -53,7 +49,7 @@ namespace RPG.Control
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             bool hasHit = Physics.Raycast(ray, out hit);
-            
+
             if (hasHit)
             {
                 mover.MoveTo(hit.point);
@@ -68,13 +64,11 @@ namespace RPG.Control
 
         private CursorMapping GetCursorMapping(CursorType type)
         {
-            foreach(CursorMapping mapping in cursorMappings)
+            foreach (CursorMapping mapping in cursorMappings)
             {
                 if (mapping.type == type)
                 {
-                    //return mapping;
-                    return cursorMappings[1];
-
+                    return mapping;
                 }
             }
 
@@ -85,6 +79,29 @@ namespace RPG.Control
         private bool InteractWithUI()
         {
             return EventSystem.current.IsPointerOverGameObject();
+        }
+
+        public Ray GetMouseRay()
+        {
+            return mainCamera.ScreenPointToRay(Input.mousePosition);
+        }
+
+        private bool InteractWithComponent()
+        {
+            RaycastHit[] hits = Physics.RaycastAll(GetMouseRay());
+            foreach (RaycastHit hit in hits)
+            {
+                IRaycastable[] raycastables = hit.transform.GetComponents<IRaycastable>();
+                foreach (IRaycastable raycastable in raycastables)
+                {
+                    if (raycastable.HandleRaycast(this))
+                    {
+                        SetCursor(raycastable.GetCursorType());
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }
