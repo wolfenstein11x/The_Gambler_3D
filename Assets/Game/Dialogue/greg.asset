@@ -146,12 +146,13 @@ MonoBehaviour:
   m_Name: 9a2e8dfd-f96d-4ec3-a3f5-6775e3c1e97d
   m_EditorClassIdentifier: 
   isPlayerSpeaking: 0
-  text: 'They know I''m the best in town, ya hear? '
+  text: They know I'm the best fisherman in town, ya hear? I oughta rassle them suckers
+    till the cows come home!
   children: []
   rect:
     serializedVersion: 2
-    x: 871
-    y: 75
+    x: 824
+    y: 97
     width: 200
     height: 100
 --- !u!114 &7683451670868772784
