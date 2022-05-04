@@ -8910,31 +8910,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8115586398412420645, guid: 48973f87b1a21a64d84812843e95148f, type: 3}
       propertyPath: testHand.Array.data[0]
-      value: qc
+      value: 3c
       objectReference: {fileID: 0}
     - target: {fileID: 8115586398412420645, guid: 48973f87b1a21a64d84812843e95148f, type: 3}
       propertyPath: testHand.Array.data[1]
-      value: 2h
+      value: 4d
       objectReference: {fileID: 0}
     - target: {fileID: 8115586398412420645, guid: 48973f87b1a21a64d84812843e95148f, type: 3}
       propertyPath: testHand.Array.data[2]
-      value: as
+      value: 7h
       objectReference: {fileID: 0}
     - target: {fileID: 8115586398412420645, guid: 48973f87b1a21a64d84812843e95148f, type: 3}
       propertyPath: testHand.Array.data[3]
-      value: ad
+      value: 4c
       objectReference: {fileID: 0}
     - target: {fileID: 8115586398412420645, guid: 48973f87b1a21a64d84812843e95148f, type: 3}
       propertyPath: testHand.Array.data[4]
-      value: kh
+      value: 7s
       objectReference: {fileID: 0}
     - target: {fileID: 8115586398412420645, guid: 48973f87b1a21a64d84812843e95148f, type: 3}
       propertyPath: testHand.Array.data[5]
-      value: ks
+      value: 4h
       objectReference: {fileID: 0}
     - target: {fileID: 8115586398412420645, guid: 48973f87b1a21a64d84812843e95148f, type: 3}
       propertyPath: testHand.Array.data[6]
-      value: 2d
+      value: 7d
       objectReference: {fileID: 0}
     - target: {fileID: 8115586398412420646, guid: 48973f87b1a21a64d84812843e95148f, type: 3}
       propertyPath: m_Name

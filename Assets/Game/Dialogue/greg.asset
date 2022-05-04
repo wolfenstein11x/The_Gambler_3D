@@ -23,6 +23,8 @@ MonoBehaviour:
     y: 71
     width: 200
     height: 100
+  onEnterAction: 
+  onExitAction: 
 --- !u!114 &-5890463479568665688
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46,6 +48,8 @@ MonoBehaviour:
     y: 155
     width: 200
     height: 100
+  onEnterAction: 
+  onExitAction: 
 --- !u!114 &-5100289757372319753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68,6 +72,8 @@ MonoBehaviour:
     y: 283
     width: 200
     height: 100
+  onEnterAction: 
+  onExitAction: 
 --- !u!114 &-4104674892729451808
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90,6 +96,8 @@ MonoBehaviour:
     y: 283
     width: 200
     height: 100
+  onEnterAction: 
+  onExitAction: 
 --- !u!114 &-1678382044854181370
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,6 +120,8 @@ MonoBehaviour:
     y: 71
     width: 200
     height: 100
+  onEnterAction: 
+  onExitAction: 
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,6 +165,8 @@ MonoBehaviour:
     y: 97
     width: 200
     height: 100
+  onEnterAction: 
+  onExitAction: 
 --- !u!114 &7683451670868772784
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,3 +188,5 @@ MonoBehaviour:
     y: 283
     width: 200
     height: 100
+  onEnterAction: 
+  onExitAction: 

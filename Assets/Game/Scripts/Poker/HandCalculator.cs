@@ -134,19 +134,25 @@ public class HandCalculator : MonoBehaviour
 
     private bool CheckFullHouse(List<string> hand)
     {
-        bool trips = false;
+        int tripsCount = 0;
         bool pair = false;
+        bool fullHouse = false;
 
         foreach (string card in hand)
         {
             // count matches in letter at idx 0 (which is rank)
             int dups = CountDups(card[0], 0, hand);
 
-            if (dups == 2) { trips = true; }
+            if (dups == 2) { tripsCount++; }
             else if (dups == 1) { pair = true; }
         }
 
-        return (trips && pair);
+        // two sets of trips is a full house
+        if (tripsCount > 1) { fullHouse = true; }
+        else if (tripsCount > 0 && pair) { fullHouse = true; }
+        else { fullHouse = false; }
+
+        return fullHouse;
     }
 
     private bool CheckFlush(List<string> hand)
@@ -501,6 +507,9 @@ public class HandCalculator : MonoBehaviour
                 hand.Remove(trip1);
                 hand.Remove(trip1a);
                 hand.Remove(trip1b);
+
+                // exit loop, to avoid double trips bug
+                break;
             }
         }
 
@@ -519,6 +528,9 @@ public class HandCalculator : MonoBehaviour
                 // remove pair from original hand
                 hand.Remove(pair1);
                 hand.Remove(pair1a);
+
+                // exit loop, to avoid double trips bug
+                break;
             }
         }
 
