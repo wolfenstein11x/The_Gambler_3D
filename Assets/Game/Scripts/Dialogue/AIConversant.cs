@@ -10,6 +10,8 @@ namespace RPG.Dialogue
     {
         [SerializeField] Sprite profilePic;
         [SerializeField] Dialogue dialogue = null;
+        [SerializeField] Dialogue midQuestDialogue = null;
+        [SerializeField] Dialogue postQuestDialogue = null;
 
         public CursorType GetCursorType()
         {
@@ -33,6 +35,11 @@ namespace RPG.Dialogue
         public Sprite GetProfilePic()
         {
             return profilePic;
+        }
+
+        public void SetDialogueToMidQuest()
+        {
+            dialogue = midQuestDialogue;
         }
 
     }

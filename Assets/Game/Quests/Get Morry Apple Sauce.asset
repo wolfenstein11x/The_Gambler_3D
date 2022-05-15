@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e1da2b117019d4997d3aa041cbf319, type: 3}
   m_Name: Get Morry Apple Sauce
   m_EditorClassIdentifier: 
-  objectives: []
+  objectives:
+  - Find Polly Straub

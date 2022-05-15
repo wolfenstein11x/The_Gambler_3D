@@ -12,4 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1e1da2b117019d4997d3aa041cbf319, type: 3}
   m_Name: Find Gregs Fishin Pole
   m_EditorClassIdentifier: 
-  objectives: []
+  objectives:
+  - Find out who stole the fishing pole
+  - Win back the fishing pole in a poker match
