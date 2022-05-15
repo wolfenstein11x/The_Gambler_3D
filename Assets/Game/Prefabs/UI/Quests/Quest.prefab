@@ -190,6 +190,7 @@ GameObject:
   - component: {fileID: 7145238425465798824}
   - component: {fileID: 678223823343020451}
   - component: {fileID: 7271481510071161645}
+  - component: {fileID: 5673585021660497820}
   m_Layer: 5
   m_Name: Quest
   m_TagString: Untagged
@@ -254,5 +255,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 787c39f11ba3ca54fa6548edd3937119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tooltipPrefab: {fileID: 2127689693421958878, guid: 781b54689203eee4f80ec3e572574bdf, type: 3}
+--- !u!114 &5673585021660497820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8602506069290754961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6573f4e8d2bfc6f46a4cf5e24d6d1e49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
