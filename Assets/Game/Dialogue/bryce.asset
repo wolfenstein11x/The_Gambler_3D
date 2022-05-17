@@ -1,5 +1,122 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-5903702185216615779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
+  m_Name: 38ad9d45-123e-4197-9fb5-b004863fdce3
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 0
+  text: Deal 'em up!
+  children: []
+  rect:
+    serializedVersion: 2
+    x: 1169
+    y: 220
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: StartPokerMatch
+--- !u!114 &-3485366998171011248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
+  m_Name: 19c3ff63-acf0-4a19-b426-7bdd79bb4104
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 0
+  text: The Cubbies won! Hey Chicago, whadda ya say!
+  children: []
+  rect:
+    serializedVersion: 2
+    x: 675
+    y: 52
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+--- !u!114 &-1859645147921362545
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
+  m_Name: 768b08c4-b349-455d-87e7-ddcb3b50a076
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 1
+  text: '    Forget it'
+  children: []
+  rect:
+    serializedVersion: 2
+    x: 906
+    y: 348
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+--- !u!114 &-612280733952313425
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
+  m_Name: e12033b0-2568-45d4-bfbf-807345bb27c4
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 1
+  text: '    No, who won?'
+  children:
+  - 19c3ff63-acf0-4a19-b426-7bdd79bb4104
+  rect:
+    serializedVersion: 2
+    x: 424
+    y: 82
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+--- !u!114 &-396589529174681628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
+  m_Name: 7e701df3-5666-4c01-aa8c-94cc81835df4
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 1
+  text: '    Did you steal Greg''s fishin pole?'
+  children:
+  - 2ab8bb7e-a3af-43a9-b61e-83773a93ee08
+  rect:
+    serializedVersion: 2
+    x: 424
+    y: 291
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14,7 +131,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nodes:
   - {fileID: 3763012586548912521}
+  - {fileID: -396589529174681628}
+  - {fileID: 6261332132139831362}
+  - {fileID: -612280733952313425}
+  - {fileID: -3485366998171011248}
+  - {fileID: -1859645147921362545}
+  - {fileID: 1154639568720460183}
+  - {fileID: -5903702185216615779}
   newNodeOffset: {x: 250, y: 0}
+--- !u!114 &1154639568720460183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
+  m_Name: dacb5aef-09e4-4457-89ce-84cdf466f031
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 1
+  text: '    I accept'
+  children:
+  - 38ad9d45-123e-4197-9fb5-b004863fdce3
+  rect:
+    serializedVersion: 2
+    x: 921
+    y: 214
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
 --- !u!114 &3763012586548912521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28,12 +176,39 @@ MonoBehaviour:
   m_Name: bed29445-30e2-47db-a2ea-f37a8a19b80f
   m_EditorClassIdentifier: 
   isPlayerSpeaking: 0
-  text: Hey Chicago, Whadda ya say!
-  children: []
+  text: Hey, did you see the Cubbies game?
+  children:
+  - 7e701df3-5666-4c01-aa8c-94cc81835df4
+  - e12033b0-2568-45d4-bfbf-807345bb27c4
   rect:
     serializedVersion: 2
     x: 167
     y: 174
+    width: 200
+    height: 100
+  onEnterAction: 
+  onExitAction: 
+--- !u!114 &6261332132139831362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 04d9246d0f29d7f43a79305b4a533747, type: 3}
+  m_Name: 2ab8bb7e-a3af-43a9-b61e-83773a93ee08
+  m_EditorClassIdentifier: 
+  isPlayerSpeaking: 0
+  text: Yeah. If you can win a poker match, I'll give it back.
+  children:
+  - 768b08c4-b349-455d-87e7-ddcb3b50a076
+  - dacb5aef-09e4-4457-89ce-84cdf466f031
+  rect:
+    serializedVersion: 2
+    x: 677
+    y: 282
     width: 200
     height: 100
   onEnterAction: 

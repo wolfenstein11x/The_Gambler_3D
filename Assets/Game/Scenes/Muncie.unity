@@ -19095,13 +19095,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 823993657, guid: 35766b28d8e49b145a31be45abb3077c, type: 3}
+      propertyPath: pokerScene
+      value: PokerTable
+      objectReference: {fileID: 0}
     - target: {fileID: 1529366667462550, guid: 35766b28d8e49b145a31be45abb3077c, type: 3}
       propertyPath: m_Name
       value: Bryce
-      objectReference: {fileID: 0}
-    - target: {fileID: 1529366667462550, guid: 35766b28d8e49b145a31be45abb3077c, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4915711711517550, guid: 35766b28d8e49b145a31be45abb3077c, type: 3}
       propertyPath: m_RootOrder
@@ -19154,20 +19154,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1529366667462550, guid: 35766b28d8e49b145a31be45abb3077c, type: 3}
   m_PrefabInstance: {fileID: 823993653}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &823993655
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 823993654}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.46492386, y: 1.8498263, z: 0.32328606}
-  m_Center: {x: 0.015737534, y: 0.9049077, z: -0.015737534}
---- !u!114 &823993656
+--- !u!114 &823993655
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -19176,13 +19163,36 @@ MonoBehaviour:
   m_GameObject: {fileID: 823993654}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fce1e25efe19509419cf297acb8e2d02, type: 3}
+  m_Script: {fileID: 11500000, guid: b1d470f93e774684bb48f190bc9fc676, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  profilePic: {fileID: 21300000, guid: 80712870148837248928ee119493b8b4, type: 3}
-  dialogue: {fileID: 11400000, guid: fb10b55ad44b7d54091e19cd3dadbc0b, type: 2}
-  midQuestDialogue: {fileID: 0}
-  postQuestDialogue: {fileID: 0}
+  action: StartPokerMatch
+  onTrigger:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 823993657}
+        m_TargetAssemblyTypeName: QuestNPC, Assembly-CSharp
+        m_MethodName: StartPokerMatch
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &823993657 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 823993657, guid: 35766b28d8e49b145a31be45abb3077c, type: 3}
+  m_PrefabInstance: {fileID: 823993653}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 823993654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d125d7288877d2b449ca9a7437d4b4ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &824059751
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -51524,6 +51534,63 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4224887291045175048, guid: 8fc62de130cf32d428efe999da17be6e, type: 3}
   m_PrefabInstance: {fileID: 139062661955132911}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &5165443118141545513
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5165443116195094777, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_Name
+      value: GameData
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165443116195094779, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_RootOrder
+      value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165443116195094779, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165443116195094779, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165443116195094779, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165443116195094779, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165443116195094779, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165443116195094779, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165443116195094779, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165443116195094779, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165443116195094779, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5165443116195094779, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 8bc4f28199075e74bb6e357050b5b866, type: 3}
 --- !u!1001 &5516936244414738072
 PrefabInstance:
   m_ObjectHideFlags: 0

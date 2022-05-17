@@ -42,5 +42,10 @@ namespace RPG.Dialogue
             dialogue = midQuestDialogue;
         }
 
+        public void SetDialogueToQuestComplete()
+        {
+            dialogue = postQuestDialogue;
+        }
+
     }
 }

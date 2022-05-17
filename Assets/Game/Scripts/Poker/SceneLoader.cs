@@ -11,6 +11,11 @@ public class SceneLoader : MonoBehaviour
         
     }
 
+    public void LoadTownScene()
+    {
+        SceneManager.LoadScene("Muncie");
+    }
+
     public void LoadQuickMatch()
     {
         SceneManager.LoadScene("PokerTable");
