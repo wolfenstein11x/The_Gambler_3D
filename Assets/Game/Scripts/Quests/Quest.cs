@@ -8,8 +8,8 @@ namespace RPG.Quests
     public class Quest : ScriptableObject
     {
         [SerializeField] string[] objectives;
-        [SerializeField] static bool inProgress = false;
-        [SerializeField] static bool completed = false;
+        [SerializeField] bool inProgress = false;
+        [SerializeField] bool completed = false;
 
         public string GetTitle()
         {

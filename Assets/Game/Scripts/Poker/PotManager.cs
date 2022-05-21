@@ -264,4 +264,20 @@ public class PotManager : MonoBehaviour
 
         return amountOwed;
     }
+
+    public int CountPlayersWithMoney()
+    {
+        int playersWithMoney = 0;
+
+        foreach (PokerPlayer player in dealer.players)
+        {
+            if (player.eliminated || player.folded) { continue; }
+            else
+            {
+                if (player.money > 0) { playersWithMoney++; }
+            }
+        }
+
+        return playersWithMoney;
+    }
 }

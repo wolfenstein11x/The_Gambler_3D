@@ -28,7 +28,7 @@ public class HandCalculator : MonoBehaviour
 
         //int handScore = ScoreHand(testHand);
         //string handName = handNames[handScore];
-
+        
         //List<string> optimizedHand = OptimizeHand(sortedHand);
         //Debug.Log("[" + sortedHand[0] + "," + sortedHand[1] + "," + sortedHand[2] + "," + sortedHand[3] + "," + sortedHand[4] + "," + sortedHand[5] + "," + sortedHand[6] + "]" + " = " + handName);
         //Debug.Log("[" + optimizedHand[0] + "," + optimizedHand[1] + "," + optimizedHand[2] + "," + optimizedHand[3] + "," + optimizedHand[4] + "]" + " = " + handName);
@@ -146,6 +146,9 @@ public class HandCalculator : MonoBehaviour
             if (dups == 2) { tripsCount++; }
             else if (dups == 1) { pair = true; }
         }
+
+        // trips get triple counted, so divide by 3 to get the actual number of trips
+        tripsCount /= 3;
 
         // two sets of trips is a full house
         if (tripsCount > 1) { fullHouse = true; }

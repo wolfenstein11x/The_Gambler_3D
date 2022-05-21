@@ -15,6 +15,8 @@ namespace RPG.Quests
             GetComponent<AIConversant>().SetDialogueToMidQuest();
             ActivateQuestNPCs();
             quest.StartQuest();
+
+            GetComponent<QuestStatus>().UpdateGregQuestStatus();
         }
 
         private void ActivateQuestNPCs()
