@@ -6,6 +6,8 @@ public enum GameState { Init, DealHands, BetRound1, BetRound1Done, BetRound2, Be
 
 public class ControlHub : MonoBehaviour
 {
+    [SerializeField] int maxTableCombineCount = 2;
+
     public GameState gameState;
     public GameState prevState;
 
@@ -351,7 +353,7 @@ public class ControlHub : MonoBehaviour
             }
 
             // combine tables and raise blinds if down to 3 players (and haven't already combined tables twice)
-            else if (dealer.CountActivePlayers() <= 3 && tableCombineCount < 2)
+            else if (dealer.CountActivePlayers() <= 3 && tableCombineCount < maxTableCombineCount)
             {
                 canvasController.ShowRaiseBlindsCanvas();
                 potManager.RaiseBlinds();

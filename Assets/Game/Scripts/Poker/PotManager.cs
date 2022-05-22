@@ -104,6 +104,10 @@ public class PotManager : MonoBehaviour
 
     public void DistributeWinnings()
     {
+        //Debug.Log("Number of winners: " + winnerCalculator.winners.Count);
+        //Debug.Log("Money in pot: " + potMoney);
+        //Debug.Log("Each winner gets: " + potMoney / winnerCalculator.winners.Count);
+
         foreach (PokerPlayer winner in winnerCalculator.winners)
         {
             // divide winnings among all winners in case of split pot
@@ -113,6 +117,8 @@ public class PotManager : MonoBehaviour
         // set pot to zero in case there is left over from split pot (due to integer division)
         ResetPot();
     }
+
+    
 
     public void CollectBlinds(List<PokerPlayer> players)
     {

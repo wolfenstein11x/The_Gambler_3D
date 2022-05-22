@@ -1446,7 +1446,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2617173200968365017, guid: cddc5c1ec9a6a7a4f9e17cbbbc09e53a, type: 3}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadTownScene
+        m_MethodName: LoadMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3085,7 +3085,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2617173200968365017, guid: cddc5c1ec9a6a7a4f9e17cbbbc09e53a, type: 3}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadTownScene
+        m_MethodName: LoadMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3599,7 +3599,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2617173200968365017, guid: cddc5c1ec9a6a7a4f9e17cbbbc09e53a, type: 3}
         m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadTownScene
+        m_MethodName: LoadMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -8236,13 +8236,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1321100292}
     m_Modifications:
+    - target: {fileID: 438961867, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
+      propertyPath: m_Text
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1175649778, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
       propertyPath: m_SizeDelta.x
       value: 330.074
       objectReference: {fileID: 0}
     - target: {fileID: 1175649778, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 69.764
+      value: 95
       objectReference: {fileID: 0}
     - target: {fileID: 1175649778, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -8250,7 +8254,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1175649778, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 370.883
+      value: 383.501
       objectReference: {fileID: 0}
     - target: {fileID: 13730946897489547, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
       propertyPath: m_Sprite
@@ -8980,6 +8984,10 @@ PrefabInstance:
     - target: {fileID: 9170299644109346353, guid: 9448f3401238da34b81b6bd65fcca5ad, type: 3}
       propertyPath: m_Name
       value: ControlHub
+      objectReference: {fileID: 0}
+    - target: {fileID: 9170299644109346355, guid: 9448f3401238da34b81b6bd65fcca5ad, type: 3}
+      propertyPath: maxTableCombineCount
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9448f3401238da34b81b6bd65fcca5ad, type: 3}
