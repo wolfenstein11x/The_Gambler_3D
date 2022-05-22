@@ -104,8 +104,8 @@ public class PokerAI : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // skip to the end when player has zero money, or no other active player has money
-        if (pokerPlayer.money <= 0 || !(pokerPlayer.OtherActivePlayersWithMoney()))
+        // skip to the end when player has zero money
+        if (pokerPlayer.money <= 0)
         {
             pokerPlayer.HandleOptionToMoneylessPlayer();
             return;

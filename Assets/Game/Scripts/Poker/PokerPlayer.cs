@@ -77,8 +77,8 @@ public class PokerPlayer : MonoBehaviour
         // skip to end if no other active player has money
         OtherActivePlayersWithMoney();
 
-        // skip to the end when player has zero money or no other active player has money
-        if (money <= 0 || !(OtherActivePlayersWithMoney()))
+        // skip to the end when player has zero money
+        if (money <= 0)
         {
             HandleOptionToMoneylessPlayer();
             return;
