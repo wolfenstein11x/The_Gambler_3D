@@ -37,8 +37,11 @@ public class PokerAI : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // skip to the end when player has zero money
-        if (pokerPlayer.money <= 0)
+        // skip to end if no other active player has money
+        pokerPlayer.OtherActivePlayersWithMoney();
+
+        // skip to the end when player has zero money or no other active player has money
+        if (pokerPlayer.money <= 0 || !(pokerPlayer.OtherActivePlayersWithMoney()))
         {
             pokerPlayer.HandleOptionToMoneylessPlayer();
             return;
@@ -101,8 +104,8 @@ public class PokerAI : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // skip to the end when player has zero money
-        if (pokerPlayer.money <= 0)
+        // skip to the end when player has zero money, or no other active player has money
+        if (pokerPlayer.money <= 0 || !(pokerPlayer.OtherActivePlayersWithMoney()))
         {
             pokerPlayer.HandleOptionToMoneylessPlayer();
             return;
@@ -244,9 +247,9 @@ public class PokerAI : MonoBehaviour
         // amount player puts in pot is the raise amount minus the money they already have put in
         int amountOwed = raiseAmount - GetComponent<PokerPlayer>().currentBet;
 
-        // NEED TO TEST IT IN HEADS-UP
+        // LevelOffRaise function causing bugs, so commented out for now
         // level off amount put in pot, so it is not greater than money of second highest non-folded player
-        amountOwed = potManager.LevelOffRaise(amountOwed);
+        // amountOwed = potManager.LevelOffRaise(amountOwed);
 
         // player puts money in pot and raise become new amount required to keep playing
         potManager.CollectMoneyFromPlayer(GetComponent<PokerPlayer>(), amountOwed);
@@ -403,6 +406,8 @@ public class PokerAI : MonoBehaviour
         if (weightedSum >= 0.2) { return 3; }
         else { return 1; }
     }
+
+    
 
     private void HandleOptionToMoneylessAI()
     {

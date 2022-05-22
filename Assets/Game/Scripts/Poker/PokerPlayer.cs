@@ -48,8 +48,11 @@ public class PokerPlayer : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // skip to the end when player has zero money
-        if (money <= 0)
+        // skip to end if no other active player has money
+        OtherActivePlayersWithMoney();
+
+        // skip to the end when player has zero money or no other active player has money
+        if (money <= 0 || !(OtherActivePlayersWithMoney()))
         {
             HandleOptionToMoneylessPlayer();
             return;
@@ -71,8 +74,11 @@ public class PokerPlayer : MonoBehaviour
         // show player's headshot on canvas
         canvasController.ShowBetter();
 
-        // skip to the end when player has zero money
-        if (money <= 0)
+        // skip to end if no other active player has money
+        OtherActivePlayersWithMoney();
+
+        // skip to the end when player has zero money or no other active player has money
+        if (money <= 0 || !(OtherActivePlayersWithMoney()))
         {
             HandleOptionToMoneylessPlayer();
             return;
@@ -135,9 +141,9 @@ public class PokerPlayer : MonoBehaviour
         // amount player puts in pot is the raise amount minus the money they already have put in
         int amountOwed = raiseAmount - currentBet;
 
-        // NEED TO TEST IT IN HEADS-UP
+        // LevelOffRaise function causing bugs, so commented out for now
         // level off amount put in pot, so it is not greater than money of second highest non-folded player
-        amountOwed = potManager.LevelOffRaise(amountOwed);
+        // amountOwed = potManager.LevelOffRaise(amountOwed);
 
         // player puts money in pot and raise become new amount required to keep playing
         potManager.CollectMoneyFromPlayer(this, amountOwed);
@@ -167,8 +173,9 @@ public class PokerPlayer : MonoBehaviour
         // amount player puts in pot is the raise amount minus the money they already have put in
         int amountOwed = raiseAmount - currentBet;
 
+        // LevelOffRaise function causing bugs, so commented out for now
         // level off amount put in pot, so it is not greater than money of second highest non-folded player
-        amountOwed = potManager.LevelOffRaise(amountOwed);
+        //amountOwed = potManager.LevelOffRaise(amountOwed);
 
         // player puts money in pot and raise become new amount required to keep playing
         potManager.CollectMoneyFromPlayer(this, amountOwed);
@@ -300,7 +307,28 @@ public class PokerPlayer : MonoBehaviour
         return (playersWithMoneyCount > 1);
     }
 
-    
+    public bool OtherActivePlayersWithMoney()
+    {
+        foreach (PokerPlayer player in dealer.players)
+        {
+            if (player == this)
+            {
+                continue;
+            }
+
+            else if (player.folded || player.eliminated)
+            {
+                continue;
+            }
+
+            else if (player.money > 0)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
 
 
 }

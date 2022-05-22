@@ -8237,8 +8237,20 @@ PrefabInstance:
     m_TransformParent: {fileID: 1321100292}
     m_Modifications:
     - target: {fileID: 1175649778, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 330.074
+      objectReference: {fileID: 0}
+    - target: {fileID: 1175649778, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 69.764
+      objectReference: {fileID: 0}
+    - target: {fileID: 1175649778, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 11
+      value: 9.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 1175649778, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 370.883
       objectReference: {fileID: 0}
     - target: {fileID: 13730946897489547, guid: b089a7e20d4c6f340a80a7cea392961d, type: 3}
       propertyPath: m_Sprite
@@ -8727,33 +8739,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1321100292}
     m_Modifications:
-    - target: {fileID: 2961589597252838934, guid: 44e10912c9d78d5458220890c152681a, type: 3}
-      propertyPath: m_Name
-      value: BetterHeadshot
+    - target: {fileID: 6225004882834641691, guid: 44e10912c9d78d5458220890c152681a, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 69.114
       objectReference: {fileID: 0}
-    - target: {fileID: 6225004882834641688, guid: 44e10912c9d78d5458220890c152681a, type: 3}
-      propertyPath: m_Name
-      value: TextBackground
-      objectReference: {fileID: 0}
-    - target: {fileID: 6225004883437070368, guid: 44e10912c9d78d5458220890c152681a, type: 3}
-      propertyPath: m_Name
-      value: DecisionText
-      objectReference: {fileID: 0}
-    - target: {fileID: 6225004883437070370, guid: 44e10912c9d78d5458220890c152681a, type: 3}
-      propertyPath: m_Text
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 6225004883437070370, guid: 44e10912c9d78d5458220890c152681a, type: 3}
-      propertyPath: m_FontData.m_MaxSize
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 6225004883437070370, guid: 44e10912c9d78d5458220890c152681a, type: 3}
-      propertyPath: m_FontData.m_MinSize
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6225004883437070370, guid: 44e10912c9d78d5458220890c152681a, type: 3}
-      propertyPath: m_FontData.m_FontSize
-      value: 65
+    - target: {fileID: 6225004882834641691, guid: 44e10912c9d78d5458220890c152681a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 370.558
       objectReference: {fileID: 0}
     - target: {fileID: 8863428716334556194, guid: 44e10912c9d78d5458220890c152681a, type: 3}
       propertyPath: m_Pivot.x
@@ -8842,14 +8834,6 @@ PrefabInstance:
     - target: {fileID: 8863428716334556198, guid: 44e10912c9d78d5458220890c152681a, type: 3}
       propertyPath: m_Name
       value: BetRoundCanvas
-      objectReference: {fileID: 0}
-    - target: {fileID: 8863428716334556198, guid: 44e10912c9d78d5458220890c152681a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8863428717510555939, guid: 44e10912c9d78d5458220890c152681a, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44e10912c9d78d5458220890c152681a, type: 3}

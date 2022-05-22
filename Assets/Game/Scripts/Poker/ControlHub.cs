@@ -76,15 +76,9 @@ public class ControlHub : MonoBehaviour
 
         else if (gameState == GameState.BetRound1)
         {
-            // if one or fewer players has money, skip the bet round
-            if (potManager.CountPlayersWithMoney() < 2) 
-            {
-                gameState = GameState.BetRound1Done;
-                RunStateMachine();
-            }
-            
+   
             // go to PlayerOption if bet is to main player
-            else if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
+            if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
             {
                 gameState = GameState.PlayerOption;
 
@@ -108,15 +102,9 @@ public class ControlHub : MonoBehaviour
 
         else if (gameState == GameState.BetRound2)
         {
-            // if one or fewer players has money, skip the bet round
-            if (potManager.CountPlayersWithMoney() < 2)
-            {
-                gameState = GameState.BetRound2Done;
-                RunStateMachine();
-            }
-
+            
             // go to PlayerOption if bet is to main player
-            else if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
+            if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
             {
                 gameState = GameState.PlayerOption;
 
@@ -140,15 +128,9 @@ public class ControlHub : MonoBehaviour
 
         else if (gameState == GameState.BetRound3)
         {
-            // if one or fewer players has money, skip the bet round
-            if (potManager.CountPlayersWithMoney() < 2)
-            {
-                gameState = GameState.BetRound3Done;
-                RunStateMachine();
-            }
 
             // go to PlayerOption if bet is to main player
-            else if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
+            if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
             {
                 gameState = GameState.PlayerOption;
 
@@ -172,15 +154,9 @@ public class ControlHub : MonoBehaviour
 
         else if (gameState == GameState.BetRound4)
         {
-            // if one or fewer players has money, skip the bet round
-            if (potManager.CountPlayersWithMoney() < 2)
-            {
-                gameState = GameState.BetRound4Done;
-                RunStateMachine();
-            }
 
             // go to PlayerOption if bet is to main player
-            else if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
+            if (dealer.players[betTracker.currentBetterIdx].tag == "mainPlayer")
             {
                 gameState = GameState.PlayerOption;
 

@@ -256,6 +256,7 @@ public class PotManager : MonoBehaviour
         return secondHighestStack;
     }
 
+    // there are some bugs with LevelOffRaise function, so will have to sideline it for now
     public int LevelOffRaise(int amountOwed)
     {
         int secondHighestStack = GetSecondHighestActiveStack();

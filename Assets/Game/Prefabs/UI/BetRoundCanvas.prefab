@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2674059859597170682}
   - component: {fileID: 6220421943581835362}
   m_Layer: 5
-  m_Name: WinnerHeadshot
+  m_Name: BetterHeadshot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87,7 +87,7 @@ GameObject:
   - component: {fileID: 6225004882834641693}
   - component: {fileID: 6225004882834641690}
   m_Layer: 5
-  m_Name: CatchphraseBackground
+  m_Name: TextBackground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110,8 +110,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 11, y: 386}
-  m_SizeDelta: {x: 294.389, y: 100}
+  m_AnchoredPosition: {x: 10.694, y: 386}
+  m_SizeDelta: {x: 331.721, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6225004882834641693
 CanvasRenderer:
@@ -163,7 +163,7 @@ GameObject:
   - component: {fileID: 6225004883437070373}
   - component: {fileID: 6225004883437070370}
   m_Layer: 5
-  m_Name: CatchphraseText
+  m_Name: DecisionText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -218,18 +218,18 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 694b12d0445c0c84abc34f0714847d62, type: 3}
-    m_FontSize: 40
+    m_FontSize: 55
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 10
-    m_MaxSize: 42
+    m_MinSize: 5
+    m_MaxSize: 70
     m_Alignment: 4
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: I raise to $2467
 --- !u!1 &8863428716334556198
 GameObject:
   m_ObjectHideFlags: 0
