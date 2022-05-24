@@ -8126,6 +8126,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ariana
       objectReference: {fileID: 0}
+    - target: {fileID: 6747273886560646916, guid: a78678f30660ac743920c5031918c24a, type: 3}
+      propertyPath: bluffRating
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a78678f30660ac743920c5031918c24a, type: 3}
 --- !u!1001 &2483474806908833072
@@ -9143,7 +9147,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9170299644109346355, guid: 9448f3401238da34b81b6bd65fcca5ad, type: 3}
       propertyPath: maxTableCombineCount
-      value: 0
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9448f3401238da34b81b6bd65fcca5ad, type: 3}
